@@ -15,6 +15,13 @@ public class ObjectInteraction : MonoBehaviour
     void Start()
     {
         textoInteracao.gameObject.SetActive(false);
+
+        if (coletarItem && InventoryManager.instance != null &&
+            InventoryManager.instance.itens.Contains(nomeItem))
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     void OnMouseDown()
