@@ -36,7 +36,16 @@ public class PauseManager : MonoBehaviour
 
     public void VoltarAoMenu()
     {
-        Debug.Log("Botão voltar ao menu clicado!");
+        GameObject jogador = GameObject.FindGameObjectWithTag("Player");
+
+        if (jogador != null)
+        {
+            PlayerPrefs.SetString("CenaSalva", SceneManager.GetActiveScene().name);
+            PlayerPrefs.SetFloat("PosicaoX", jogador.transform.position.x);
+            PlayerPrefs.SetFloat("PosicaoY", jogador.transform.position.y);
+            PlayerPrefs.SetInt("TemPartidaSalva", 1);
+            PlayerPrefs.Save();
+        }
 
         Time.timeScale = 1f;
         SceneManager.LoadScene("Menu_Inicial");

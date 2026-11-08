@@ -25,7 +25,15 @@ public class MenuManager : MonoBehaviour
 
     public void Jogar()
     {
-        SceneManager.LoadScene("Cena_Teste");
+        if (PlayerPrefs.GetInt("TemPartidaSalva", 0) == 1)
+        {
+            string cenaSalva = PlayerPrefs.GetString("CenaSalva", "Cena_Teste");
+            SceneManager.LoadScene(cenaSalva);
+        }
+        else
+        {
+            SceneManager.LoadScene("Cena_Teste");
+        }
     }
 
     public void AbrirCreditos()
