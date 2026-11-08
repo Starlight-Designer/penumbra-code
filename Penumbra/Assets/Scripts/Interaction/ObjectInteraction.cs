@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using TMPro;
 using System.Collections;
@@ -5,8 +6,11 @@ using System.Collections;
 public class ObjectInteraction : MonoBehaviour
 {
     public TextMeshProUGUI textoInteracao;
-    public string mensagem = "Você encontrou uma pista!";
+    public string mensagem = "Você pegou a fita!";
     public float tempoNaTela = 3f;
+
+    public string nomeItem = "Fita VHS";
+    public bool coletarItem = true;
 
     void Start()
     {
@@ -16,6 +20,12 @@ public class ObjectInteraction : MonoBehaviour
     void OnMouseDown()
     {
         StopAllCoroutines();
+
+        if (coletarItem)
+        {
+            InventoryManager.instance.AdicionarItem(nomeItem);
+        }
+
         StartCoroutine(MostrarMensagem());
     }
 
@@ -23,7 +33,14 @@ public class ObjectInteraction : MonoBehaviour
     {
         textoInteracao.text = mensagem;
         textoInteracao.gameObject.SetActive(true);
+
         yield return new WaitForSeconds(tempoNaTela);
+
         textoInteracao.gameObject.SetActive(false);
+
+        if (coletarItem)
+        {
+            Destroy(gameObject);
+        }
     }
 }
