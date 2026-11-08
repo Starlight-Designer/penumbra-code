@@ -6,6 +6,7 @@ public class MenuManager : MonoBehaviour
 {
     public GameObject painelConfiguracoes;
     public GameObject painelCreditos;
+    public GameObject painelConfirmarReinicio;
     public UnityEngine.UI.Slider sliderVolume;
 
     public void AbrirConfiguracoes()
@@ -44,6 +45,31 @@ public class MenuManager : MonoBehaviour
     public void FecharCreditos()
     {
         painelCreditos.SetActive(false);
+    }
+
+    public void AbrirConfirmacaoReinicio()
+    {
+        painelConfirmarReinicio.SetActive(true);
+    }
+
+    public void CancelarReinicio()
+    {
+        painelConfirmarReinicio.SetActive(false);
+    }
+
+    public void ConfirmarReinicio()
+    {
+        if (InventoryManager.instance != null)
+        {
+            InventoryManager.instance.itens.Clear();
+        }
+
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene("Cena_Teste");
     }
 
     public void SairDoJogo()
