@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,5 +36,10 @@ public class MenuManager : MonoBehaviour
     public void FecharCreditos()
     {
         painelCreditos.SetActive(false);
+    }
+
+    public void SairDoJogo()
+    {
+        Application.Quit();
     }
 }

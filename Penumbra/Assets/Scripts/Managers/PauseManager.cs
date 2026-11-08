@@ -1,4 +1,6 @@
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
@@ -6,22 +8,15 @@ public class PauseManager : MonoBehaviour
 
     private bool jogoPausado = false;
 
-    void Start()
-    {
-        painelPausa.SetActive(false);
-        Time.timeScale = 1f;
-    }
-
     void Update()
     {
-        if (jogoPausado)
-        {
-            if (Input.anyKeyDown)
-                RetomarJogo();
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             PausarJogo();
+        }
+        else if (jogoPausado && Input.anyKeyDown && !Input.GetMouseButtonDown(0))
+        {
+            RetomarJogo();
         }
     }
 
@@ -32,10 +27,18 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    public void RetomarJogo()
+    void RetomarJogo()
     {
         jogoPausado = false;
         painelPausa.SetActive(false);
         Time.timeScale = 1f;
+    }
+
+    public void VoltarAoMenu()
+    {
+        Debug.Log("Botão voltar ao menu clicado!");
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Menu_Inicial");
     }
 }
