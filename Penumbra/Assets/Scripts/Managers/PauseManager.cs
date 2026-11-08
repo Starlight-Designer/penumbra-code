@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class PauseManager : MonoBehaviour
 {
     public GameObject painelPausa;
+    public GameObject painelObjetivos;
 
     private bool jogoPausado = false;
 
@@ -12,11 +13,14 @@ public class PauseManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            PausarJogo();
-        }
-        else if (jogoPausado && Input.anyKeyDown && !Input.GetMouseButtonDown(0))
-        {
-            RetomarJogo();
+            if (!jogoPausado)
+            {
+                PausarJogo();
+            }
+            else
+            {
+                RetomarJogo();
+            }
         }
     }
 
@@ -24,6 +28,7 @@ public class PauseManager : MonoBehaviour
     {
         jogoPausado = true;
         painelPausa.SetActive(true);
+        painelObjetivos.SetActive(true);
         Time.timeScale = 0f;
     }
 
@@ -31,6 +36,7 @@ public class PauseManager : MonoBehaviour
     {
         jogoPausado = false;
         painelPausa.SetActive(false);
+        painelObjetivos.SetActive(false);
         Time.timeScale = 1f;
     }
 
@@ -44,6 +50,7 @@ public class PauseManager : MonoBehaviour
             PlayerPrefs.SetFloat("PosicaoX", jogador.transform.position.x);
             PlayerPrefs.SetFloat("PosicaoY", jogador.transform.position.y);
             PlayerPrefs.SetInt("TemPartidaSalva", 1);
+            PlayerPrefs.SetInt("CarregarPosicaoSalva", 1);
             PlayerPrefs.Save();
         }
 

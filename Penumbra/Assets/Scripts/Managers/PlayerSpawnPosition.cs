@@ -11,8 +11,10 @@ public class PlayerSpawnPosition : MonoBehaviour
         string cenaAtual = SceneManager.GetActiveScene().name;
         string cenaSalva = PlayerPrefs.GetString("CenaSalva", "");
 
-        if (PlayerPrefs.GetInt("TemPartidaSalva", 0) == 1 &&
-            cenaAtual == cenaSalva)
+        bool carregarPosicaoSalva =
+            PlayerPrefs.GetInt("CarregarPosicaoSalva", 0) == 1;
+
+        if (carregarPosicaoSalva && cenaAtual == cenaSalva)
         {
             transform.position = new Vector3(
                 PlayerPrefs.GetFloat("PosicaoX"),
@@ -28,6 +30,8 @@ public class PlayerSpawnPosition : MonoBehaviour
                 transform.position.z
             );
         }
+
+        PlayerPrefs.SetInt("CarregarPosicaoSalva", 0);
+        PlayerPrefs.Save();
     }
 }
-
