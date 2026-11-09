@@ -9,12 +9,15 @@ public class CutsceneManager : MonoBehaviour
 {
     public VideoPlayer reprodutorVideo;
     public GameObject textoPularCutscene;
+    public GameObject painelPausaCutscene;
 
     private bool cutsceneFinalizada = false;
+    private bool cutscenePausada = false;
 
     void Start()
     {
         textoPularCutscene.SetActive(false);
+        painelPausaCutscene.SetActive(false);
 
         reprodutorVideo.loopPointReached += FinalizarCutscene;
 
@@ -25,10 +28,46 @@ public class CutsceneManager : MonoBehaviour
 
     void Update()
     {
-        if (!cutsceneFinalizada && Input.GetKeyDown(KeyCode.E))
+        if (cutsceneFinalizada)
+            return;
+
+        // Pausar ou retomar com ESC
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!cutscenePausada)
+            {
+                PausarCutscene();
+            }
+            else
+            {
+                ContinuarCutscene();
+            }
+        }
+
+        // Pular com E, desde que não esteja pausada
+        if (!cutscenePausada && Input.GetKeyDown(KeyCode.E))
         {
             FinalizarCutscene();
         }
+    }
+
+    void PausarCutscene()
+    {
+        cutscenePausada = true;
+        reprodutorVideo.Pause();
+        painelPausaCutscene.SetActive(true);
+    }
+
+    public void ContinuarCutscene()
+    {
+        cutscenePausada = false;
+        painelPausaCutscene.SetActive(false);
+        reprodutorVideo.Play();
+    }
+
+    public void PularCutscene()
+    {
+        FinalizarCutscene();
     }
 
     IEnumerator MostrarTextoPular()
@@ -50,6 +89,7 @@ public class CutsceneManager : MonoBehaviour
 
         reprodutorVideo.Stop();
         textoPularCutscene.SetActive(false);
+        painelPausaCutscene.SetActive(false);
 
         PlayerPrefs.SetInt("CutsceneInicialAssistida", 1);
         PlayerPrefs.Save();
