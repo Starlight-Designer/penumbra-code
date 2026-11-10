@@ -42,6 +42,8 @@ public class PauseManager : MonoBehaviour
 
     public void VoltarAoMenu()
     {
+        Debug.Log("BOTÃO VOLTAR AO MENU FOI CLICADO!");
+
         GameObject jogador = GameObject.FindGameObjectWithTag("Player");
 
         if (jogador != null)

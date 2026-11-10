@@ -24,11 +24,16 @@ public class ObjectiveManager : MonoBehaviour
     void Start()
     {
         objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
+
+        Debug.Log("OBJETIVO ATUAL: " + objetivoAtual);
+
         AtualizarObjetivos();
     }
 
     public void ConcluirObjetivo()
     {
+        objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
+
         if (objetivoAtual < objetivos.Length)
         {
             objetivoAtual++;
@@ -36,13 +41,16 @@ public class ObjectiveManager : MonoBehaviour
             PlayerPrefs.SetInt("ObjetivoAtual", objetivoAtual);
             PlayerPrefs.Save();
 
+            Debug.Log("OBJETIVO CONCLUÍDO! NOVO VALOR: " + objetivoAtual);
+
             AtualizarObjetivos();
         }
     }
 
     void AtualizarObjetivos()
     {
-        // Primeiro espaço
+        objetivoAtual = Mathf.Clamp(objetivoAtual, 0, objetivos.Length);
+
         if (objetivoAtual == 0)
         {
             textoObjetivo1.text = objetivos[0];
@@ -56,7 +64,6 @@ public class ObjectiveManager : MonoBehaviour
             textoObjetivo1.color = new Color(1f, 1f, 1f, 0.4f);
         }
 
-        // Segundo espaço
         int indiceSegundoObjetivo = objetivoAtual == 0 ? 1 : objetivoAtual;
 
         if (indiceSegundoObjetivo < objetivos.Length)

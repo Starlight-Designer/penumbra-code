@@ -151,6 +151,7 @@ public class DialogueManager : MonoBehaviour
 
         painelDialogo.SetActive(false);
 
+        // Ações específicas do delegado
         if (nomeDoPersonagem == "Delegado" &&
             PlayerPrefs.GetInt("DelegadoConversou", 0) == 0)
         {
@@ -159,12 +160,13 @@ public class DialogueManager : MonoBehaviour
 
             if (itemParaRevelar != null)
                 itemParaRevelar.SetActive(true);
+        }
 
-            if (objectiveManager != null &&
-                PlayerPrefs.GetInt("ObjetivoAtual", 0) == objetivoParaConcluir)
-            {
-                objectiveManager.ConcluirObjetivo();
-            }
+        // Conclusão do objetivo configurado para cada NPC
+        if (objectiveManager != null &&
+            PlayerPrefs.GetInt("ObjetivoAtual", 0) == objetivoParaConcluir)
+        {
+            objectiveManager.ConcluirObjetivo();
         }
     }
 
