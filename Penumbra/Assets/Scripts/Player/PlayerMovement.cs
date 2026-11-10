@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (DialogueManager.DialogoGlobalAtivo)
+        {
+            movement = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         Vector2 input = Vector2.zero;
 
         if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed) input.y += 1;
@@ -28,6 +36,12 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (DialogueManager.DialogoGlobalAtivo)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         rb.linearVelocity = movement * speed;
     }
 }

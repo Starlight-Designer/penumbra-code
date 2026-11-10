@@ -12,9 +12,26 @@ public class ObjectInteraction : MonoBehaviour
     public string nomeItem = "Fita VHS";
     public bool coletarItem = true;
 
+    [Header("Atualização de Objetivos")]
+    public ObjectiveManager objectiveManager;
+    public int objetivoParaConcluir = 2;
+
+    [Header("Identificação da fita")]
+    public bool primeiraFitaVHS = false;
+
+    private bool itemColetado = false;
+
     void Start()
     {
-        textoInteracao.gameObject.SetActive(false);
+        if (textoInteracao != null)
+            textoInteracao.gameObject.SetActive(false);
+
+        if (primeiraFitaVHS &&
+            PlayerPrefs.GetInt("FitaVHS01Coletada", 0) == 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         if (coletarItem && InventoryManager.instance != null &&
             InventoryManager.instance.itens.Contains(nomeItem))
@@ -26,11 +43,35 @@ public class ObjectInteraction : MonoBehaviour
 
     void OnMouseDown()
     {
-        StopAllCoroutines();
+        if (DialogueManager.DialogoGlobalAtivo)
+            return;
+
+        if (itemColetado)
+            return;
+
+        if (coletarItem && InventoryManager.instance == null)
+        {
+            Debug.LogError("INVENTÁRIO NÃO ENCONTRADO!");
+            return;
+        }
+
+        itemColetado = true;
 
         if (coletarItem)
         {
             InventoryManager.instance.AdicionarItem(nomeItem);
+
+            if (primeiraFitaVHS)
+            {
+                PlayerPrefs.SetInt("FitaVHS01Coletada", 1);
+                PlayerPrefs.Save();
+            }
+
+            if (objectiveManager != null &&
+                PlayerPrefs.GetInt("ObjetivoAtual", 0) == objetivoParaConcluir)
+            {
+                objectiveManager.ConcluirObjetivo();
+            }
         }
 
         StartCoroutine(MostrarMensagem());
@@ -38,16 +79,18 @@ public class ObjectInteraction : MonoBehaviour
 
     IEnumerator MostrarMensagem()
     {
-        textoInteracao.text = mensagem;
-        textoInteracao.gameObject.SetActive(true);
+        if (textoInteracao != null)
+        {
+            textoInteracao.text = mensagem;
+            textoInteracao.gameObject.SetActive(true);
+        }
 
         yield return new WaitForSeconds(tempoNaTela);
 
-        textoInteracao.gameObject.SetActive(false);
+        if (textoInteracao != null)
+            textoInteracao.gameObject.SetActive(false);
 
         if (coletarItem)
-        {
             Destroy(gameObject);
-        }
     }
 }
