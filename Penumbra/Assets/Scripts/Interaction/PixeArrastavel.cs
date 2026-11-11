@@ -47,5 +47,6 @@ public class PixeArrastavel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         aceito = true;
         transform.SetParent(caixa);
         rectTransform.position = caixa.position;
+        transform.SetSiblingIndex(1);
     }
 }
