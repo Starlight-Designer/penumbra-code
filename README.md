@@ -4,15 +4,15 @@ Projeto de jogo 2D de terror e suspense com estética infantil desenvolvido na U
 
 ## Sobre o projeto
 
-Penumbra é um jogo de investigação e suspense com exploração,
-enigmas e elementos de terror porém com estética de jogo educativo antigo.
+Penumbra é um jogo de investigação e terror pscológico com exploração,
+puzzles com estética de jogo educativo antigo.
 
 ## Informações técnicas
 
 - Engine: Unity 6
 - Linguagem: C#
 - Estilo: 2D
-- Gênero: Terror, suspense e investigação.
+- Gênero: Terror Pscológico, suspense e investigação.
 - Plataforma: PC
 
 ## Equipe
