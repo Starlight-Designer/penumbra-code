@@ -131,6 +131,8 @@ GameObject:
   - component: {fileID: 9214841}
   - component: {fileID: 9214840}
   - component: {fileID: 9214839}
+  - component: {fileID: 9214843}
+  - component: {fileID: 9214842}
   m_Layer: 5
   m_Name: Botao_Creditos
   m_TagString: Untagged
@@ -252,6 +254,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9214837}
   m_CullTransparentMesh: 1
+--- !u!114 &9214842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9214837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 10
+--- !u!114 &9214843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9214837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &92677804
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +447,8 @@ GameObject:
   - component: {fileID: 107517533}
   - component: {fileID: 107517532}
   - component: {fileID: 107517531}
+  - component: {fileID: 107517535}
+  - component: {fileID: 107517534}
   m_Layer: 5
   m_Name: Botao_Jogar
   m_TagString: Untagged
@@ -535,6 +570,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 107517529}
   m_CullTransparentMesh: 1
+--- !u!114 &107517534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107517529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 10
+--- !u!114 &107517535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107517529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &121768106
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,6 +779,7 @@ GameObject:
   - component: {fileID: 192900123}
   - component: {fileID: 192900125}
   - component: {fileID: 192900124}
+  - component: {fileID: 192900126}
   m_Layer: 5
   m_Name: Texto_Equipe_Lara
   m_TagString: Untagged
@@ -839,6 +906,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192900122}
   m_CullTransparentMesh: 1
+--- !u!114 &192900126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192900122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba6026a95dec8d4f950e24b597669f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LinkCredito
+  url: https://www.instagram.com/larinha_yuri?srtk=MWdxMmZ1empkM2ZvaQ%3D%3D&utm_source=qr
+  escalaHover: 1.1
+  velocidade: 15
+  sublinharNoHover: 1
+  usarBorda: 1
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  larguraBorda: 0.2
 --- !u!1 &200789480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1691,6 +1777,8 @@ GameObject:
   - component: {fileID: 458733661}
   - component: {fileID: 458733660}
   - component: {fileID: 458733659}
+  - component: {fileID: 458733663}
+  - component: {fileID: 458733662}
   m_Layer: 5
   m_Name: Botao_Voltar_Creditos
   m_TagString: Untagged
@@ -1762,9 +1850,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 453389123}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: FecharCreditos
+      - m_Target: {fileID: 1882573596}
+        m_TargetAssemblyTypeName: AnimacaoQueda, Assembly-CSharp
+        m_MethodName: Fechar
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1812,6 +1900,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 458733657}
   m_CullTransparentMesh: 1
+--- !u!114 &458733662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458733657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 4
+--- !u!114 &458733663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458733657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &508013335
 GameObject:
   m_ObjectHideFlags: 0
@@ -2007,6 +2126,8 @@ GameObject:
   - component: {fileID: 585462902}
   - component: {fileID: 585462904}
   - component: {fileID: 585462903}
+  - component: {fileID: 585462906}
+  - component: {fileID: 585462905}
   m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
@@ -2071,6 +2192,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585462901}
   m_CullTransparentMesh: 1
+--- !u!114 &585462905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585462901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 3
+--- !u!114 &585462906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585462901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &590470062
 GameObject:
   m_ObjectHideFlags: 0
@@ -2083,6 +2235,7 @@ GameObject:
   - component: {fileID: 590470065}
   - component: {fileID: 590470064}
   - component: {fileID: 590470063}
+  - component: {fileID: 590470067}
   m_Layer: 5
   m_Name: Canvas (1)
   m_TagString: Untagged
@@ -2183,6 +2336,28 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &590470067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590470062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52682667f3b8c674491b6127396068d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimacaoMenu
+  itens:
+  - {fileID: 802906674}
+  - {fileID: 107517530}
+  - {fileID: 917397149}
+  - {fileID: 1107793764}
+  - {fileID: 9214838}
+  - {fileID: 1768767894}
+  duracao: 0.8
+  intervalo: 0.2
+  duracaoFade: 0.2
 --- !u!1 &597050872
 GameObject:
   m_ObjectHideFlags: 0
@@ -2332,6 +2507,8 @@ GameObject:
   - component: {fileID: 603264913}
   - component: {fileID: 603264912}
   - component: {fileID: 603264911}
+  - component: {fileID: 603264915}
+  - component: {fileID: 603264914}
   m_Layer: 5
   m_Name: Botao_Voltar
   m_TagString: Untagged
@@ -2403,9 +2580,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 453389123}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: FecharConfiguracoes
+      - m_Target: {fileID: 1701295088}
+        m_TargetAssemblyTypeName: AnimacaoQueda, Assembly-CSharp
+        m_MethodName: Fechar
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2453,6 +2630,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 603264909}
   m_CullTransparentMesh: 1
+--- !u!114 &603264914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603264909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 8
+--- !u!114 &603264915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603264909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &618369761
 GameObject:
   m_ObjectHideFlags: 0
@@ -2637,6 +2845,8 @@ GameObject:
   - component: {fileID: 773290181}
   - component: {fileID: 773290182}
   - component: {fileID: 773290183}
+  - component: {fileID: 773290185}
+  - component: {fileID: 773290184}
   m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
@@ -2701,6 +2911,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &773290184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773290180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 3
+--- !u!114 &773290185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773290180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &802906673
 GameObject:
   m_ObjectHideFlags: 0
@@ -2713,7 +2954,7 @@ GameObject:
   - component: {fileID: 802906676}
   - component: {fileID: 802906675}
   m_Layer: 5
-  m_Name: Fundo
+  m_Name: Penumbra_Titulo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2789,6 +3030,8 @@ GameObject:
   - component: {fileID: 819061625}
   - component: {fileID: 819061624}
   - component: {fileID: 819061623}
+  - component: {fileID: 819061627}
+  - component: {fileID: 819061626}
   m_Layer: 5
   m_Name: Botao_Cancelar_Reinicio
   m_TagString: Untagged
@@ -2860,9 +3103,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 453389123}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: CancelarReinicio
+      - m_Target: {fileID: 1423935595}
+        m_TargetAssemblyTypeName: AnimacaoZoom, Assembly-CSharp
+        m_MethodName: Fechar
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2910,6 +3153,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 819061621}
   m_CullTransparentMesh: 1
+--- !u!114 &819061626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819061621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 6
+--- !u!114 &819061627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819061621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &867292596
 GameObject:
   m_ObjectHideFlags: 0
@@ -2921,6 +3195,7 @@ GameObject:
   - component: {fileID: 867292597}
   - component: {fileID: 867292599}
   - component: {fileID: 867292598}
+  - component: {fileID: 867292600}
   m_Layer: 5
   m_Name: Texto_Equipe_Bianca
   m_TagString: Untagged
@@ -3047,6 +3322,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 867292596}
   m_CullTransparentMesh: 1
+--- !u!114 &867292600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867292596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba6026a95dec8d4f950e24b597669f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LinkCredito
+  url: https://www.instagram.com/licitwo?cplk=MTlzYjZmdmZ4a3lvMg==
+  escalaHover: 1.1
+  velocidade: 15
+  sublinharNoHover: 1
+  usarBorda: 0
+  corBorda: {r: 1, g: 1, b: 1, a: 1}
+  larguraBorda: 0.2
 --- !u!1 &900453559
 GameObject:
   m_ObjectHideFlags: 0
@@ -3134,6 +3428,8 @@ GameObject:
   - component: {fileID: 917397152}
   - component: {fileID: 917397151}
   - component: {fileID: 917397150}
+  - component: {fileID: 917397154}
+  - component: {fileID: 917397153}
   m_Layer: 5
   m_Name: Botao_Reiniciar
   m_TagString: Untagged
@@ -3255,6 +3551,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 917397148}
   m_CullTransparentMesh: 1
+--- !u!114 &917397153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917397148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 10
+--- !u!114 &917397154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917397148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &934411038
 GameObject:
   m_ObjectHideFlags: 0
@@ -3872,6 +4199,8 @@ GameObject:
   - component: {fileID: 1107793767}
   - component: {fileID: 1107793766}
   - component: {fileID: 1107793765}
+  - component: {fileID: 1107793769}
+  - component: {fileID: 1107793768}
   m_Layer: 5
   m_Name: Botao_configuracoes
   m_TagString: Untagged
@@ -3993,6 +4322,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1107793763}
   m_CullTransparentMesh: 1
+--- !u!114 &1107793768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107793763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 10
+--- !u!114 &1107793769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107793763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1115694055
 GameObject:
   m_ObjectHideFlags: 0
@@ -4004,6 +4364,8 @@ GameObject:
   - component: {fileID: 1115694056}
   - component: {fileID: 1115694058}
   - component: {fileID: 1115694057}
+  - component: {fileID: 1115694060}
+  - component: {fileID: 1115694059}
   m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
@@ -4068,6 +4430,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1115694055}
   m_CullTransparentMesh: 1
+--- !u!114 &1115694059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115694055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.25
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 3
+--- !u!114 &1115694060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115694055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1213439616
 GameObject:
   m_ObjectHideFlags: 0
@@ -4537,6 +4930,7 @@ GameObject:
   - component: {fileID: 1423935592}
   - component: {fileID: 1423935594}
   - component: {fileID: 1423935593}
+  - component: {fileID: 1423935595}
   m_Layer: 5
   m_Name: Painel_Confirmar_Reinicio
   m_TagString: Untagged
@@ -4605,6 +4999,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423935591}
   m_CullTransparentMesh: 1
+--- !u!114 &1423935595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423935591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c6919186cb4bb4baf4e24300325301, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimacaoZoom
+  escalaInicial: 0.2
+  duracao: 0.6
+  duracaoFade: 0.3
+  duracaoSaida: 0.4
+  aoFechar:
+    m_PersistentCalls:
+      m_Calls: []
+  bloquearCliquesDuranteAnimacao: 1
 --- !u!1 &1452632476
 GameObject:
   m_ObjectHideFlags: 0
@@ -5282,6 +5696,7 @@ GameObject:
   - component: {fileID: 1613923424}
   - component: {fileID: 1613923426}
   - component: {fileID: 1613923425}
+  - component: {fileID: 1613923427}
   m_Layer: 5
   m_Name: Texto_Equipe_Gui
   m_TagString: Untagged
@@ -5408,6 +5823,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1613923423}
   m_CullTransparentMesh: 1
+--- !u!114 &1613923427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613923423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba6026a95dec8d4f950e24b597669f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LinkCredito
+  url: https://www.instagram.com/sou_guih?utm_source=qr&obrf=N2l5MmVsY3JmNWRk
+  escalaHover: 1.1
+  velocidade: 15
+  sublinharNoHover: 1
+  usarBorda: 0
+  corBorda: {r: 1, g: 1, b: 1, a: 1}
+  larguraBorda: 0.2
 --- !u!1 &1642280875
 GameObject:
   m_ObjectHideFlags: 0
@@ -5888,6 +6322,7 @@ GameObject:
   - component: {fileID: 1701295085}
   - component: {fileID: 1701295087}
   - component: {fileID: 1701295086}
+  - component: {fileID: 1701295088}
   m_Layer: 5
   m_Name: Painel_Configuracoes
   m_TagString: Untagged
@@ -5961,6 +6396,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1701295084}
   m_CullTransparentMesh: 1
+--- !u!114 &1701295088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1701295084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 918364501511134409324169b27908d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimacaoQueda
+  duracao: 1.5
+  estilo: 1
+  distancia: 0
+  duracaoSaida: 0.8
+  direcaoSaida: 0
+  aoFechar:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 453389123}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: FecharConfiguracoes
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1731750204
 GameObject:
   m_ObjectHideFlags: 0
@@ -6065,6 +6532,8 @@ GameObject:
   - component: {fileID: 1768767897}
   - component: {fileID: 1768767896}
   - component: {fileID: 1768767895}
+  - component: {fileID: 1768767899}
+  - component: {fileID: 1768767898}
   m_Layer: 5
   m_Name: Botao_Sair
   m_TagString: Untagged
@@ -6186,6 +6655,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1768767893}
   m_CullTransparentMesh: 1
+--- !u!114 &1768767898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768767893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 10
+--- !u!114 &1768767899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768767893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1795705731
 GameObject:
   m_ObjectHideFlags: 0
@@ -6410,6 +6910,8 @@ GameObject:
   - component: {fileID: 1801848869}
   - component: {fileID: 1801848868}
   - component: {fileID: 1801848867}
+  - component: {fileID: 1801848871}
+  - component: {fileID: 1801848870}
   m_Layer: 5
   m_Name: Botao_Confirmar_Reinicio
   m_TagString: Untagged
@@ -6531,6 +7033,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1801848865}
   m_CullTransparentMesh: 1
+--- !u!114 &1801848870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801848865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5316cae0538c543a63c57631140507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HoverBotao
+  escalaHover: 1.1
+  velocidade: 15
+  corBorda: {r: 0, g: 0, b: 0, a: 1}
+  espessuraBorda: 6
+--- !u!114 &1801848871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801848865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Outline
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1826541033
 GameObject:
   m_ObjectHideFlags: 0
@@ -6919,6 +7452,7 @@ GameObject:
   - component: {fileID: 1882573593}
   - component: {fileID: 1882573595}
   - component: {fileID: 1882573594}
+  - component: {fileID: 1882573596}
   m_Layer: 5
   m_Name: Painel_Creditos
   m_TagString: Untagged
@@ -7000,6 +7534,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1882573592}
   m_CullTransparentMesh: 1
+--- !u!114 &1882573596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882573592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 918364501511134409324169b27908d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimacaoQueda
+  duracao: 2
+  estilo: 1
+  distancia: 0
+  duracaoSaida: 0.8
+  direcaoSaida: 0
+  aoFechar:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 453389123}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: FecharCreditos
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1886019703
 GameObject:
   m_ObjectHideFlags: 0
@@ -7011,6 +7577,7 @@ GameObject:
   - component: {fileID: 1886019704}
   - component: {fileID: 1886019706}
   - component: {fileID: 1886019705}
+  - component: {fileID: 1886019707}
   m_Layer: 5
   m_Name: Texto_Equipe_Joao
   m_TagString: Untagged
@@ -7137,6 +7704,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886019703}
   m_CullTransparentMesh: 1
+--- !u!114 &1886019707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886019703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba6026a95dec8d4f950e24b597669f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LinkCredito
+  url: https://www.instagram.com/jm.fbx?vrfl=cGR0a2I1anV3ZWFk
+  escalaHover: 1.1
+  velocidade: 15
+  sublinharNoHover: 1
+  usarBorda: 0
+  corBorda: {r: 1, g: 1, b: 1, a: 1}
+  larguraBorda: 0.2
 --- !u!1 &2024454816
 GameObject:
   m_ObjectHideFlags: 0
