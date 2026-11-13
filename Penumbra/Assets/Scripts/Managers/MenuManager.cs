@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +7,9 @@ public class MenuManager : MonoBehaviour
     public GameObject painelCreditos;
     public GameObject painelConfirmarReinicio;
     public UnityEngine.UI.Slider sliderVolume;
+
+    [Header("Transição")]
+    public FadePreto fade; // arraste aqui o objeto FadePreto do Menu_Inicial
 
     public void AbrirConfiguracoes()
     {
@@ -33,7 +35,8 @@ public class MenuManager : MonoBehaviour
         }
         else if (PlayerPrefs.GetInt("CutsceneInicialAssistida", 0) == 0)
         {
-            SceneManager.LoadScene("Cutscene_Inicial");
+            // primeira vez: a tela escurece devagar e a cutscene começa
+            IrParaCutscene();
         }
         else
         {
@@ -85,11 +88,21 @@ public class MenuManager : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        SceneManager.LoadScene("Cutscene_Inicial");
+        // a tela escurece devagar e a cutscene começa
+        IrParaCutscene();
     }
 
     public void SairDoJogo()
     {
         Application.Quit();
+    }
+
+    // Usa o fade preto; se o FadePreto não estiver ligado no Inspector, carrega a cena direto
+    private void IrParaCutscene()
+    {
+        if (fade != null)
+            fade.EscurecerECarregar("Cutscene_Inicial");
+        else
+            SceneManager.LoadScene("Cutscene_Inicial");
     }
 }
