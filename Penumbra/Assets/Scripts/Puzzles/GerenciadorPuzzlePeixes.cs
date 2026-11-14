@@ -14,9 +14,15 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
     public float velocidadeFadeIn = 0.15f;
     public float velocidadeFadeOut = 0.15f;
 
+    [Header("Popups extras")]
+    public int quantidadePopups = 40;
+    public float intervaloEntrePopups = 0.06f;
+    public float proximidadeCursor = 40f;
+
     private int peixesOrganizados = 0;
     private CanvasGroup grupoPopup;
     private Coroutine animacaoAtual;
+    private bool popupsJaApareceram = false;
 
     private void Awake()
     {
@@ -29,38 +35,81 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (painelPopupPeixes == null ||
+            peixesOrganizados < 15 ||
+            !painelPopupPeixes.activeInHierarchy ||
+            popupsJaApareceram)
+            return;
+
+        RectTransform rectPopup =
+            painelPopupPeixes.GetComponent<RectTransform>();
+
+        Canvas canvas =
+            painelPopupPeixes.GetComponentInParent<Canvas>();
+
+        if (rectPopup == null || canvas == null)
+            return;
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            rectPopup,
+            Input.mousePosition,
+            canvas.worldCamera,
+            out Vector2 posicaoLocal
+        );
+
+        Rect areaPopup = rectPopup.rect;
+
+        areaPopup.xMin -= proximidadeCursor;
+        areaPopup.xMax += proximidadeCursor;
+        areaPopup.yMin -= proximidadeCursor;
+        areaPopup.yMax += proximidadeCursor;
+
+        if (areaPopup.Contains(posicaoLocal))
+        {
+            popupsJaApareceram = true;
+            StartCoroutine(AparecerPopupsExtras());
+        }
+    }
+
     public void RegistrarPeixe()
     {
         peixesOrganizados++;
 
         Debug.Log("Peixes organizados: " + peixesOrganizados);
 
-        if (peixesOrganizados == 10)
+        if (peixesOrganizados == 10 || peixesOrganizados == 15)
         {
             Debug.Log("BIANCA NÃO ESTÁ AQUI.");
 
-            if (painelPopupPeixes != null)
-            {
-                painelPopupPeixes.SetActive(true);
+            MostrarPopup();
+        }
+    }
 
-                if (audioPopup != null)
-                {
-                    audioPopup.time = 0.3f;
-                    audioPopup.Play();
-                }
+    private void MostrarPopup()
+    {
+        if (painelPopupPeixes == null)
+            return;
 
-                if (grupoPopup != null)
-                {
-                    grupoPopup.alpha = 0f;
-                    grupoPopup.interactable = true;
-                    grupoPopup.blocksRaycasts = true;
+        painelPopupPeixes.SetActive(true);
 
-                    if (animacaoAtual != null)
-                        StopCoroutine(animacaoAtual);
+        if (audioPopup != null)
+        {
+            audioPopup.time = 0.3f;
+            audioPopup.Play();
+        }
 
-                    animacaoAtual = StartCoroutine(FadeIn());
-                }
-            }
+        if (grupoPopup != null)
+        {
+            grupoPopup.alpha = 0f;
+            grupoPopup.interactable = true;
+            grupoPopup.blocksRaycasts = true;
+
+            if (animacaoAtual != null)
+                StopCoroutine(animacaoAtual);
+
+            animacaoAtual = StartCoroutine(FadeIn());
         }
     }
 
@@ -105,5 +154,73 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         grupoPopup.alpha = 0f;
         painelPopupPeixes.SetActive(false);
         animacaoAtual = null;
+    }
+
+    private IEnumerator AparecerPopupsExtras()
+    {
+        RectTransform areaCanvas =
+            painelPopupPeixes.transform.parent as RectTransform;
+
+        if (areaCanvas == null)
+            yield break;
+
+        for (int i = 0; i < quantidadePopups; i++)
+        {
+            GameObject novoPopup = Instantiate(
+                painelPopupPeixes,
+                painelPopupPeixes.transform.parent
+            );
+
+            novoPopup.SetActive(true);
+
+            RectTransform rectNovo =
+                novoPopup.GetComponent<RectTransform>();
+
+            rectNovo.anchorMin = new Vector2(0.5f, 0.5f);
+            rectNovo.anchorMax = new Vector2(0.5f, 0.5f);
+
+            float limiteX = Mathf.Max(
+                0f,
+                areaCanvas.rect.width / 2f - rectNovo.rect.width / 2f
+            );
+
+            float limiteY = Mathf.Max(
+                0f,
+                areaCanvas.rect.height / 2f - rectNovo.rect.height / 2f
+            );
+
+            rectNovo.anchoredPosition = new Vector2(
+                Random.Range(-limiteX, limiteX),
+                Random.Range(-limiteY, limiteY)
+            );
+
+            rectNovo.localRotation = Quaternion.Euler(
+                0f,
+                0f,
+                Random.Range(-12f, 12f)
+            );
+
+            CanvasGroup grupoNovo =
+                novoPopup.GetComponent<CanvasGroup>();
+
+            if (grupoNovo != null)
+            {
+                grupoNovo.alpha = 1f;
+                grupoNovo.interactable = false;
+                grupoNovo.blocksRaycasts = false;
+            }
+
+            // Reproduz o áudio em cada popup extra
+            AudioSource somNovoPopup =
+                novoPopup.GetComponent<AudioSource>();
+
+            if (somNovoPopup != null)
+            {
+                somNovoPopup.time = 0.3f;
+                somNovoPopup.Play();
+            }
+
+            yield return new WaitForSeconds(intervaloEntrePopups);
+        }
     }
 }
