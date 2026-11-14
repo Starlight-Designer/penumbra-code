@@ -4215,6 +4215,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GerenciadorPuzzlePeixes
   painelPopupPeixes: {fileID: 1299983847}
   audioPopup: {fileID: 1054061549}
+  velocidadeFadeIn: 0.1
+  velocidadeFadeOut: 0.08
 --- !u!4 &1054061547
 Transform:
   m_ObjectHideFlags: 0
@@ -4244,6 +4246,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GerenciadorPuzzlePeixes
   painelPopupPeixes: {fileID: 1299983847}
   audioPopup: {fileID: 1054061549}
+  velocidadeFadeIn: 0.1
+  velocidadeFadeOut: 0.08
 --- !u!82 &1054061549
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5386,6 +5390,7 @@ GameObject:
   - component: {fileID: 1299983848}
   - component: {fileID: 1299983850}
   - component: {fileID: 1299983849}
+  - component: {fileID: 1299983851}
   m_Layer: 5
   m_Name: PainelPopupPeixes
   m_TagString: Untagged
@@ -5454,6 +5459,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1299983847}
   m_CullTransparentMesh: 1
+--- !u!225 &1299983851
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299983847}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1323483866
 GameObject:
   m_ObjectHideFlags: 0
