@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -7,6 +6,9 @@ using System.Collections;
 public class SceneTransition : MonoBehaviour
 {
     public string nomeCena = "Casa";
+
+    [Header("Onde o Player aparece na cena de destino")]
+    public string spawnNoDestino;
 
     [Header("Mensagem de bloqueio")]
     public TextMeshProUGUI textoInteracao;
@@ -54,6 +56,7 @@ public class SceneTransition : MonoBehaviour
             }
         }
 
+        SpawnData.proximoSpawn = spawnNoDestino;
         SceneManager.LoadScene(nomeCena);
     }
 

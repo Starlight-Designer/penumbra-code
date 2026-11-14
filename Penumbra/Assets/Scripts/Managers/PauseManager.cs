@@ -1,4 +1,3 @@
-
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,6 +7,10 @@ public class PauseManager : MonoBehaviour
     public GameObject painelPausa;
     public GameObject painelObjetivos;
 
+    [Header("Nomes dos painéis na Hierarchy (usados se os campos acima estiverem vazios)")]
+    public string nomePainelPausa = "Painel_Pausa";
+    public string nomePainelObjetivos = "Painel_Objetivos";
+
     private bool jogoPausado = false;
     private bool fechando = false;
 
@@ -16,11 +19,34 @@ public class PauseManager : MonoBehaviour
 
     void Awake()
     {
+        if (painelPausa == null)
+            painelPausa = ProcurarNaCena(nomePainelPausa);
+
+        if (painelObjetivos == null)
+            painelObjetivos = ProcurarNaCena(nomePainelObjetivos);
+
         if (painelPausa != null)
             animacaoPausa = painelPausa.GetComponent<AnimacaoQueda>();
 
         if (painelObjetivos != null)
             animacaoObjetivos = painelObjetivos.GetComponent<AnimacaoZoom>();
+    }
+
+    private GameObject ProcurarNaCena(string nome)
+    {
+        Transform[] todos = FindObjectsByType<Transform>(
+            FindObjectsInactive.Include,
+            FindObjectsSortMode.None
+        );
+
+        foreach (Transform t in todos)
+        {
+            if (t.name == nome)
+                return t.gameObject;
+        }
+
+        Debug.LogWarning("PauseManager: não achei o objeto '" + nome + "' na cena.");
+        return null;
     }
 
     void Update()
@@ -40,6 +66,9 @@ public class PauseManager : MonoBehaviour
 
     void PausarJogo()
     {
+        if (painelPausa == null || painelObjetivos == null)
+            return;
+
         jogoPausado = true;
         fechando = false;
 

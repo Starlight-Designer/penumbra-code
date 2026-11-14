@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,12 +23,25 @@ public class PlayerSpawnPosition : MonoBehaviour
         }
         else
         {
-            transform.position = new Vector3(
-                posicaoInicial.x,
-                posicaoInicial.y,
-                transform.position.z
-            );
+            Vector2 destino = posicaoInicial;
+
+            if (!string.IsNullOrEmpty(SpawnData.proximoSpawn))
+            {
+                foreach (var sp in FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None))
+                {
+                    if (sp.id == SpawnData.proximoSpawn)
+                    {
+                        destino = sp.transform.position;
+                        break;
+                    }
+                }
+            }
+
+            transform.position = new Vector3(destino.x, destino.y, transform.position.z);
         }
+
+        SpawnData.proximoSpawn = null;
+        Physics2D.SyncTransforms();
 
         PlayerPrefs.SetInt("CarregarPosicaoSalva", 0);
         PlayerPrefs.Save();

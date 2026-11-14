@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,11 +7,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed = 5f;
 
     private Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer sr;
     private Vector2 movement;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -21,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
         {
             movement = Vector2.zero;
             rb.linearVelocity = Vector2.zero;
+            AtualizarAnimacao();
             return;
         }
 
@@ -32,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
         if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed) input.x += 1;
 
         movement = input.normalized;
+
+        AtualizarAnimacao();
     }
 
     void FixedUpdate()
@@ -43,5 +49,22 @@ public class PlayerMovement : MonoBehaviour
         }
 
         rb.linearVelocity = movement * speed;
+    }
+
+    private void AtualizarAnimacao()
+    {
+        if (animator == null) return;
+
+        bool andando = movement != Vector2.zero;
+        animator.SetBool("Andando", andando);
+
+        if (andando)
+        {
+            animator.SetFloat("MoveX", Mathf.Abs(movement.x));
+            animator.SetFloat("MoveY", movement.y);
+
+            if (movement.x != 0 && sr != null)
+                sr.flipX = movement.x > 0;
+        }
     }
 }
