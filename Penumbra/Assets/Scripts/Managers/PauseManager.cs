@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,19 @@ public class PauseManager : MonoBehaviour
     public GameObject painelObjetivos;
 
     private bool jogoPausado = false;
+    private bool fechando = false;
+
+    private AnimacaoQueda animacaoPausa;
+    private AnimacaoZoom animacaoObjetivos;
+
+    void Awake()
+    {
+        if (painelPausa != null)
+            animacaoPausa = painelPausa.GetComponent<AnimacaoQueda>();
+
+        if (painelObjetivos != null)
+            animacaoObjetivos = painelObjetivos.GetComponent<AnimacaoZoom>();
+    }
 
     void Update()
     {
@@ -27,16 +41,52 @@ public class PauseManager : MonoBehaviour
     void PausarJogo()
     {
         jogoPausado = true;
+        fechando = false;
+
         painelPausa.SetActive(true);
         painelObjetivos.SetActive(true);
+
         Time.timeScale = 0f;
     }
 
-    void RetomarJogo()
+    public void RetomarJogo()
+    {
+        if (!jogoPausado || fechando)
+            return;
+
+        StartCoroutine(RetomarComAnimacoes());
+    }
+
+    private IEnumerator RetomarComAnimacoes()
+    {
+        fechando = true;
+
+        if (animacaoPausa != null)
+            animacaoPausa.Fechar();
+        else
+            painelPausa.SetActive(false);
+
+        if (animacaoObjetivos != null)
+            animacaoObjetivos.Fechar();
+        else
+            painelObjetivos.SetActive(false);
+
+        yield return new WaitUntil(() =>
+            !painelPausa.activeSelf &&
+            !painelObjetivos.activeSelf
+        );
+
+        FinalizarRetomada();
+    }
+
+    private void FinalizarRetomada()
     {
         jogoPausado = false;
+        fechando = false;
+
         painelPausa.SetActive(false);
         painelObjetivos.SetActive(false);
+
         Time.timeScale = 1f;
     }
 

@@ -13,10 +13,10 @@ public class ObjectiveManager : MonoBehaviour
     {
         "Vá até a Delegacia.",
         "Fale com seu tio.",
-        "Encontre a primeira fita VHS.",
+        "Pegue a fita VHS.",
         "Vá até a Peixaria e converse com o pescador.",
         "Vá até a casa da mãe da Bianca.",
-        "Resolva o puzzle e encontre a segunda fita VHS.",
+        "Resolva o puzzle e pegue a fita VHS.",
         "Explore a floresta e siga em direção à igreja.",
         "Resolva o último puzzle para entrar na igreja."
     };
@@ -49,19 +49,22 @@ public class ObjectiveManager : MonoBehaviour
 
     void AtualizarObjetivos()
     {
+        Debug.Log("TEXTO 1: " + (textoObjetivo1 != null ? textoObjetivo1.name : "NULL")
+            + " | TEXTO 2: " + (textoObjetivo2 != null ? textoObjetivo2.name : "NULL"));
+
         objetivoAtual = Mathf.Clamp(objetivoAtual, 0, objetivos.Length);
 
         if (objetivoAtual == 0)
         {
             textoObjetivo1.text = objetivos[0];
             textoObjetivo1.fontStyle = FontStyles.Normal;
-            textoObjetivo1.color = Color.white;
+            textoObjetivo1.color = Color.black;
         }
         else
         {
             textoObjetivo1.text = objetivos[objetivoAtual - 1];
             textoObjetivo1.fontStyle = FontStyles.Strikethrough;
-            textoObjetivo1.color = new Color(1f, 1f, 1f, 0.4f);
+            textoObjetivo1.color = new Color(0f, 0f, 0f, 0.4f);
         }
 
         int indiceSegundoObjetivo = objetivoAtual == 0 ? 1 : objetivoAtual;
@@ -70,7 +73,7 @@ public class ObjectiveManager : MonoBehaviour
         {
             textoObjetivo2.text = objetivos[indiceSegundoObjetivo];
             textoObjetivo2.fontStyle = FontStyles.Normal;
-            textoObjetivo2.color = Color.white;
+            textoObjetivo2.color = Color.black;
         }
         else
         {
