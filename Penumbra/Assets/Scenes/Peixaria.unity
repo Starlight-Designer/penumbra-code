@@ -155,15 +155,13 @@ MonoBehaviour:
   textoDialogo: {fileID: 595466093}
   nomeNPC: {fileID: 1154422651}
   objectiveManager: {fileID: 870950691}
+  painelPuzzlePeixes: {fileID: 106301927}
   nomeDoPersonagem: Pescador
   nomeProtagonista: Alice
   falas:
-  - oq vc quer?
-  - blablablabla n sei oq ela n sei oq eu ja disse oq eu tinha q dizer vai embora
-  - VAI PEGA O BECO
+  - "O que voc\xEA quer saber sobre Bianca?\nN\xE3o vou abrir o bico de gra\xE7a. Se quiser informa\xE7\xF5es, vai ter que me ajudar a organizar esses peixes primeiro."
   respostasAlice:
-  - quero saber sobre a bianca
-  - mas..
+  - Tudo bem, eu ajudo.
   objetivoParaConcluir: 3
   itemParaRevelar: {fileID: 0}
 --- !u!61 &23686524
@@ -603,7 +601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &106301928
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2182,6 +2180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaixaDestinoPeixe
   especieAceita: Tucurane
+  gerenciador: {fileID: 0}
 --- !u!114 &568905150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2195,6 +2194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaixaDestinoPeixe
   especieAceita: Pirarucu
+  gerenciador: {fileID: 0}
 --- !u!114 &568905151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2208,6 +2208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaixaDestinoPeixe
   especieAceita: Tambaqui
+  gerenciador: {fileID: 0}
 --- !u!1 &595466091
 GameObject:
   m_ObjectHideFlags: 0
@@ -3522,6 +3523,52 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &872109950
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 872109952}
+  - component: {fileID: 872109951}
+  m_Layer: 0
+  m_Name: CaixaDestinoPeixe (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &872109951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872109950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1354584e40eab9546b129f45ae12b662, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CaixaDestinoPeixe
+  especieAceita: 
+  gerenciador: {fileID: 0}
+--- !u!4 &872109952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872109950}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 818.114, y: 536.71686, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &888099904
 GameObject:
   m_ObjectHideFlags: 0
@@ -3864,6 +3911,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+--- !u!1 &1054061545
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1054061547}
+  - component: {fileID: 1054061546}
+  - component: {fileID: 1054061548}
+  m_Layer: 0
+  m_Name: GerenciadorPuzzlePeixes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1054061546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054061545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5522fb5c16a314294c2e0f2375819b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GerenciadorPuzzlePeixes
+--- !u!4 &1054061547
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054061545}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 818.114, y: 536.71686, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1054061548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054061545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5522fb5c16a314294c2e0f2375819b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GerenciadorPuzzlePeixes
 --- !u!1 &1127689194
 GameObject:
   m_ObjectHideFlags: 0
@@ -4858,6 +4962,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaixaDestinoPeixe
   especieAceita: Pirarucu
+  gerenciador: {fileID: 1054061546}
 --- !u!1 &1378218655
 GameObject:
   m_ObjectHideFlags: 0
@@ -5390,6 +5495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaixaDestinoPeixe
   especieAceita: Tucunare
+  gerenciador: {fileID: 1054061546}
 --- !u!1 &1459144182
 GameObject:
   m_ObjectHideFlags: 0
@@ -5468,6 +5574,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459144182}
   m_CullTransparentMesh: 1
+--- !u!1 &1485531373
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1485531375}
+  - component: {fileID: 1485531374}
+  m_Layer: 0
+  m_Name: CaixaDestinoPeixe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1485531374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485531373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1354584e40eab9546b129f45ae12b662, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CaixaDestinoPeixe
+  especieAceita: 
+  gerenciador: {fileID: 0}
+--- !u!4 &1485531375
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485531373}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 818.114, y: 536.71686, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1627172773
 GameObject:
   m_ObjectHideFlags: 0
@@ -6241,6 +6393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CaixaDestinoPeixe
   especieAceita: Tambaqui
+  gerenciador: {fileID: 1054061546}
 --- !u!1 &1874082666
 GameObject:
   m_ObjectHideFlags: 0
@@ -7152,3 +7305,6 @@ SceneRoots:
   - {fileID: 1927734251}
   - {fileID: 23686527}
   - {fileID: 846564878}
+  - {fileID: 1054061547}
+  - {fileID: 1485531375}
+  - {fileID: 872109952}

@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,6 +5,9 @@ public class CaixaDestinoPeixe : MonoBehaviour, IDropHandler
 {
     [Header("Espécie aceita")]
     public string especieAceita;
+
+    [Header("Gerenciador do puzzle")]
+    public GerenciadorPuzzlePeixes gerenciador;
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -22,6 +24,9 @@ public class CaixaDestinoPeixe : MonoBehaviour, IDropHandler
         if (peixe.especie == especieAceita)
         {
             peixe.AceitarNaCaixa(transform);
+
+            if (gerenciador != null)
+                gerenciador.RegistrarPeixe();
 
             Debug.Log("Peixe organizado corretamente!");
         }

@@ -11,6 +11,9 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI nomeNPC;
     public ObjectiveManager objectiveManager;
 
+    [Header("Puzzle dos Peixes")]
+    public GameObject painelPuzzlePeixes;
+
     [Header("Configuração do NPC")]
     public string nomeDoPersonagem = "Delegado";
     public string nomeProtagonista = "Alice";
@@ -160,6 +163,24 @@ public class DialogueManager : MonoBehaviour
 
             if (itemParaRevelar != null)
                 itemParaRevelar.SetActive(true);
+        }
+
+        // Ações específicas do pescador
+        if (nomeDoPersonagem == "Pescador")
+        {
+            bool puzzleConcluido =
+                PlayerPrefs.GetInt("PescadorPuzzleConcluido", 0) == 1;
+
+            if (!puzzleConcluido)
+            {
+                PlayerPrefs.SetInt("PescadorPrimeiraConversa", 1);
+                PlayerPrefs.Save();
+
+                if (painelPuzzlePeixes != null)
+                    painelPuzzlePeixes.SetActive(true);
+
+                return;
+            }
         }
 
         // Conclusão do objetivo configurado para cada NPC
