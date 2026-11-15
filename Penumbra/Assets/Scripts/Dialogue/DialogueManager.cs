@@ -14,6 +14,9 @@ public class DialogueManager : MonoBehaviour
     [Header("Puzzle dos Peixes")]
     public GameObject painelPuzzlePeixes;
 
+    [Header("Indicação de Interação")]
+    public GameObject indicadorInteracao;
+
     [Header("Configuração do NPC")]
     public string nomeDoPersonagem = "Delegado";
     public string nomeProtagonista = "Alice";
@@ -43,6 +46,9 @@ public class DialogueManager : MonoBehaviour
 
         painelDialogo.SetActive(false);
 
+        if (indicadorInteracao != null)
+            indicadorInteracao.SetActive(false);
+
         if (itemParaRevelar != null)
         {
             bool conversou = PlayerPrefs.GetInt("DelegadoConversou", 0) == 1;
@@ -54,6 +60,13 @@ public class DialogueManager : MonoBehaviour
 
     void Update()
     {
+        if (indicadorInteracao != null)
+        {
+            indicadorInteracao.SetActive(
+                jogadorPerto && !dialogoAtivo
+            );
+        }
+
         if (jogadorPerto && Input.GetKeyDown(KeyCode.E))
         {
             if (!dialogoAtivo)
