@@ -124,6 +124,54 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4993872029371896606, guid: 396644b6389bff342bd3fb780788709c, type: 3}
   m_PrefabInstance: {fileID: 6739120890510187354}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &84114052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 84114054}
+  - component: {fileID: 84114053}
+  m_Layer: 0
+  m_Name: Gerenciador_Pausa
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &84114053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84114052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 083820ffead15534784954ccfb2e27bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseManager
+  painelPausa: {fileID: 6739120890510187355}
+  painelObjetivos: {fileID: 1049994812415002422}
+  nomePainelPausa: Painel_Pausa
+  nomePainelObjetivos: Painel_Objetivos
+--- !u!4 &84114054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84114052}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.27695, y: 0.1061, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &350239414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2332,6 +2380,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d203bc604eda018478067294fc183da5, type: 3}
+--- !u!1 &1049994812415002422 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5718351597716681392, guid: d203bc604eda018478067294fc183da5, type: 3}
+  m_PrefabInstance: {fileID: 1049994812415002421}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6739120890510187354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2427,12 +2480,21 @@ PrefabInstance:
     - target: {fileID: 8383552035027808036, guid: 396644b6389bff342bd3fb780788709c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 84114053}
+    - target: {fileID: 8383552035027808036, guid: 396644b6389bff342bd3fb780788709c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: VoltarAoMenu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 396644b6389bff342bd3fb780788709c, type: 3}
+--- !u!1 &6739120890510187355 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3618796713960194172, guid: 396644b6389bff342bd3fb780788709c, type: 3}
+  m_PrefabInstance: {fileID: 6739120890510187354}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2452,3 +2514,4 @@ SceneRoots:
   - {fileID: 503311175}
   - {fileID: 1377916780}
   - {fileID: 427107169}
+  - {fileID: 84114054}
