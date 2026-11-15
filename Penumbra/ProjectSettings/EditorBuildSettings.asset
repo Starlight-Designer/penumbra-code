@@ -23,6 +23,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Peixaria.unity
     guid: 2fc695edec841144ebec391c3b362a33
+  - enabled: 1
+    path: Assets/Scenes/Casa_Mae_Bianca.unity
+    guid: b18fcad9d0a09f444b76c91efdea76af
+  - enabled: 1
+    path: Assets/Scenes/Caminho_Igreja.unity
+    guid: 7b629225f6e67db4ea29caa4d6a621c9
+  - enabled: 1
+    path: Assets/Scenes/Igreja.unity
+    guid: d1f61defe0650764c92bb44f83e10f46
+  - enabled: 1
+    path: Assets/Scenes/Floresta.unity
+    guid: a0eca082ddee74e4c95caec9f1134ca4
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
