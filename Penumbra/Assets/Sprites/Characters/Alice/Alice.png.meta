@@ -155,8 +155,8 @@ TextureImporter:
         y: 942
         width: 165
         height: 448
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.553898, y: 0.09036378}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -173,12 +173,12 @@ TextureImporter:
       name: Alice_1
       rect:
         serializedVersion: 2
-        x: 211
-        y: 947
+        x: 213
+        y: 944
         width: 162
         height: 425
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.557344, y: 0.12924819}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -195,12 +195,12 @@ TextureImporter:
       name: Alice_2
       rect:
         serializedVersion: 2
-        x: 398
+        x: 400
         y: 947
         width: 164
         height: 425
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.48483798, y: 0.1484441}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -221,8 +221,8 @@ TextureImporter:
         y: 949
         width: 164
         height: 446
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5549179, y: 0.06552028}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -239,12 +239,12 @@ TextureImporter:
       name: Alice_4
       rect:
         serializedVersion: 2
-        x: 780
+        x: 786
         y: 947
         width: 148
         height: 427
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5794385, y: 0.10507152}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -265,8 +265,8 @@ TextureImporter:
         y: 946
         width: 154
         height: 426
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5195431, y: 0.111422114}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -287,8 +287,8 @@ TextureImporter:
         y: 477
         width: 148
         height: 444
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.6220152, y: 0.079725526}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -305,12 +305,12 @@ TextureImporter:
       name: Alice_7
       rect:
         serializedVersion: 2
-        x: 215
+        x: 212
         y: 474
         width: 207
         height: 426
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.54921764, y: 0.07188501}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -327,12 +327,12 @@ TextureImporter:
       name: Alice_8
       rect:
         serializedVersion: 2
-        x: 446
+        x: 452
         y: 474
         width: 206
         height: 425
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5348466, y: 0.06929831}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -349,12 +349,12 @@ TextureImporter:
       name: Alice_9
       rect:
         serializedVersion: 2
-        x: 15
-        y: 3
+        x: 12
+        y: 1
         width: 147
         height: 444
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.40233523, y: 0.0756036}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -371,12 +371,12 @@ TextureImporter:
       name: Alice_10
       rect:
         serializedVersion: 2
-        x: 212
+        x: 209
         y: 0
         width: 209
         height: 425
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.46565372, y: 0.077743515}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -393,12 +393,12 @@ TextureImporter:
       name: Alice_11
       rect:
         serializedVersion: 2
-        x: 437
+        x: 435
         y: 0
         width: 218
         height: 433
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.4670718, y: 0.07725576}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -407,6 +407,28 @@ TextureImporter:
       bones: []
       spriteID: c8ecce988dc61fd70800000000000000
       internalID: 9075154401410993804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Alice_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1116
+        height: 1395
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2723c9c739dd2cb40918b9381fb8ea9d
+      internalID: 61198560
       vertices: []
       indices: 
       edges: []
@@ -431,6 +453,7 @@ TextureImporter:
       Alice_1: 8519099831857675943
       Alice_10: -1545258028212519440
       Alice_11: 9075154401410993804
+      Alice_12: 61198560
       Alice_2: -881956747276830140
       Alice_3: 2647380151519193639
       Alice_4: 5529598911401279410

@@ -1748,6 +1748,9 @@ MonoBehaviour:
   imagemNPCBocaAberta: {fileID: -6501494232570338453, guid: b6bfd7c226f1c5c479c1a6e52fa08b55, type: 3}
   aliceBocaFechadaPorResposta: []
   aliceBocaAbertaPorResposta: []
+  npcBocaFechadaPorFala: []
+  npcBocaAbertaPorFala: []
+  indiceRespostaPorFala: 
   aliceEspecialBocaFechada: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
   aliceEspecialBocaAberta: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
   intervaloAnimacaoBoca: 0.2
@@ -1827,6 +1830,10 @@ PrefabInstance:
     - target: {fileID: 3618796713960194172, guid: 396644b6389bff342bd3fb780788709c, type: 3}
       propertyPath: m_Name
       value: Painel_Pausa (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3618796713960194172, guid: 396644b6389bff342bd3fb780788709c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4993872029371896606, guid: 396644b6389bff342bd3fb780788709c, type: 3}
       propertyPath: m_Pivot.x
