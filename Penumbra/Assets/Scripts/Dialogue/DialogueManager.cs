@@ -1,6 +1,8 @@
 
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using System.Collections;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -10,6 +12,35 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI textoDialogo;
     public TextMeshProUGUI nomeNPC;
     public ObjectiveManager objectiveManager;
+
+    [Header("Imagem dos Personagens")]
+    public Image imagemPersonagem;
+    public Sprite imagemDoNPC;
+    public Sprite imagemDaAlice;
+    public Sprite imagemDaAliceBocaAberta;
+    public Sprite imagemNPCBocaAberta;
+
+    [Header("Expressões das respostas da Alice")]
+    public Sprite[] aliceBocaFechadaPorResposta;
+    public Sprite[] aliceBocaAbertaPorResposta;
+
+    [Header("Expressão de fala especial da Alice")]
+    public Sprite aliceEspecialBocaFechada;
+    public Sprite aliceEspecialBocaAberta;
+
+    [Header("Animação da fala")]
+    public float intervaloAnimacaoBoca = 0.2f;
+
+    private Coroutine animacaoBoca;
+
+    private Sprite spriteBocaFechadaAtual;
+    private Sprite spriteBocaAbertaAtual;
+
+    [Header("Animação do texto")]
+    public float velocidadeTexto = 0.03f;
+
+    private Coroutine digitacaoTexto;
+    private bool textoDigitando = false;
 
     [Header("Puzzle dos Peixes")]
     public GameObject painelPuzzlePeixes;
@@ -70,9 +101,17 @@ public class DialogueManager : MonoBehaviour
         if (jogadorPerto && Input.GetKeyDown(KeyCode.E))
         {
             if (!dialogoAtivo)
+            {
                 IniciarDialogo();
+            }
+            else if (textoDigitando)
+            {
+                CompletarTexto();
+            }
             else
+            {
                 AvancarDialogo();
+            }
         }
     }
 
@@ -116,6 +155,20 @@ public class DialogueManager : MonoBehaviour
         painelDialogo.SetActive(true);
         nomeNPC.text = personagem;
         textoDialogo.text = mensagem;
+
+        IniciarDigitacao();
+
+        if (personagem == nomeProtagonista)
+        {
+            ConfigurarAnimacaoAlice(
+                aliceEspecialBocaFechada,
+                aliceEspecialBocaAberta
+            );
+        }
+        else
+        {
+            ConfigurarAnimacaoNPC();
+        }
     }
 
     void AvancarDialogo()
@@ -151,16 +204,160 @@ public class DialogueManager : MonoBehaviour
         {
             nomeNPC.text = nomeProtagonista;
             textoDialogo.text = respostasAlice[falaAtual];
+
+            Sprite fechada = imagemDaAlice;
+            Sprite aberta = null;
+
+            if (aliceBocaFechadaPorResposta != null &&
+                falaAtual < aliceBocaFechadaPorResposta.Length &&
+                aliceBocaFechadaPorResposta[falaAtual] != null)
+            {
+                fechada = aliceBocaFechadaPorResposta[falaAtual];
+            }
+
+            if (aliceBocaAbertaPorResposta != null &&
+                falaAtual < aliceBocaAbertaPorResposta.Length)
+            {
+                aberta = aliceBocaAbertaPorResposta[falaAtual];
+            }
+
+            ConfigurarAnimacaoAlice(fechada, aberta);
         }
         else
         {
             nomeNPC.text = nomeDoPersonagem;
             textoDialogo.text = falas[falaAtual];
+
+            ConfigurarAnimacaoNPC();
         }
+
+        IniciarDigitacao();
+    }
+
+    void ConfigurarAnimacaoAlice(Sprite fechada, Sprite aberta)
+    {
+        PararAnimacaoBoca();
+
+        spriteBocaFechadaAtual = fechada != null
+            ? fechada
+            : imagemDaAlice;
+
+        spriteBocaAbertaAtual = aberta != null
+            ? aberta
+            : imagemDaAliceBocaAberta;
+
+        if (imagemPersonagem != null)
+            imagemPersonagem.sprite = spriteBocaFechadaAtual;
+
+        IniciarAnimacaoBoca();
+    }
+
+    void ConfigurarAnimacaoNPC()
+    {
+        PararAnimacaoBoca();
+
+        spriteBocaFechadaAtual = imagemDoNPC;
+        spriteBocaAbertaAtual = imagemNPCBocaAberta;
+
+        if (imagemPersonagem != null)
+            imagemPersonagem.sprite = spriteBocaFechadaAtual;
+
+        IniciarAnimacaoBoca();
+    }
+
+    void IniciarAnimacaoBoca()
+    {
+        if (imagemPersonagem != null &&
+            spriteBocaAbertaAtual != null)
+        {
+            animacaoBoca = StartCoroutine(AnimarBoca());
+        }
+    }
+
+    IEnumerator AnimarBoca()
+    {
+        bool bocaAberta = false;
+
+        while (true)
+        {
+            bocaAberta = !bocaAberta;
+
+            imagemPersonagem.sprite = bocaAberta
+                ? spriteBocaAbertaAtual
+                : spriteBocaFechadaAtual;
+
+            yield return new WaitForSeconds(intervaloAnimacaoBoca);
+        }
+    }
+
+    void PararAnimacaoBoca()
+    {
+        if (animacaoBoca != null)
+        {
+            StopCoroutine(animacaoBoca);
+            animacaoBoca = null;
+        }
+    }
+
+    // ANIMAÇÃO DE DIGITAÇÃO DO TEXTO
+
+    void IniciarDigitacao()
+    {
+        if (digitacaoTexto != null)
+        {
+            StopCoroutine(digitacaoTexto);
+            digitacaoTexto = null;
+        }
+
+        textoDialogo.maxVisibleCharacters = 0;
+        textoDialogo.ForceMeshUpdate();
+
+        textoDigitando = true;
+        digitacaoTexto = StartCoroutine(AnimarTexto());
+    }
+
+    IEnumerator AnimarTexto()
+    {
+        int totalCaracteres = textoDialogo.textInfo.characterCount;
+
+        for (int i = 0; i <= totalCaracteres; i++)
+        {
+            textoDialogo.maxVisibleCharacters = i;
+
+            yield return new WaitForSeconds(velocidadeTexto);
+        }
+
+        textoDialogo.maxVisibleCharacters = int.MaxValue;
+
+        textoDigitando = false;
+        digitacaoTexto = null;
+    }
+
+    void CompletarTexto()
+    {
+        if (digitacaoTexto != null)
+        {
+            StopCoroutine(digitacaoTexto);
+            digitacaoTexto = null;
+        }
+
+        textoDialogo.maxVisibleCharacters = int.MaxValue;
+        textoDigitando = false;
     }
 
     void FinalizarDialogo()
     {
+        if (digitacaoTexto != null)
+        {
+            StopCoroutine(digitacaoTexto);
+            digitacaoTexto = null;
+        }
+
+        textoDigitando = false;
+        textoDialogo.maxVisibleCharacters = int.MaxValue;
+
+        PararAnimacaoBoca();
+
         dialogoAtivo = false;
         DialogoGlobalAtivo = false;
         falaEspecial = false;
