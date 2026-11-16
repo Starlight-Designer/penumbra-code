@@ -24,6 +24,13 @@ public class DialogueManager : MonoBehaviour
     public Sprite[] aliceBocaFechadaPorResposta;
     public Sprite[] aliceBocaAbertaPorResposta;
 
+    [Header("Expressões do NPC por fala")]
+    public Sprite[] npcBocaFechadaPorFala;
+    public Sprite[] npcBocaAbertaPorFala;
+
+    [Header("Índice da resposta da Alice por fala do NPC")]
+    public int[] indiceRespostaPorFala;
+
     [Header("Expressão de fala especial da Alice")]
     public Sprite aliceEspecialBocaFechada;
     public Sprite aliceEspecialBocaAberta;
@@ -70,6 +77,7 @@ public class DialogueManager : MonoBehaviour
     private bool mostrandoResposta = false;
     private bool falaEspecial = false;
     private int falaAtual = 0;
+    private int respostaAtual = -1;
 
     void Start()
     {
@@ -141,6 +149,7 @@ public class DialogueManager : MonoBehaviour
         mostrandoResposta = false;
         falaEspecial = false;
         falaAtual = 0;
+        respostaAtual = -1;
 
         painelDialogo.SetActive(true);
         MostrarFala();
@@ -179,16 +188,33 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        if (!mostrandoResposta &&
-            respostasAlice != null &&
-            falaAtual < respostasAlice.Length &&
-            !string.IsNullOrWhiteSpace(respostasAlice[falaAtual]))
+        if (!mostrandoResposta)
         {
-            mostrandoResposta = true;
+            int indiceResposta = falaAtual;
+
+            if (indiceRespostaPorFala != null &&
+                falaAtual < indiceRespostaPorFala.Length)
+            {
+                indiceResposta = indiceRespostaPorFala[falaAtual];
+            }
+
+            if (respostasAlice != null &&
+                indiceResposta >= 0 &&
+                indiceResposta < respostasAlice.Length &&
+                !string.IsNullOrWhiteSpace(respostasAlice[indiceResposta]))
+            {
+                respostaAtual = indiceResposta;
+                mostrandoResposta = true;
+            }
+            else
+            {
+                falaAtual++;
+            }
         }
         else
         {
             mostrandoResposta = false;
+            respostaAtual = -1;
             falaAtual++;
         }
 
@@ -203,22 +229,22 @@ public class DialogueManager : MonoBehaviour
         if (mostrandoResposta)
         {
             nomeNPC.text = nomeProtagonista;
-            textoDialogo.text = respostasAlice[falaAtual];
+            textoDialogo.text = respostasAlice[respostaAtual];
 
             Sprite fechada = imagemDaAlice;
             Sprite aberta = null;
 
             if (aliceBocaFechadaPorResposta != null &&
-                falaAtual < aliceBocaFechadaPorResposta.Length &&
-                aliceBocaFechadaPorResposta[falaAtual] != null)
+                respostaAtual < aliceBocaFechadaPorResposta.Length &&
+                aliceBocaFechadaPorResposta[respostaAtual] != null)
             {
-                fechada = aliceBocaFechadaPorResposta[falaAtual];
+                fechada = aliceBocaFechadaPorResposta[respostaAtual];
             }
 
             if (aliceBocaAbertaPorResposta != null &&
-                falaAtual < aliceBocaAbertaPorResposta.Length)
+                respostaAtual < aliceBocaAbertaPorResposta.Length)
             {
-                aberta = aliceBocaAbertaPorResposta[falaAtual];
+                aberta = aliceBocaAbertaPorResposta[respostaAtual];
             }
 
             ConfigurarAnimacaoAlice(fechada, aberta);
@@ -228,7 +254,7 @@ public class DialogueManager : MonoBehaviour
             nomeNPC.text = nomeDoPersonagem;
             textoDialogo.text = falas[falaAtual];
 
-            ConfigurarAnimacaoNPC();
+            ConfigurarAnimacaoNPC(falaAtual);
         }
 
         IniciarDigitacao();
@@ -252,12 +278,30 @@ public class DialogueManager : MonoBehaviour
         IniciarAnimacaoBoca();
     }
 
-    void ConfigurarAnimacaoNPC()
+    void ConfigurarAnimacaoNPC(int indiceFala = -1)
     {
         PararAnimacaoBoca();
 
         spriteBocaFechadaAtual = imagemDoNPC;
         spriteBocaAbertaAtual = imagemNPCBocaAberta;
+
+        if (indiceFala >= 0 &&
+            npcBocaFechadaPorFala != null &&
+            indiceFala < npcBocaFechadaPorFala.Length &&
+            npcBocaFechadaPorFala[indiceFala] != null)
+        {
+            spriteBocaFechadaAtual =
+                npcBocaFechadaPorFala[indiceFala];
+        }
+
+        if (indiceFala >= 0 &&
+            npcBocaAbertaPorFala != null &&
+            indiceFala < npcBocaAbertaPorFala.Length &&
+            npcBocaAbertaPorFala[indiceFala] != null)
+        {
+            spriteBocaAbertaAtual =
+                npcBocaAbertaPorFala[indiceFala];
+        }
 
         if (imagemPersonagem != null)
             imagemPersonagem.sprite = spriteBocaFechadaAtual;
