@@ -1,18 +1,24 @@
+
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class PauseManager : MonoBehaviour
 {
     public GameObject painelPausa;
     public GameObject painelObjetivos;
 
-    [Header("Nomes dos painéis na Hierarchy (usados se os campos acima estiverem vazios)")]
-    public string nomePainelPausa = "Painel_Pausa";
-    public string nomePainelObjetivos = "Painel_Objetivos";
+    [Header("Vídeo da cutscene (opcional)")]
+    public VideoPlayer videoCutscene;
 
     private bool jogoPausado = false;
     private bool fechando = false;
+    private bool videoEstavaTocandoAntesDaPausa = false;
+
+    [Header("Nomes dos painéis na Hierarchy (usados se os campos acima estiverem vazios)")]
+    public string nomePainelPausa = "Painel_Pausa";
+    public string nomePainelObjetivos = "Painel_Objetivos";
 
     private AnimacaoQueda animacaoPausa;
     private AnimacaoZoom animacaoObjetivos;
@@ -72,6 +78,14 @@ public class PauseManager : MonoBehaviour
         jogoPausado = true;
         fechando = false;
 
+        // Verifica se o vídeo estava sendo reproduzido
+        videoEstavaTocandoAntesDaPausa =
+            videoCutscene != null && videoCutscene.isPlaying;
+
+        // Pausa o vídeo
+        if (videoEstavaTocandoAntesDaPausa)
+            videoCutscene.Pause();
+
         painelPausa.SetActive(true);
         painelObjetivos.SetActive(true);
 
@@ -117,6 +131,12 @@ public class PauseManager : MonoBehaviour
         painelObjetivos.SetActive(false);
 
         Time.timeScale = 1f;
+
+        // Retoma o vídeo somente se ele estava tocando antes da pausa
+        if (videoEstavaTocandoAntesDaPausa && videoCutscene != null)
+            videoCutscene.Play();
+
+        videoEstavaTocandoAntesDaPausa = false;
     }
 
     public void VoltarAoMenu()

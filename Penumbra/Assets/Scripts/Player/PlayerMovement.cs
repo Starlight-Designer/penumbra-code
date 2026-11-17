@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("DialogoGlobalAtivo: " + DialogueManager.DialogoGlobalAtivo);
+
         if (DialogueManager.DialogoGlobalAtivo)
         {
             movement = Vector2.zero;

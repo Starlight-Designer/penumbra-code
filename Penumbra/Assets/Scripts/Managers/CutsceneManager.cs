@@ -94,6 +94,9 @@ public class CutsceneManager : MonoBehaviour
         PlayerPrefs.SetInt("CutsceneInicialAssistida", 1);
         PlayerPrefs.Save();
 
+        // Libera o Player antes de carregar a próxima cena
+        DialogueManager.DialogoGlobalAtivo = false;
+
         SceneManager.LoadScene("Cena_Teste");
     }
 

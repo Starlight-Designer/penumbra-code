@@ -19,6 +19,9 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
     public float intervaloEntrePopups = 0.06f;
     public float proximidadeCursor = 40f;
 
+    [Header("Cutscene")]
+    public CutscenePeixesManager cutscenePeixesManager;
+
     private int peixesOrganizados = 0;
     private CanvasGroup grupoPopup;
     private Coroutine animacaoAtual;
@@ -210,7 +213,7 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
                 grupoNovo.blocksRaycasts = false;
             }
 
-            // Reproduz o áudio em cada popup extra
+            // Reproduz o áudio em cada popup extra.
             AudioSource somNovoPopup =
                 novoPopup.GetComponent<AudioSource>();
 
@@ -221,6 +224,20 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
             }
 
             yield return new WaitForSeconds(intervaloEntrePopups);
+        }
+
+        // Inicia a cutscene depois que todos os popups aparecerem.
+        if (cutscenePeixesManager != null)
+        {
+            Debug.Log("Iniciando cutscene dos peixes!");
+
+            cutscenePeixesManager.IniciarCutscene();
+        }
+        else
+        {
+            Debug.LogError(
+                "CutscenePeixesManager não foi conectado no Inspector!"
+            );
         }
     }
 }

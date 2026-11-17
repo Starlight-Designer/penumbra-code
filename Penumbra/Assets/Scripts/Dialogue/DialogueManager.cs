@@ -8,6 +8,12 @@ public class DialogueManager : MonoBehaviour
 {
     public static bool DialogoGlobalAtivo = false;
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetarDialogoGlobal()
+    {
+        DialogoGlobalAtivo = false;
+    }
+
     public GameObject painelDialogo;
     public TextMeshProUGUI textoDialogo;
     public TextMeshProUGUI nomeNPC;
@@ -67,6 +73,14 @@ public class DialogueManager : MonoBehaviour
     [TextArea(2, 4)]
     public string[] respostasAlice;
 
+    [Header("Falas do pescador após o puzzle")]
+    [TextArea(2, 4)]
+    public string[] falasDepoisPuzzle;
+
+    [Header("Respostas da Alice após o puzzle")]
+    [TextArea(2, 4)]
+    public string[] respostasAliceDepoisPuzzle;
+
     public int objetivoParaConcluir = 1;
 
     [Header("Item liberado após o diálogo")]
@@ -76,8 +90,18 @@ public class DialogueManager : MonoBehaviour
     private bool dialogoAtivo = false;
     private bool mostrandoResposta = false;
     private bool falaEspecial = false;
+    private bool dialogoFinalPescador = false;
+    private bool bloquearTeclaE = false;
+
+    private bool pescadorInteracaoBloqueada = false;
+
+    private Coroutine liberarTeclaECoroutine;
+
     private int falaAtual = 0;
     private int respostaAtual = -1;
+
+    private string[] falasOriginais;
+    private string[] respostasOriginais;
 
     void Start()
     {
@@ -87,6 +111,16 @@ public class DialogueManager : MonoBehaviour
 
         if (indicadorInteracao != null)
             indicadorInteracao.SetActive(false);
+
+        if (nomeDoPersonagem == "Pescador")
+        {
+            falasOriginais = falas;
+            respostasOriginais = respostasAlice;
+
+            pescadorInteracaoBloqueada =
+                PlayerPrefs.GetInt("PescadorPrimeiraConversa", 0) == 1 &&
+                PlayerPrefs.GetInt("DialogoFinalPescadorConcluido", 0) == 0;
+        }
 
         if (itemParaRevelar != null)
         {
@@ -99,6 +133,18 @@ public class DialogueManager : MonoBehaviour
 
     void Update()
     {
+        if (bloquearTeclaE)
+            return;
+
+        if (nomeDoPersonagem == "Pescador" &&
+            pescadorInteracaoBloqueada)
+        {
+            if (indicadorInteracao != null)
+                indicadorInteracao.SetActive(false);
+
+            return;
+        }
+
         if (indicadorInteracao != null)
         {
             indicadorInteracao.SetActive(
@@ -123,8 +169,43 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    void IniciarDialogo()
+    public void IniciarDialogoAutomatico()
     {
+        if (dialogoAtivo)
+            return;
+
+        jogadorPerto = true;
+
+        BloquearTeclaEAteSoltar();
+
+        Debug.Log("=== DIÁLOGO AUTOMÁTICO ===");
+        Debug.Log("Personagem: " + nomeDoPersonagem);
+        Debug.Log("Puzzle concluído: " + PlayerPrefs.GetInt("PescadorPuzzleConcluido", 0));
+        Debug.Log("Falas finais cadastradas: " + (falasDepoisPuzzle != null ? falasDepoisPuzzle.Length : 0));
+
+        if (nomeDoPersonagem == "Pescador")
+        {
+            dialogoFinalPescador = true;
+            falas = falasDepoisPuzzle;
+            respostasAlice = respostasAliceDepoisPuzzle;
+
+            IniciarDialogo(true);
+        }
+        else
+        {
+            IniciarDialogo();
+        }
+    }
+
+    void IniciarDialogo(bool forcarDialogoFinalPescador = false)
+    {
+        if (nomeDoPersonagem == "Pescador" &&
+            PlayerPrefs.GetInt("DialogoFinalPescadorConcluido", 0) == 1)
+        {
+            MostrarFalaEspecial("VAI EMBORA.", nomeDoPersonagem);
+            return;
+        }
+
         bool conversou = PlayerPrefs.GetInt("DelegadoConversou", 0) == 1;
         bool fitaColetada = PlayerPrefs.GetInt("FitaVHS01Coletada", 0) == 1;
 
@@ -140,8 +221,31 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
+        if (nomeDoPersonagem == "Pescador")
+        {
+            dialogoFinalPescador =
+                forcarDialogoFinalPescador ||
+                PlayerPrefs.GetInt("PescadorPuzzleConcluido", 0) == 1;
+
+            if (dialogoFinalPescador)
+            {
+                Debug.Log("=== SELECIONANDO DIÁLOGO FINAL ===");
+
+                falas = falasDepoisPuzzle;
+                respostasAlice = respostasAliceDepoisPuzzle;
+            }
+            else
+            {
+                falas = falasOriginais;
+                respostasAlice = respostasOriginais;
+            }
+        }
+
         if (falas == null || falas.Length == 0)
+        {
+            Debug.LogError("Não há falas configuradas para " + nomeDoPersonagem);
             return;
+        }
 
         dialogoAtivo = true;
         DialogoGlobalAtivo = true;
@@ -343,8 +447,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    // ANIMAÇÃO DE DIGITAÇÃO DO TEXTO
-
     void IniciarDigitacao()
     {
         if (digitacaoTexto != null)
@@ -408,7 +510,6 @@ public class DialogueManager : MonoBehaviour
 
         painelDialogo.SetActive(false);
 
-        // Ações específicas do delegado
         if (nomeDoPersonagem == "Delegado" &&
             PlayerPrefs.GetInt("DelegadoConversou", 0) == 0)
         {
@@ -419,7 +520,6 @@ public class DialogueManager : MonoBehaviour
                 itemParaRevelar.SetActive(true);
         }
 
-        // Ações específicas do pescador
         if (nomeDoPersonagem == "Pescador")
         {
             bool puzzleConcluido =
@@ -430,19 +530,62 @@ public class DialogueManager : MonoBehaviour
                 PlayerPrefs.SetInt("PescadorPrimeiraConversa", 1);
                 PlayerPrefs.Save();
 
+                pescadorInteracaoBloqueada = true;
+
+                if (indicadorInteracao != null)
+                    indicadorInteracao.SetActive(false);
+
                 if (painelPuzzlePeixes != null)
                     painelPuzzlePeixes.SetActive(true);
 
                 return;
             }
+
+            if (dialogoFinalPescador &&
+                PlayerPrefs.GetInt("DialogoFinalPescadorConcluido", 0) == 0)
+            {
+                if (PlayerPrefs.GetInt("ObjetivoAtual", 0) == objetivoParaConcluir)
+                {
+                    if (objectiveManager != null)
+                        objectiveManager.ConcluirObjetivo();
+                }
+
+                PlayerPrefs.SetInt("DialogoFinalPescadorConcluido", 1);
+                PlayerPrefs.Save();
+
+                pescadorInteracaoBloqueada = false;
+            }
+
+            return;
         }
 
-        // Conclusão do objetivo configurado para cada NPC
         if (objectiveManager != null &&
             PlayerPrefs.GetInt("ObjetivoAtual", 0) == objetivoParaConcluir)
         {
             objectiveManager.ConcluirObjetivo();
         }
+    }
+
+    // Bloqueia temporariamente a tecla E após a cutscene.
+    public void BloquearTeclaEAteSoltar()
+    {
+        bloquearTeclaE = true;
+
+        if (liberarTeclaECoroutine != null)
+        {
+            StopCoroutine(liberarTeclaECoroutine);
+        }
+
+        liberarTeclaECoroutine = StartCoroutine(LiberarTeclaE());
+    }
+
+    IEnumerator LiberarTeclaE()
+    {
+        // Aguarda um pequeno intervalo antes de liberar o diálogo.
+        yield return new WaitForSeconds(0.3f);
+
+        bloquearTeclaE = false;
+        liberarTeclaECoroutine = null;
     }
 
     void OnTriggerEnter2D(Collider2D other)
