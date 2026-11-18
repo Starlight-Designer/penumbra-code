@@ -19,6 +19,16 @@ public class SceneTransition : MonoBehaviour
 
         int objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
 
+        // BLOQUEIA A FLORESTA ATÉ O OBJETIVO 9
+        if (nomeCena == "Floresta")
+        {
+            if (objetivoAtual < 9)
+            {
+                MostrarPensamento("Ainda preciso terminar o que tenho que fazer na casa da Dona Cida antes de explorar a floresta.");
+                return;
+            }
+        }
+
         if (nomeCena == "Peixaria")
         {
             if (objetivoAtual == 0)
@@ -51,7 +61,6 @@ public class SceneTransition : MonoBehaviour
                 return;
             }
 
-            // Ao entrar na casa, inicia o objetivo de conversar com Dona Cida.
             if (objetivoAtual == 4)
             {
                 PlayerPrefs.SetInt("ObjetivoAtual", 5);
@@ -59,7 +68,6 @@ public class SceneTransition : MonoBehaviour
             }
         }
 
-        // Bloqueia o quarto até Alice terminar a primeira conversa com Dona Cida.
         if (nomeCena == "Quarto_Bianca")
         {
             if (objetivoAtual < 6)
@@ -68,7 +76,6 @@ public class SceneTransition : MonoBehaviour
                 return;
             }
 
-            // Impede a entrada novamente depois de concluir a investigação.
             if (objetivoAtual >= 7)
             {
                 MostrarPensamento("Já terminei de investigar o quarto da Bianca.");

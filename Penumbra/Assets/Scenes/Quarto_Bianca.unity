@@ -2189,6 +2189,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1525691623}
     m_Modifications:
+    - target: {fileID: 190753545989280076, guid: d203bc604eda018478067294fc183da5, type: 3}
+      propertyPath: m_fontSize
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 190753545989280076, guid: d203bc604eda018478067294fc183da5, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 4475194613143087955, guid: d203bc604eda018478067294fc183da5, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -2272,6 +2280,18 @@ PrefabInstance:
     - target: {fileID: 5718351597716681392, guid: d203bc604eda018478067294fc183da5, type: 3}
       propertyPath: m_Name
       value: Painel_Objetivos
+      objectReference: {fileID: 0}
+    - target: {fileID: 5718351597716681392, guid: d203bc604eda018478067294fc183da5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7791488214762712236, guid: d203bc604eda018478067294fc183da5, type: 3}
+      propertyPath: m_fontSize
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7791488214762712236, guid: d203bc604eda018478067294fc183da5, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3066,6 +3086,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Painel_Pausa
       objectReference: {fileID: 0}
+    - target: {fileID: 3618796713960194172, guid: 396644b6389bff342bd3fb780788709c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4993872029371896606, guid: 396644b6389bff342bd3fb780788709c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3128,11 +3152,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4993872029371896606, guid: 396644b6389bff342bd3fb780788709c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -956.00916
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4993872029371896606, guid: 396644b6389bff342bd3fb780788709c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -540.1428
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4993872029371896606, guid: 396644b6389bff342bd3fb780788709c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3494,7 +3518,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
   m_UseReflectionProbes: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
