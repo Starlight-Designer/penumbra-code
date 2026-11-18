@@ -21,7 +21,8 @@ public class ObjectiveManager : MonoBehaviour
         "Volte à sala e converse com Dona Cida.",
         "Receba a fita VHS de Dona Cida.",
         "Explore a floresta e siga em direção à igreja.",
-        "Resolva o último puzzle para entrar na igreja."
+        "Resolva o último puzzle para entrar na igreja.",
+        "Investigue o Almoxarifado."
     };
 
     void Start()

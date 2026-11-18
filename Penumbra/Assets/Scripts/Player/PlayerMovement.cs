@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer sr;
     private Vector2 movement;
 
+    private bool movimentoBloqueado = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -21,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (DialogueManager.DialogoGlobalAtivo)
+        if (DialogueManager.DialogoGlobalAtivo || movimentoBloqueado)
         {
             movement = Vector2.zero;
             rb.linearVelocity = Vector2.zero;
@@ -43,13 +45,32 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (DialogueManager.DialogoGlobalAtivo)
+        if (DialogueManager.DialogoGlobalAtivo || movimentoBloqueado)
         {
             rb.linearVelocity = Vector2.zero;
             return;
         }
 
         rb.linearVelocity = movement * speed;
+    }
+
+    // Bloqueia ou libera o jogador
+    public void BloquearMovimento(bool bloquear)
+    {
+        movimentoBloqueado = bloquear;
+
+        movement = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
+
+        if (sr != null)
+        {
+            sr.enabled = !bloquear;
+        }
+
+        if (animator != null)
+        {
+            animator.SetBool("Andando", false);
+        }
     }
 
     private void AtualizarAnimacao()

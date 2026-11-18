@@ -92,6 +92,14 @@ public class SceneTransition : MonoBehaviour
             }
         }
 
+        // CONCLUI O OBJETIVO DE EXPLORAR A FLORESTA
+        // AO ENTRAR NA CENA CAMINHO_IGREJA
+        if (nomeCena == "Caminho_Igreja" && objetivoAtual == 9)
+        {
+            PlayerPrefs.SetInt("ObjetivoAtual", 10);
+            PlayerPrefs.Save();
+        }
+
         SpawnData.proximoSpawn = spawnNoDestino;
         SceneManager.LoadScene(nomeCena);
     }
