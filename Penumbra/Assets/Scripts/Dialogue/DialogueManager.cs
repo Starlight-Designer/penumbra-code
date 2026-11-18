@@ -41,6 +41,10 @@ public class DialogueManager : MonoBehaviour
     public Sprite aliceEspecialBocaFechada;
     public Sprite aliceEspecialBocaAberta;
 
+    [Header("Expressão especial do pescador - VAI EMBORA")]
+    public Sprite pescadorVaiEmboraBocaFechada;
+    public Sprite pescadorVaiEmboraBocaAberta;
+
     [Header("Animação da fala")]
     public float intervaloAnimacaoBoca = 0.2f;
 
@@ -81,7 +85,7 @@ public class DialogueManager : MonoBehaviour
     [TextArea(2, 4)]
     public string[] respostasAliceDepoisPuzzle;
 
-    public int objetivoParaConcluir = 1;
+    public int objetivoParaConcluir = 3;
 
     [Header("Item liberado após o diálogo")]
     public GameObject itemParaRevelar;
@@ -91,11 +95,8 @@ public class DialogueManager : MonoBehaviour
     private bool mostrandoResposta = false;
     private bool falaEspecial = false;
     private bool dialogoFinalPescador = false;
-    private bool bloquearTeclaE = false;
 
     private bool pescadorInteracaoBloqueada = false;
-
-    private Coroutine liberarTeclaECoroutine;
 
     private int falaAtual = 0;
     private int respostaAtual = -1;
@@ -133,11 +134,11 @@ public class DialogueManager : MonoBehaviour
 
     void Update()
     {
-        if (bloquearTeclaE)
-            return;
-
+        // Bloqueia novas interações com o pescador,
+        // mas permite avançar um diálogo automático já iniciado.
         if (nomeDoPersonagem == "Pescador" &&
-            pescadorInteracaoBloqueada)
+            pescadorInteracaoBloqueada &&
+            !dialogoAtivo)
         {
             if (indicadorInteracao != null)
                 indicadorInteracao.SetActive(false);
@@ -148,11 +149,13 @@ public class DialogueManager : MonoBehaviour
         if (indicadorInteracao != null)
         {
             indicadorInteracao.SetActive(
-                jogadorPerto && !dialogoAtivo
+                jogadorPerto && !dialogoAtivo &&
+                !pescadorInteracaoBloqueada
             );
         }
 
-        if (jogadorPerto && Input.GetKeyDown(KeyCode.E))
+        // F inicia e avança os diálogos.
+        if (jogadorPerto && Input.GetKeyDown(KeyCode.F))
         {
             if (!dialogoAtivo)
             {
@@ -176,13 +179,12 @@ public class DialogueManager : MonoBehaviour
 
         jogadorPerto = true;
 
-        BloquearTeclaEAteSoltar();
-
         Debug.Log("=== DIÁLOGO AUTOMÁTICO ===");
         Debug.Log("Personagem: " + nomeDoPersonagem);
         Debug.Log("Puzzle concluído: " + PlayerPrefs.GetInt("PescadorPuzzleConcluido", 0));
         Debug.Log("Falas finais cadastradas: " + (falasDepoisPuzzle != null ? falasDepoisPuzzle.Length : 0));
 
+        // Força a seleção das falas finais do pescador.
         if (nomeDoPersonagem == "Pescador")
         {
             dialogoFinalPescador = true;
@@ -199,6 +201,7 @@ public class DialogueManager : MonoBehaviour
 
     void IniciarDialogo(bool forcarDialogoFinalPescador = false)
     {
+        // Depois do diálogo final, o pescador só responde VAI EMBORA.
         if (nomeDoPersonagem == "Pescador" &&
             PlayerPrefs.GetInt("DialogoFinalPescadorConcluido", 0) == 1)
         {
@@ -221,6 +224,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
+        // Seleciona a conversa correta do pescador.
         if (nomeDoPersonagem == "Pescador")
         {
             dialogoFinalPescador =
@@ -278,6 +282,27 @@ public class DialogueManager : MonoBehaviour
                 aliceEspecialBocaAberta
             );
         }
+        else if (nomeDoPersonagem == "Pescador" &&
+                 mensagem == "VAI EMBORA.")
+        {
+            // Usa os sprites exclusivos do pescador.
+            PararAnimacaoBoca();
+
+            spriteBocaFechadaAtual =
+                pescadorVaiEmboraBocaFechada != null
+                ? pescadorVaiEmboraBocaFechada
+                : imagemDoNPC;
+
+            spriteBocaAbertaAtual =
+                pescadorVaiEmboraBocaAberta != null
+                ? pescadorVaiEmboraBocaAberta
+                : imagemNPCBocaAberta;
+
+            if (imagemPersonagem != null)
+                imagemPersonagem.sprite = spriteBocaFechadaAtual;
+
+            IniciarAnimacaoBoca();
+        }
         else
         {
             ConfigurarAnimacaoNPC();
@@ -309,11 +334,12 @@ public class DialogueManager : MonoBehaviour
             {
                 respostaAtual = indiceResposta;
                 mostrandoResposta = true;
+
+                MostrarFala();
+                return;
             }
-            else
-            {
-                falaAtual++;
-            }
+
+            falaAtual++;
         }
         else
         {
@@ -323,9 +349,13 @@ public class DialogueManager : MonoBehaviour
         }
 
         if (falaAtual < falas.Length)
+        {
             MostrarFala();
+        }
         else
+        {
             FinalizarDialogo();
+        }
     }
 
     void MostrarFala()
@@ -510,6 +540,7 @@ public class DialogueManager : MonoBehaviour
 
         painelDialogo.SetActive(false);
 
+        // Ações específicas do delegado.
         if (nomeDoPersonagem == "Delegado" &&
             PlayerPrefs.GetInt("DelegadoConversou", 0) == 0)
         {
@@ -520,6 +551,7 @@ public class DialogueManager : MonoBehaviour
                 itemParaRevelar.SetActive(true);
         }
 
+        // Ações específicas do pescador.
         if (nomeDoPersonagem == "Pescador")
         {
             bool puzzleConcluido =
@@ -541,51 +573,46 @@ public class DialogueManager : MonoBehaviour
                 return;
             }
 
+            // Conclui o objetivo somente após a conversa final.
             if (dialogoFinalPescador &&
                 PlayerPrefs.GetInt("DialogoFinalPescadorConcluido", 0) == 0)
             {
-                if (PlayerPrefs.GetInt("ObjetivoAtual", 0) == objetivoParaConcluir)
+                int objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
+
+                if (objectiveManager == null)
                 {
-                    if (objectiveManager != null)
-                        objectiveManager.ConcluirObjetivo();
+                    Debug.LogError("Objective Manager não foi conectado no Pescador!");
+                    return;
                 }
+
+                if (objetivoAtual != objetivoParaConcluir)
+                {
+                    Debug.LogWarning(
+                        "Objetivo do pescador não concluído. Objetivo atual: " +
+                        objetivoAtual + " | Objetivo esperado: " + objetivoParaConcluir
+                    );
+                    return;
+                }
+
+                objectiveManager.ConcluirObjetivo();
 
                 PlayerPrefs.SetInt("DialogoFinalPescadorConcluido", 1);
                 PlayerPrefs.Save();
 
                 pescadorInteracaoBloqueada = false;
+
+                Debug.Log("Objetivo do pescador concluído! Casa da Bianca liberada.");
             }
 
             return;
         }
 
+        // Conclusão do objetivo configurado para cada outro NPC.
         if (objectiveManager != null &&
             PlayerPrefs.GetInt("ObjetivoAtual", 0) == objetivoParaConcluir)
         {
             objectiveManager.ConcluirObjetivo();
         }
-    }
-
-    // Bloqueia temporariamente a tecla E após a cutscene.
-    public void BloquearTeclaEAteSoltar()
-    {
-        bloquearTeclaE = true;
-
-        if (liberarTeclaECoroutine != null)
-        {
-            StopCoroutine(liberarTeclaECoroutine);
-        }
-
-        liberarTeclaECoroutine = StartCoroutine(LiberarTeclaE());
-    }
-
-    IEnumerator LiberarTeclaE()
-    {
-        // Aguarda um pequeno intervalo antes de liberar o diálogo.
-        yield return new WaitForSeconds(0.3f);
-
-        bloquearTeclaE = false;
-        liberarTeclaECoroutine = null;
     }
 
     void OnTriggerEnter2D(Collider2D other)

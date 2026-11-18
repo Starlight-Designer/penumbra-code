@@ -17,10 +17,10 @@ public class SceneTransition : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
+        int objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
+
         if (nomeCena == "Peixaria")
         {
-            int objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
-
             if (objetivoAtual == 0)
             {
                 MostrarPensamento("Eu tenho que ir na delegacia primeiro! Meu tio tá me esperando.");
@@ -45,18 +45,40 @@ public class SceneTransition : MonoBehaviour
 
         if (nomeCena == "Casa_Mae_Bianca")
         {
-            int objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
-
             if (objetivoAtual < 4)
             {
                 MostrarPensamento("Preciso descobrir o que o pescador sabe antes de ir até a casa da Bianca.");
+                return;
+            }
+
+            // Ao entrar na casa, inicia o objetivo de conversar com Dona Cida.
+            if (objetivoAtual == 4)
+            {
+                PlayerPrefs.SetInt("ObjetivoAtual", 5);
+                PlayerPrefs.Save();
+            }
+        }
+
+        // Bloqueia o quarto até Alice terminar a primeira conversa com Dona Cida.
+        if (nomeCena == "Quarto_Bianca")
+        {
+            if (objetivoAtual < 6)
+            {
+                MostrarPensamento("Preciso conversar com Dona Cida antes de entrar no quarto da Bianca.");
+                return;
+            }
+
+            // Impede a entrada novamente depois de concluir a investigação.
+            if (objetivoAtual >= 7)
+            {
+                MostrarPensamento("Já terminei de investigar o quarto da Bianca.");
                 return;
             }
         }
 
         if (nomeCena == "Delegacia")
         {
-            if (PlayerPrefs.GetInt("ObjetivoAtual", 0) == 0)
+            if (objetivoAtual == 0)
             {
                 PlayerPrefs.SetInt("ObjetivoAtual", 1);
                 PlayerPrefs.Save();

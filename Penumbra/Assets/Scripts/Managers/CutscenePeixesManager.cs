@@ -79,6 +79,7 @@ public class CutscenePeixesManager : MonoBehaviour
         if (!cutsceneIniciada || cutsceneFinalizada)
             return;
 
+        // E continua sendo usada somente para pular a cutscene.
         if (Input.GetKeyDown(KeyCode.E))
             FinalizarCutscene();
     }
@@ -215,9 +216,9 @@ public class CutscenePeixesManager : MonoBehaviour
 
         MostrarPersonagens();
 
+        // Inicia automaticamente o diálogo final do pescador.
         if (dialogoPescador != null)
         {
-            // O próprio DialogueManager controla o bloqueio da tecla E.
             dialogoPescador.IniciarDialogoAutomatico();
         }
         else

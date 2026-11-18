@@ -16,7 +16,10 @@ public class ObjectiveManager : MonoBehaviour
         "Pegue a fita VHS.",
         "Vá até a Peixaria e converse com o pescador.",
         "Vá até a casa da mãe da Bianca.",
-        "Resolva o puzzle e pegue a fita VHS.",
+        "Converse com Dona Cida.",
+        "Entre no quarto da Bianca e resolva o puzzle.",
+        "Volte à sala e converse com Dona Cida.",
+        "Receba a fita VHS de Dona Cida.",
         "Explore a floresta e siga em direção à igreja.",
         "Resolva o último puzzle para entrar na igreja."
     };
