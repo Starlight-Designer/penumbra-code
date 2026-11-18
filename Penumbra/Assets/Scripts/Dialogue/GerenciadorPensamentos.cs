@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class GerenciadorPensamentos : MonoBehaviour
 {
@@ -26,9 +27,17 @@ public class GerenciadorPensamentos : MonoBehaviour
     private Coroutine digitacaoTexto;
     private Coroutine animacaoBoca;
 
+    private Action acaoAoFechar;
+
+    private Sprite bocaFechadaAtual;
+    private Sprite bocaAbertaAtual;
+
     void Start()
     {
         painelPensamentos.SetActive(false);
+
+        bocaFechadaAtual = aliceBocaFechada;
+        bocaAbertaAtual = aliceBocaAberta;
     }
 
     void Update()
@@ -46,14 +55,45 @@ public class GerenciadorPensamentos : MonoBehaviour
         }
     }
 
+    // Mantém compatibilidade com os pensamentos já existentes
     public void MostrarPensamento(string mensagem)
+    {
+        MostrarPensamento(mensagem, null);
+    }
+
+    // Pensamento com ação ao fechar
+    public void MostrarPensamento(string mensagem, Action aoFechar)
+    {
+        MostrarPensamento(
+            mensagem,
+            aoFechar,
+            aliceBocaFechada,
+            aliceBocaAberta
+        );
+    }
+
+    // Pensamento com rosto personalizado
+    public void MostrarPensamento(
+        string mensagem,
+        Action aoFechar,
+        Sprite rostoFechado,
+        Sprite rostoAberto
+    )
     {
         if (pensamentoAtivo)
             return;
 
         pensamentoAtivo = true;
+        acaoAoFechar = aoFechar;
 
-        // Bloqueia o movimento da Alice
+        bocaFechadaAtual = rostoFechado != null
+            ? rostoFechado
+            : aliceBocaFechada;
+
+        bocaAbertaAtual = rostoAberto != null
+            ? rostoAberto
+            : aliceBocaAberta;
+
         DialogueManager.DialogoGlobalAtivo = true;
 
         painelPensamentos.SetActive(true);
@@ -62,7 +102,7 @@ public class GerenciadorPensamentos : MonoBehaviour
         textoPensamento.text = mensagem;
 
         if (imagemAlice != null)
-            imagemAlice.sprite = aliceBocaFechada;
+            imagemAlice.sprite = bocaFechadaAtual;
 
         IniciarDigitacao();
         IniciarAnimacaoBoca();
@@ -109,7 +149,7 @@ public class GerenciadorPensamentos : MonoBehaviour
 
     void IniciarAnimacaoBoca()
     {
-        if (imagemAlice != null && aliceBocaAberta != null)
+        if (imagemAlice != null && bocaAbertaAtual != null)
             animacaoBoca = StartCoroutine(AnimarBoca());
     }
 
@@ -122,8 +162,8 @@ public class GerenciadorPensamentos : MonoBehaviour
             bocaAberta = !bocaAberta;
 
             imagemAlice.sprite = bocaAberta
-                ? aliceBocaAberta
-                : aliceBocaFechada;
+                ? bocaAbertaAtual
+                : bocaFechadaAtual;
 
             yield return new WaitForSeconds(intervaloAnimacaoBoca);
         }
@@ -143,14 +183,24 @@ public class GerenciadorPensamentos : MonoBehaviour
         textoDigitando = false;
         pensamentoAtivo = false;
 
-        // Libera o movimento da Alice
         DialogueManager.DialogoGlobalAtivo = false;
 
         textoPensamento.maxVisibleCharacters = int.MaxValue;
+
+        // Restaura o rosto original da Alice
+        bocaFechadaAtual = aliceBocaFechada;
+        bocaAbertaAtual = aliceBocaAberta;
 
         if (imagemAlice != null)
             imagemAlice.sprite = aliceBocaFechada;
 
         painelPensamentos.SetActive(false);
+
+        // Executa a ação somente depois que o painel for fechado
+        Action acao = acaoAoFechar;
+        acaoAoFechar = null;
+
+        if (acao != null)
+            acao.Invoke();
     }
 }
