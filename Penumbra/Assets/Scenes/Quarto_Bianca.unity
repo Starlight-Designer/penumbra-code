@@ -2267,10 +2267,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DestaqueSprite2D
   aumentarNoHover: 1
-  escalaHover: 1.1
+  escalaHover: 1.05
   velocidade: 15
   corBorda: {r: 0, g: 0, b: 0, a: 1}
-  espessuraBorda: 1.08
+  espessuraBorda: 1.05
 --- !u!61 &1355751818
 BoxCollider2D:
   m_ObjectHideFlags: 0
