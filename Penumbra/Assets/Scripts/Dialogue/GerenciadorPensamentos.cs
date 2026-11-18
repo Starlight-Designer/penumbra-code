@@ -33,7 +33,7 @@ public class GerenciadorPensamentos : MonoBehaviour
 
     void Update()
     {
-        if (!pensamentoAtivo || !Input.GetKeyDown(KeyCode.E))
+        if (!pensamentoAtivo || !Input.GetKeyDown(KeyCode.F))
             return;
 
         if (textoDigitando)

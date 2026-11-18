@@ -52,35 +52,42 @@ public class ObjectiveManager : MonoBehaviour
 
     void AtualizarObjetivos()
     {
-        Debug.Log("TEXTO 1: " + (textoObjetivo1 != null ? textoObjetivo1.name : "NULL")
-            + " | TEXTO 2: " + (textoObjetivo2 != null ? textoObjetivo2.name : "NULL"));
-
         objetivoAtual = Mathf.Clamp(objetivoAtual, 0, objetivos.Length);
+
+        if (textoObjetivo1 == null || textoObjetivo2 == null)
+        {
+            Debug.LogError(
+                "ObjectiveManager: conecte os campos Texto Objetivo 1 e Texto Objetivo 2 no Inspector!"
+            );
+            return;
+        }
 
         if (objetivoAtual == 0)
         {
             textoObjetivo1.text = objetivos[0];
             textoObjetivo1.fontStyle = FontStyles.Normal;
             textoObjetivo1.color = Color.black;
+
+            textoObjetivo2.text = objetivos[1];
+            textoObjetivo2.fontStyle = FontStyles.Normal;
+            textoObjetivo2.color = Color.black;
         }
         else
         {
             textoObjetivo1.text = objetivos[objetivoAtual - 1];
             textoObjetivo1.fontStyle = FontStyles.Strikethrough;
             textoObjetivo1.color = new Color(0f, 0f, 0f, 0.4f);
-        }
 
-        int indiceSegundoObjetivo = objetivoAtual == 0 ? 1 : objetivoAtual;
-
-        if (indiceSegundoObjetivo < objetivos.Length)
-        {
-            textoObjetivo2.text = objetivos[indiceSegundoObjetivo];
-            textoObjetivo2.fontStyle = FontStyles.Normal;
-            textoObjetivo2.color = Color.black;
-        }
-        else
-        {
-            textoObjetivo2.text = "";
+            if (objetivoAtual < objetivos.Length)
+            {
+                textoObjetivo2.text = objetivos[objetivoAtual];
+                textoObjetivo2.fontStyle = FontStyles.Normal;
+                textoObjetivo2.color = Color.black;
+            }
+            else
+            {
+                textoObjetivo2.text = "";
+            }
         }
     }
 }

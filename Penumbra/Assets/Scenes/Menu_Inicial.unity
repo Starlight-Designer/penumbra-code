@@ -627,7 +627,7 @@ Transform:
   m_GameObject: {fileID: 121768106}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -522.1368, y: -140.9724, z: -9720}
+  m_LocalPosition: {x: -550.8968, y: -105.7124, z: -9720}
   m_LocalScale: {x: 42.740997, y: 40.247726, z: 69.119995}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2161,7 +2161,7 @@ Transform:
   m_GameObject: {fileID: 541072943}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -472.71597, y: -89.4132, z: -9720}
+  m_LocalPosition: {x: -501.47595, y: -54.153206, z: -9720}
   m_LocalScale: {x: 42.740997, y: 40.247726, z: 69.119995}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3858,7 +3858,7 @@ Transform:
   m_GameObject: {fileID: 993477955}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -505.43997, y: -110.159996, z: -9720}
+  m_LocalPosition: {x: -534.2, y: -74.9, z: -9720}
   m_LocalScale: {x: 42.740997, y: 40.247726, z: 69.119995}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -7737,7 +7737,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "ARTE\r\nJo\xE3o Ot\xE1vio"
+  m_text: "ARTE E MODELAGEM 3D\r\nJo\xE3o Ot\xE1vio"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b8eb728c3c6d53541aeff8ef90c00e99, type: 2}
   m_sharedMaterial: {fileID: 4335478604012020240, guid: b8eb728c3c6d53541aeff8ef90c00e99, type: 2}

@@ -60,4 +60,9 @@ public class PuzzleFotosFio : MonoBehaviour
         if (destaqueFio != null && !fioCompleto)
             destaqueFio.Destacar(valor);
     }
+
+    public bool EstaCompleto()
+    {
+        return fioCompleto;
+    }
 }
