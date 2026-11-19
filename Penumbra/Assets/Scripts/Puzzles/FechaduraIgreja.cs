@@ -19,6 +19,7 @@ public class FechaduraIgreja : MonoBehaviour
 
     private string senhaDigitada = "";
     private bool mostrandoMensagem = false;
+    private bool jogadorNaFechadura = false;
 
     void Start()
     {
@@ -26,15 +27,20 @@ public class FechaduraIgreja : MonoBehaviour
         AtualizarTexto();
     }
 
-    // Abre o painel quando o jogador entra na área
+    // Abre o painel quando o jogador entra na área.
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player"))
             return;
 
+        jogadorNaFechadura = true;
+
+        // Bloqueia o inventário durante a interação.
+        InventoryManager.BloquearInventario(true);
+
         painelFechadura.SetActive(true);
 
-        // Esconde e bloqueia o jogador
+        // Esconde e bloqueia o jogador.
         if (playerMovement != null)
         {
             playerMovement.BloquearMovimento(true);
@@ -46,12 +52,14 @@ public class FechaduraIgreja : MonoBehaviour
         Debug.Log("Painel da fechadura aberto!");
     }
 
-    // Chamado pelos botões numéricos
+    // Chamado pelos botões numéricos.
     public void DigitarNumero(string numero)
     {
         Debug.Log("Botão clicado: " + numero);
 
-        if (mostrandoMensagem || senhaDigitada.Length >= 8)
+        if (!jogadorNaFechadura ||
+            mostrandoMensagem ||
+            senhaDigitada.Length >= 8)
             return;
 
         senhaDigitada += numero;
@@ -65,7 +73,7 @@ public class FechaduraIgreja : MonoBehaviour
         }
     }
 
-    // Verifica se os oito números estão corretos
+    // Verifica se os oito números estão corretos.
     void VerificarSenha()
     {
         if (senhaDigitada == senhaCorreta)
@@ -74,7 +82,6 @@ public class FechaduraIgreja : MonoBehaviour
 
             PlayerPrefs.SetInt("SenhaIgrejaCorreta", 1);
 
-            // Conclui o último objetivo
             int objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
 
             if (objetivoAtual == 10)
@@ -85,6 +92,7 @@ public class FechaduraIgreja : MonoBehaviour
 
             PlayerPrefs.Save();
 
+            // Mantém o inventário bloqueado durante a transição.
             SceneManager.LoadScene(nomeCenaIgreja);
         }
         else
@@ -94,7 +102,7 @@ public class FechaduraIgreja : MonoBehaviour
         }
     }
 
-    // Mostra a mensagem e limpa o campo depois
+    // Mostra a mensagem e limpa o campo depois.
     IEnumerator MostrarSenhaIncorreta()
     {
         mostrandoMensagem = true;
@@ -107,10 +115,12 @@ public class FechaduraIgreja : MonoBehaviour
         AtualizarTexto();
     }
 
-    // Apaga somente o último número
+    // Apaga somente o último número.
     public void ApagarUltimoNumero()
     {
-        if (mostrandoMensagem || senhaDigitada.Length == 0)
+        if (!jogadorNaFechadura ||
+            mostrandoMensagem ||
+            senhaDigitada.Length == 0)
             return;
 
         senhaDigitada = senhaDigitada.Substring(
@@ -120,7 +130,7 @@ public class FechaduraIgreja : MonoBehaviour
         AtualizarTexto();
     }
 
-    // Fecha o painel
+    // Fecha o painel.
     public void FecharPainel()
     {
         senhaDigitada = "";
@@ -128,17 +138,49 @@ public class FechaduraIgreja : MonoBehaviour
 
         painelFechadura.SetActive(false);
 
-        // Faz o jogador reaparecer e voltar a andar
+        jogadorNaFechadura = false;
+        mostrandoMensagem = false;
+
+        // Desbloqueia o inventário.
+        InventoryManager.BloquearInventario(false);
+
+        // Faz o jogador voltar a andar.
         if (playerMovement != null)
         {
             playerMovement.BloquearMovimento(false);
         }
 
-        Debug.Log("Painel fechado. Jogador liberado!");
+        Debug.Log("Painel fechado. Jogador e inventário liberados!");
+    }
+
+    // Desbloqueia o inventário quando Alice sai da área do cadeado.
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player"))
+            return;
+
+        jogadorNaFechadura = false;
+
+        if (painelFechadura != null)
+            painelFechadura.SetActive(false);
+
+        senhaDigitada = "";
+        mostrandoMensagem = false;
+        AtualizarTexto();
+
+        InventoryManager.BloquearInventario(false);
+
+        if (playerMovement != null)
+        {
+            playerMovement.BloquearMovimento(false);
+        }
+
+        Debug.Log("Alice saiu da área do cadeado. Inventário desbloqueado!");
     }
 
     void AtualizarTexto()
     {
-        areaNumeros.text = senhaDigitada;
+        if (areaNumeros != null)
+            areaNumeros.text = senhaDigitada;
     }
 }

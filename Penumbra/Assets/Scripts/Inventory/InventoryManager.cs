@@ -19,6 +19,9 @@ public class InventoryManager : MonoBehaviour
 
     public static bool InventarioAberto { get; private set; }
 
+    // Bloqueia o inventário durante interações específicas.
+    public static bool InventarioBloqueado { get; private set; }
+
     private const string CHAVE_INVENTARIO = "InventarioItens";
 
     private readonly string[] nomesFitas =
@@ -78,6 +81,7 @@ public class InventoryManager : MonoBehaviour
 
         inventarioAberto = false;
         InventarioAberto = false;
+        InventarioBloqueado = false;
 
         if (painelInventario != null)
             painelInventario.SetActive(false);
@@ -96,6 +100,13 @@ public class InventoryManager : MonoBehaviour
 
     private void AlternarInventario()
     {
+        // Não permite abrir o inventário durante uma interação bloqueada.
+        if (InventarioBloqueado)
+        {
+            Debug.Log("Inventário bloqueado durante a interação!");
+            return;
+        }
+
         if (!interfaceEncontrada || painelInventario == null)
             EncontrarInterface();
 
@@ -137,6 +148,29 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    // Bloqueia ou libera o inventário por meio de outros scripts.
+    public static void BloquearInventario(bool bloquear)
+    {
+        InventarioBloqueado = bloquear;
+
+        if (bloquear && instance != null)
+        {
+            if (instance.painelInventario != null)
+                instance.painelInventario.SetActive(false);
+
+            instance.inventarioAberto = false;
+            InventarioAberto = false;
+
+            instance.EsconderDescricao();
+        }
+
+        Debug.Log(
+            bloquear
+            ? "Inventário bloqueado!"
+            : "Inventário desbloqueado!"
+        );
+    }
+
     private void AoCarregarCena(Scene cena, LoadSceneMode modo)
     {
         painelInventario = null;
@@ -146,6 +180,9 @@ public class InventoryManager : MonoBehaviour
         interfaceEncontrada = false;
         inventarioAberto = false;
         InventarioAberto = false;
+
+        // Evita que o bloqueio fique ativo ao trocar de cena.
+        InventarioBloqueado = false;
 
         EncontrarInterface();
 

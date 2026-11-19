@@ -1,6 +1,5 @@
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
 {
@@ -12,9 +11,17 @@ public class SceneTransition : MonoBehaviour
     [Header("Pensamentos da Alice")]
     public GerenciadorPensamentos gerenciadorPensamentos;
 
+    [Header("Transição de cena")]
+    public FadePreto fade;
+
+    private bool transicaoIniciada = false;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player"))
+            return;
+
+        if (transicaoIniciada)
             return;
 
         int objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
@@ -100,8 +107,21 @@ public class SceneTransition : MonoBehaviour
             PlayerPrefs.Save();
         }
 
+        // Guarda o spawn da próxima cena
         SpawnData.proximoSpawn = spawnNoDestino;
-        SceneManager.LoadScene(nomeCena);
+
+        // Impede que a transição seja iniciada mais de uma vez
+        transicaoIniciada = true;
+
+        if (fade != null)
+        {
+            fade.EscurecerECarregar(nomeCena);
+        }
+        else
+        {
+            Debug.LogWarning("FadePreto não foi conectado! Carregando cena sem transição.");
+            UnityEngine.SceneManagement.SceneManager.LoadScene(nomeCena);
+        }
     }
 
     void MostrarPensamento(string mensagem)

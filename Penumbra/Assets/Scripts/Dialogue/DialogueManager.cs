@@ -126,6 +126,19 @@ public class DialogueManager : MonoBehaviour
     private string[] falasOriginais;
     private string[] respostasOriginais;
 
+    // Controle de continuidade do diálogo final do pescador.
+    private const string CHAVE_DIALOGO_PESCADOR_INICIADO =
+        "DialogoFinalPescadorIniciado";
+
+    private const string CHAVE_FALA_PESCADOR =
+        "DialogoFinalPescadorFala";
+
+    private const string CHAVE_RESPOSTA_PESCADOR =
+        "DialogoFinalPescadorResposta";
+
+    private const string CHAVE_MOSTRANDO_RESPOSTA_PESCADOR =
+        "DialogoFinalPescadorMostrandoResposta";
+
     void Start()
     {
         DialogoGlobalAtivo = false;
@@ -143,6 +156,14 @@ public class DialogueManager : MonoBehaviour
             pescadorInteracaoBloqueada =
                 PlayerPrefs.GetInt("PescadorPrimeiraConversa", 0) == 1 &&
                 PlayerPrefs.GetInt("DialogoFinalPescadorConcluido", 0) == 0;
+
+            // Verifica se existe um diálogo final interrompido.
+            if (PlayerPrefs.GetInt("PescadorPuzzleConcluido", 0) == 1 &&
+                PlayerPrefs.GetInt("DialogoFinalPescadorConcluido", 0) == 0 &&
+                PlayerPrefs.GetInt(CHAVE_DIALOGO_PESCADOR_INICIADO, 0) == 1)
+            {
+                StartCoroutine(RetomarDialogoFinalPescador());
+            }
         }
 
         // Configuração do item do Delegado.
@@ -181,12 +202,81 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator IniciarDialogoDonaCida()
     {
-        // Aguarda a inicialização da cena.
         yield return null;
 
         Debug.Log("Iniciando diálogo automático com Dona Cida!");
 
         IniciarDialogoAutomatico();
+    }
+
+    // Retoma o diálogo final do pescador de onde parou.
+    IEnumerator RetomarDialogoFinalPescador()
+    {
+        yield return null;
+
+        if (dialogoAtivo)
+            yield break;
+
+        Debug.Log("Retomando diálogo final do pescador!");
+
+        dialogoFinalPescador = true;
+
+        falas = falasDepoisPuzzle;
+        respostasAlice = respostasAliceDepoisPuzzle;
+
+        falaAtual = PlayerPrefs.GetInt(CHAVE_FALA_PESCADOR, 0);
+        respostaAtual = PlayerPrefs.GetInt(CHAVE_RESPOSTA_PESCADOR, -1);
+
+        mostrandoResposta =
+            PlayerPrefs.GetInt(CHAVE_MOSTRANDO_RESPOSTA_PESCADOR, 0) == 1;
+
+        falaEspecial = false;
+
+        if (falas == null || falas.Length == 0)
+        {
+            Debug.LogError("Não há falas pós-puzzle configuradas para o pescador!");
+            yield break;
+        }
+
+        if (falaAtual < 0 || falaAtual >= falas.Length)
+            falaAtual = 0;
+
+        if (mostrandoResposta &&
+            (respostasAlice == null ||
+             respostaAtual < 0 ||
+             respostaAtual >= respostasAlice.Length))
+        {
+            mostrandoResposta = false;
+            respostaAtual = -1;
+        }
+
+        dialogoAtivo = true;
+        DialogoGlobalAtivo = true;
+        jogadorPerto = true;
+
+        painelDialogo.SetActive(true);
+
+        MostrarFala();
+    }
+
+    // Salva a posição atual do diálogo final do pescador.
+    void SalvarProgressoDialogoPescador()
+    {
+        if (nomeDoPersonagem != "Pescador" ||
+            !dialogoFinalPescador ||
+            !dialogoAtivo)
+            return;
+
+        PlayerPrefs.SetInt(CHAVE_DIALOGO_PESCADOR_INICIADO, 1);
+        PlayerPrefs.SetInt(CHAVE_FALA_PESCADOR, falaAtual);
+        PlayerPrefs.SetInt(CHAVE_RESPOSTA_PESCADOR, respostaAtual);
+
+        PlayerPrefs.SetInt(
+            CHAVE_MOSTRANDO_RESPOSTA_PESCADOR,
+            mostrandoResposta ? 1 : 0
+        );
+
+        PlayerPrefs.Save();
     }
 
     void Update()
@@ -249,7 +339,6 @@ public class DialogueManager : MonoBehaviour
         else if (nomeDoPersonagem == "Dona Cida" &&
                  donaCidaDialogoPosPuzzle)
         {
-            // Usa o conjunto exclusivo de falas do pós-puzzle do quarto.
             falas = falasDepoisPuzzleDonaCida;
             respostasAlice = respostasAliceDepoisPuzzleDonaCida;
 
@@ -257,15 +346,12 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            // Mantém as falas normais dos demais diálogos da Dona Cida.
             IniciarDialogo();
         }
     }
 
     void IniciarDialogo(bool forcarDialogoFinalPescador = false)
     {
-        // Depois que a segunda fita VHS é coletada, Dona Cida passa a usar
-        // uma fala curta e um retrato próprio em todas as interações.
         bool segundaFitaColetada =
             InventoryManager.instance != null &&
             InventoryManager.instance.itens.Contains("Fita VHS 2");
@@ -282,8 +368,6 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // Depois do diálogo pós-puzzle, enquanto a segunda fita ainda não foi
-        // coletada, Dona Cida lembra Alice de que pode pegar a fita.
         if (nomeDoPersonagem == "Dona Cida" &&
             PlayerPrefs.GetInt("DonaCidaFitaLiberada", 0) == 1 &&
             !segundaFitaColetada)
@@ -292,8 +376,6 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // Depois da primeira conversa, mas antes do puzzle do quarto,
-        // Dona Cida repete esta orientação em todas as interações.
         if (nomeDoPersonagem == "Dona Cida" &&
             PlayerPrefs.GetInt("DonaCidaPrimeiraConversaConcluida", 0) == 1 &&
             PlayerPrefs.GetInt("PuzzleQuartoConcluido", 0) == 0)
@@ -469,7 +551,6 @@ public class DialogueManager : MonoBehaviour
             Sprite fechada = imagemDaAlice;
             Sprite aberta = null;
 
-            // Durante o diálogo pós-puzzle, Alice usa sprites próprios.
             Sprite[] spritesFechadosAlice =
                 nomeDoPersonagem == "Dona Cida" && donaCidaDialogoPosPuzzle
                 ? aliceBocaFechadaPorRespostaDepoisPuzzle
@@ -505,6 +586,9 @@ public class DialogueManager : MonoBehaviour
         }
 
         IniciarDigitacao();
+
+        // Salva a fala ou resposta atual do pescador.
+        SalvarProgressoDialogoPescador();
     }
 
     void ConfigurarAnimacaoAlice(Sprite fechada, Sprite aberta)
@@ -532,7 +616,6 @@ public class DialogueManager : MonoBehaviour
         spriteBocaFechadaAtual = imagemDoNPC;
         spriteBocaAbertaAtual = imagemNPCBocaAberta;
 
-        // Durante o diálogo pós-puzzle, Dona Cida usa sprites próprios.
         Sprite[] spritesFechadosNPC =
             nomeDoPersonagem == "Dona Cida" && donaCidaDialogoPosPuzzle
             ? donaCidaBocaFechadaPorFalaDepoisPuzzle
@@ -720,6 +803,13 @@ public class DialogueManager : MonoBehaviour
                 objectiveManager.ConcluirObjetivo();
 
                 PlayerPrefs.SetInt("DialogoFinalPescadorConcluido", 1);
+
+                // Apaga o progresso salvo porque o diálogo foi concluído.
+                PlayerPrefs.DeleteKey(CHAVE_DIALOGO_PESCADOR_INICIADO);
+                PlayerPrefs.DeleteKey(CHAVE_FALA_PESCADOR);
+                PlayerPrefs.DeleteKey(CHAVE_RESPOSTA_PESCADOR);
+                PlayerPrefs.DeleteKey(CHAVE_MOSTRANDO_RESPOSTA_PESCADOR);
+
                 PlayerPrefs.Save();
 
                 pescadorInteracaoBloqueada = false;
@@ -733,8 +823,6 @@ public class DialogueManager : MonoBehaviour
         // Ações específicas da Dona Cida.
         if (nomeDoPersonagem == "Dona Cida")
         {
-            // O PlayerPrefs PuzzleQuartoConcluido é a confirmação persistente
-            // de que esta conversa acontece depois do puzzle do quarto.
             bool puzzleDoQuartoConcluido =
                 PlayerPrefs.GetInt("PuzzleQuartoConcluido", 0) == 1;
 
@@ -745,7 +833,6 @@ public class DialogueManager : MonoBehaviour
             {
                 int objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
 
-                // A conversa pós-puzzle conclui o objetivo 7 e avança para 8.
                 if (objetivoAtual == 7)
                 {
                     if (objectiveManager != null)
@@ -770,7 +857,6 @@ public class DialogueManager : MonoBehaviour
                     );
                 }
 
-                // Registra a conversa e libera a segunda fita VHS.
                 PlayerPrefs.SetInt("DonaCidaDialogoPosPuzzleConcluido", 1);
                 PlayerPrefs.SetInt("DonaCidaDialogoDoQuarto", 0);
                 PlayerPrefs.SetInt("DonaCidaFitaLiberada", 1);
@@ -784,7 +870,6 @@ public class DialogueManager : MonoBehaviour
 
                 Debug.Log("Dona Cida liberou a segunda fita VHS!");
             }
-            // Primeira conversa: conclui o objetivo 5 apenas uma vez.
             else if (!puzzleDoQuartoConcluido &&
                      PlayerPrefs.GetInt("DonaCidaPrimeiraConversaConcluida", 0) == 0)
             {
@@ -822,7 +907,6 @@ public class DialogueManager : MonoBehaviour
                 }
             }
 
-            // Impede que a regra genérica conclua outro objetivo da Dona Cida.
             return;
         }
 
