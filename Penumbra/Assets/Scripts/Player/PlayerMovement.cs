@@ -23,7 +23,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (DialogueManager.DialogoGlobalAtivo || movimentoBloqueado)
+        // Bloqueia a movimentação durante diálogos,
+        // inventário aberto ou bloqueio manual.
+        if (DialogueManager.DialogoGlobalAtivo ||
+            InventoryManager.InventarioAberto ||
+            movimentoBloqueado)
         {
             movement = Vector2.zero;
             rb.linearVelocity = Vector2.zero;
@@ -45,7 +49,9 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (DialogueManager.DialogoGlobalAtivo || movimentoBloqueado)
+        if (DialogueManager.DialogoGlobalAtivo ||
+            InventoryManager.InventarioAberto ||
+            movimentoBloqueado)
         {
             rb.linearVelocity = Vector2.zero;
             return;

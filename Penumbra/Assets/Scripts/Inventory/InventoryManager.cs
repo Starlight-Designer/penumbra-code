@@ -17,6 +17,8 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
 
+    public static bool InventarioAberto { get; private set; }
+
     private const string CHAVE_INVENTARIO = "InventarioItens";
 
     private readonly string[] nomesFitas =
@@ -75,6 +77,7 @@ public class InventoryManager : MonoBehaviour
         EncontrarInterface();
 
         inventarioAberto = false;
+        InventarioAberto = false;
 
         if (painelInventario != null)
             painelInventario.SetActive(false);
@@ -118,17 +121,19 @@ public class InventoryManager : MonoBehaviour
 
             painelInventario.SetActive(true);
             inventarioAberto = true;
+            InventarioAberto = true;
 
             AtualizarInventario();
 
-            Debug.Log("Inventário aberto!");
+            Debug.Log("Inventário aberto! Movimentação bloqueada.");
         }
         else
         {
             painelInventario.SetActive(false);
             inventarioAberto = false;
+            InventarioAberto = false;
 
-            Debug.Log("Inventário fechado!");
+            Debug.Log("Inventário fechado! Movimentação liberada.");
         }
     }
 
@@ -140,6 +145,7 @@ public class InventoryManager : MonoBehaviour
 
         interfaceEncontrada = false;
         inventarioAberto = false;
+        InventarioAberto = false;
 
         EncontrarInterface();
 
