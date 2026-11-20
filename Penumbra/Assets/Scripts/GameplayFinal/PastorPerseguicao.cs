@@ -25,24 +25,47 @@ public class PastorPerseguicao : MonoBehaviour
     public UnityEvent aoCapturar;
 
     private Rigidbody2D rb;
+    private Rigidbody2D rbAlice;
 
     private bool atacando = false;
     private bool capturou = false;
 
+    private int contadorDiagnostico = 0;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        if (alice == null)
+        {
+            GameObject objetoAlice = GameObject.FindGameObjectWithTag("Player");
+
+            if (objetoAlice != null)
+                alice = objetoAlice.transform;
+        }
+
+        if (alice != null)
+            rbAlice = alice.GetComponent<Rigidbody2D>();
+
+        if (animator == null)
+            animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
     {
-        if (alice == null || capturou)
+        if (capturou)
             return;
 
-        if (atacando)
+        if (alice == null)
         {
-            MoverAteAlice();
+            Debug.LogError("Pastor: referência da Alice não encontrada!");
+            return;
         }
+
+        if (!atacando)
+            return;
+
+        MoverAteAlice();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -52,7 +75,8 @@ public class PastorPerseguicao : MonoBehaviour
 
     private void ArremessarObstaculo(Collider2D obstaculo)
     {
-        if (!obstaculo.CompareTag(tagObstaculo))
+        if (!obstaculo.CompareTag(tagObstaculo) &&
+            !obstaculo.transform.root.CompareTag(tagObstaculo))
             return;
 
         Rigidbody2D rbObstaculo = obstaculo.attachedRigidbody;
@@ -66,27 +90,21 @@ public class PastorPerseguicao : MonoBehaviour
             return;
         }
 
-        // Impede que o mesmo obstáculo seja arremessado novamente.
         if (rbObstaculo.bodyType == RigidbodyType2D.Dynamic)
             return;
 
-        // Para o movimento automático do obstáculo.
         MovimentoObstaculo movimento =
-            obstaculo.GetComponent<MovimentoObstaculo>();
+            rbObstaculo.GetComponent<MovimentoObstaculo>();
 
         if (movimento != null)
             movimento.Arremessar();
 
-        // Remove todos os colisores do obstáculo.
         Collider2D[] colisores =
             rbObstaculo.GetComponentsInChildren<Collider2D>();
 
         foreach (Collider2D colisor in colisores)
-        {
             colisor.enabled = false;
-        }
 
-        // Ativa a física.
         rbObstaculo.bodyType = RigidbodyType2D.Dynamic;
         rbObstaculo.gravityScale = gravidadeObstaculo;
         rbObstaculo.constraints = RigidbodyConstraints2D.None;
@@ -94,7 +112,6 @@ public class PastorPerseguicao : MonoBehaviour
         rbObstaculo.linearVelocity = Vector2.zero;
         rbObstaculo.angularVelocity = 0f;
 
-        // Lança o obstáculo para cima e para a direita.
         Vector2 direcao = new Vector2(1f, 1f).normalized;
 
         rbObstaculo.AddForce(
@@ -103,7 +120,6 @@ public class PastorPerseguicao : MonoBehaviour
             ForceMode2D.Impulse
         );
 
-        // Faz o obstáculo girar no ar.
         float sentido = Random.value > 0.5f ? 1f : -1f;
 
         rbObstaculo.AddTorque(
@@ -111,7 +127,6 @@ public class PastorPerseguicao : MonoBehaviour
             ForceMode2D.Impulse
         );
 
-        // Destrói o obstáculo depois do tempo configurado.
         Destroy(rbObstaculo.gameObject, tempoParaDestruir);
 
         Debug.Log(
@@ -122,7 +137,11 @@ public class PastorPerseguicao : MonoBehaviour
 
     private void MoverAteAlice()
     {
-        Vector2 destino = alice.position;
+        Vector2 destino = rbAlice != null
+            ? rbAlice.position
+            : (Vector2)alice.position;
+
+        float distanciaAtual = Vector2.Distance(rb.position, destino);
 
         Vector2 novaPosicao = Vector2.MoveTowards(
             rb.position,
@@ -132,18 +151,44 @@ public class PastorPerseguicao : MonoBehaviour
 
         rb.MovePosition(novaPosicao);
 
-        if (Vector2.Distance(novaPosicao, destino) <= distanciaCaptura)
+        if (distanciaAtual <= distanciaCaptura)
         {
-            capturou = true;
-            rb.linearVelocity = Vector2.zero;
-
-            if (animator != null)
-                animator.SetBool("Andando", false);
-
-            Debug.Log("Alice foi capturada pelo pastor!");
-
-            aoCapturar?.Invoke();
+            CapturarAlice();
+            return;
         }
+
+        // Mostra a distância periodicamente para facilitar o diagnóstico.
+        contadorDiagnostico++;
+
+        if (contadorDiagnostico >= 50)
+        {
+            contadorDiagnostico = 0;
+
+            Debug.Log(
+                "Pastor perseguindo Alice. Distância: " +
+                distanciaAtual.ToString("F2") +
+                " | Posição Pastor: " + rb.position +
+                " | Posição Alice: " + destino
+            );
+        }
+    }
+
+    private void CapturarAlice()
+    {
+        if (capturou)
+            return;
+
+        capturou = true;
+        atacando = false;
+
+        rb.linearVelocity = Vector2.zero;
+
+        if (animator != null)
+            animator.SetBool("Andando", false);
+
+        Debug.Log("Alice foi capturada pelo pastor!");
+
+        aoCapturar?.Invoke();
     }
 
     public void IniciarAtaque()
@@ -151,7 +196,21 @@ public class PastorPerseguicao : MonoBehaviour
         if (atacando || capturou)
             return;
 
+        if (alice == null)
+        {
+            Debug.LogError(
+                "Não é possível iniciar a perseguição: Alice não foi encontrada!"
+            );
+            return;
+        }
+
+        if (rbAlice == null)
+            rbAlice = alice.GetComponent<Rigidbody2D>();
+
         atacando = true;
+
+        if (animator != null)
+            animator.SetBool("Andando", true);
 
         Debug.Log("O pastor começou a perseguir Alice!");
     }
@@ -159,5 +218,8 @@ public class PastorPerseguicao : MonoBehaviour
     public void EncerrarAtaque()
     {
         atacando = false;
+
+        if (animator != null)
+            animator.SetBool("Andando", false);
     }
 }

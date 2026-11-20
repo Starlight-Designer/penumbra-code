@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,18 @@ public class PlayerSpawnPosition : MonoBehaviour
     void Start()
     {
         string cenaAtual = SceneManager.GetActiveScene().name;
+
+        // Na floresta, a posição inicial é controlada
+        // pelo InicioFugaFloresta.
+        if (cenaAtual == "Floresta_Fuga")
+        {
+            SpawnData.proximoSpawn = null;
+
+            Physics2D.SyncTransforms();
+
+            return;
+        }
+
         string cenaSalva = PlayerPrefs.GetString("CenaSalva", "");
 
         bool carregarPosicaoSalva =
@@ -27,7 +40,11 @@ public class PlayerSpawnPosition : MonoBehaviour
 
             if (!string.IsNullOrEmpty(SpawnData.proximoSpawn))
             {
-                foreach (var sp in FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None))
+                SpawnPoint[] pontos = FindObjectsByType<SpawnPoint>(
+                    FindObjectsInactive.Exclude
+                );
+
+                foreach (SpawnPoint sp in pontos)
                 {
                     if (sp.id == SpawnData.proximoSpawn)
                     {
@@ -37,7 +54,11 @@ public class PlayerSpawnPosition : MonoBehaviour
                 }
             }
 
-            transform.position = new Vector3(destino.x, destino.y, transform.position.z);
+            transform.position = new Vector3(
+                destino.x,
+                destino.y,
+                transform.position.z
+            );
         }
 
         SpawnData.proximoSpawn = null;

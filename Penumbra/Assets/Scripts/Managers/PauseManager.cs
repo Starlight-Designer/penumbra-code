@@ -41,8 +41,7 @@ public class PauseManager : MonoBehaviour
     private GameObject ProcurarNaCena(string nome)
     {
         Transform[] todos = FindObjectsByType<Transform>(
-            FindObjectsInactive.Include,
-            FindObjectsSortMode.None
+            FindObjectsInactive.Include
         );
 
         foreach (Transform t in todos)
@@ -78,11 +77,9 @@ public class PauseManager : MonoBehaviour
         jogoPausado = true;
         fechando = false;
 
-        // Verifica se o vídeo estava sendo reproduzido
         videoEstavaTocandoAntesDaPausa =
             videoCutscene != null && videoCutscene.isPlaying;
 
-        // Pausa o vídeo
         if (videoEstavaTocandoAntesDaPausa)
             videoCutscene.Pause();
 
@@ -132,7 +129,6 @@ public class PauseManager : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        // Retoma o vídeo somente se ele estava tocando antes da pausa
         if (videoEstavaTocandoAntesDaPausa && videoCutscene != null)
             videoCutscene.Play();
 

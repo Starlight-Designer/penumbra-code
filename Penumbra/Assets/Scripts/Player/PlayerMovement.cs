@@ -8,6 +8,10 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
 
+    [Header("Perseguição do Pastor")]
+    [SerializeField] private PastorPerseguicao pastor;
+    [SerializeField] private string tagObstaculo = "Obstaculo";
+
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer sr;
@@ -79,6 +83,41 @@ public class PlayerMovement : MonoBehaviour
 
         if (animator != null)
             animator.SetBool("Andando", false);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        VerificarObstaculo(collision.collider);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        VerificarObstaculo(other);
+    }
+
+    private void VerificarObstaculo(Collider2D obstaculo)
+    {
+        if (SceneManager.GetActiveScene().name != "Floresta_Fuga")
+            return;
+
+        bool temTagCorreta =
+            obstaculo.CompareTag(tagObstaculo) ||
+            obstaculo.transform.root.CompareTag(tagObstaculo);
+
+        if (!temTagCorreta)
+            return;
+
+        Debug.Log("Alice detectou o obstáculo: " + obstaculo.name);
+
+        if (pastor == null)
+        {
+            Debug.LogError("Pastor não foi atribuído no PlayerMovement!");
+            return;
+        }
+
+        pastor.IniciarAtaque();
+
+        Debug.Log("Alice encostou em um obstáculo! O Pastor iniciou a perseguição!");
     }
 
     private void AtualizarAnimacao()

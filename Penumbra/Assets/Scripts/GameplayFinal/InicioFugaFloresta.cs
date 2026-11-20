@@ -8,7 +8,7 @@ public class InicioFugaFloresta : MonoBehaviour
 {
     [Header("Alice")]
     public Transform alice;
-    public float posicaoInicialX = -8f;
+    public float posicaoInicialX = -10f;
     public float velocidadeEntrada = 3f;
 
     [Header("Componentes da Alice")]
@@ -34,7 +34,7 @@ public class InicioFugaFloresta : MonoBehaviour
     [Header("Gerenciador de obstáculos")]
     public GerenciadorObstaculos gerenciadorObstaculos;
 
-    private Vector3 destinoFinal;
+    private Vector2 destinoFinalAlice;
     private Vector2 destinoFinalPastor;
 
     private void Start()
@@ -63,40 +63,51 @@ public class InicioFugaFloresta : MonoBehaviour
         if (animatorPastor == null)
             animatorPastor = pastor.GetComponent<Animator>();
 
+        if (animator == null)
+            animator = alice.GetComponent<Animator>();
+
         if (colisor == null)
             colisor = alice.GetComponent<Collider2D>();
 
-        // Guarda as posições finais dos dois personagens.
-        destinoFinal = alice.position;
-        destinoFinalPastor = rbPastor.position;
+        // Guarda as posições finais usando os Transforms.
+        destinoFinalAlice = alice.position;
+        destinoFinalPastor = pastor.position;
 
-        // Bloqueia o controle da Alice.
+        // Bloqueia o controle e a física da Alice durante a entrada.
         playerMovement.enabled = false;
+
         rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+        rb.bodyType = RigidbodyType2D.Kinematic;
 
         if (colisor != null)
             colisor.enabled = false;
 
         // Posiciona Alice no início da entrada.
-        alice.position = new Vector3(
-            posicaoInicialX,
-            destinoFinal.y,
-            destinoFinal.z
-        );
-
         rb.position = new Vector2(
             posicaoInicialX,
-            destinoFinal.y
+            destinoFinalAlice.y
         );
+
+        Physics2D.SyncTransforms();
+
+        // DIAGNÓSTICO DA POSIÇÃO DA ALICE.
+        Debug.Log("========== DIAGNÓSTICO DA ALICE ==========");
+        Debug.Log("Posição inicial configurada: " + posicaoInicialX);
+        Debug.Log("Alice Transform: " + alice.position);
+        Debug.Log("Rigidbody2D: " + rb.position);
+        Debug.Log("Transform.position do Rigidbody: " + rb.transform.position);
+        Debug.Log("Alice.position: " + alice.position);
+        Debug.Log("Transform.localPosition: " + rb.transform.localPosition);
+        Debug.Log("Objeto Alice: " + alice.name);
+        Debug.Log("Objeto Rigidbody: " + rb.gameObject.name);
+        Debug.Log("Alice é filha do objeto Rigidbody? " +
+                  (alice.IsChildOf(rb.transform)));
+        Debug.Log("==========================================");
 
         // Posiciona o Pastor no início da entrada.
         rbPastor.linearVelocity = Vector2.zero;
-
-        pastor.position = new Vector3(
-            posicaoInicialXPastor,
-            destinoFinalPastor.y,
-            pastor.position.z
-        );
+        rbPastor.angularVelocity = 0f;
 
         rbPastor.position = new Vector2(
             posicaoInicialXPastor,
@@ -114,6 +125,8 @@ public class InicioFugaFloresta : MonoBehaviour
             textoInstrucao.alpha = 0f;
             textoInstrucao.gameObject.SetActive(false);
         }
+
+        Physics2D.SyncTransforms();
 
         StartCoroutine(SequenciaInicial());
     }
@@ -138,15 +151,15 @@ public class InicioFugaFloresta : MonoBehaviour
             animatorPastor.SetFloat("MoveY", 0f);
         }
 
-        // Alice e Pastor caminham simultaneamente.
+        // Alice e Pastor entram simultaneamente.
         while (
-            Vector2.Distance(rb.position, destinoFinal) > 0.05f ||
+            Vector2.Distance(rb.position, destinoFinalAlice) > 0.05f ||
             Vector2.Distance(rbPastor.position, destinoFinalPastor) > 0.05f
         )
         {
             Vector2 proximaPosicaoAlice = Vector2.MoveTowards(
                 rb.position,
-                new Vector2(destinoFinal.x, destinoFinal.y),
+                destinoFinalAlice,
                 velocidadeEntrada * Time.fixedDeltaTime
             );
 
@@ -162,13 +175,16 @@ public class InicioFugaFloresta : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        // Garante que os dois estejam exatamente nos destinos.
-        rb.position = new Vector2(destinoFinal.x, destinoFinal.y);
+        // Posiciona os dois exatamente nos destinos.
+        rb.position = destinoFinalAlice;
         rb.linearVelocity = Vector2.zero;
 
         rbPastor.position = destinoFinalPastor;
         rbPastor.linearVelocity = Vector2.zero;
 
+        Physics2D.SyncTransforms();
+
+        // Finaliza as animações de corrida.
         if (animator != null)
             animator.SetBool("Andando", false);
 
@@ -199,7 +215,9 @@ public class InicioFugaFloresta : MonoBehaviour
             textoInstrucao.gameObject.SetActive(false);
         }
 
-        // Reativa as colisões e libera a Alice.
+        // Devolve a física dinâmica e libera Alice.
+        rb.bodyType = RigidbodyType2D.Dynamic;
+
         if (colisor != null)
             colisor.enabled = true;
 
