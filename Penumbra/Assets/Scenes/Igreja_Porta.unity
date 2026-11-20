@@ -1348,6 +1348,7 @@ MonoBehaviour:
   audioSource: {fileID: 1167983352}
   audioVidroQuebrando: {fileID: 8300000, guid: 3007937810634ce4da56f4ea709c039e, type: 3}
   duracaoFadeAudio: 2
+  atrasoAudioAposFade: 2
   aoFicarPreto:
     m_PersistentCalls:
       m_Calls:
@@ -1430,7 +1431,7 @@ AudioSource:
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 0.9
+  m_Pitch: 0.95
   Loop: 0
   Mute: 0
   Spatialize: 0

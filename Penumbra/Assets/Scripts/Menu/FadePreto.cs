@@ -19,6 +19,7 @@ public class FadePreto : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip audioVidroQuebrando;
     public float duracaoFadeAudio = 1.5f;
+    public float atrasoAudioAposFade = 0f;
 
     [Header("Eventos")]
     [SerializeField] private UnityEvent aoFicarPreto;
@@ -89,7 +90,16 @@ public class FadePreto : MonoBehaviour
         TransicaoAtiva = true;
         grupo.blocksRaycasts = true;
 
+        // Primeiro, escurece a tela completamente.
         yield return Fade(0f, 1f, duracaoEscurecer);
+
+        // Espera o tempo escolhido antes de tocar o vidro.
+        if (atrasoAudioAposFade > 0f)
+        {
+            yield return new WaitForSecondsRealtime(
+                atrasoAudioAposFade
+            );
+        }
 
         if (audioSource != null && audioVidroQuebrando != null)
         {

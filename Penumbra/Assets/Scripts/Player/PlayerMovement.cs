@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
@@ -92,8 +93,17 @@ public class PlayerMovement : MonoBehaviour
             animator.SetFloat("MoveX", Mathf.Abs(movement.x));
             animator.SetFloat("MoveY", movement.y);
 
-            if (movement.x != 0 && sr != null)
-                sr.flipX = movement.x > 0;
+            if (sr != null)
+            {
+                if (SceneManager.GetActiveScene().name == "Floresta_Fuga")
+                {
+                    sr.flipX = false;
+                }
+                else if (movement.x != 0)
+                {
+                    sr.flipX = movement.x > 0;
+                }
+            }
         }
     }
 }
