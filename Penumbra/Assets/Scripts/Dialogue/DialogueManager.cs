@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.Events;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -76,6 +77,11 @@ public class DialogueManager : MonoBehaviour
     [Header("Configuração do NPC")]
     public string nomeDoPersonagem = "Delegado";
     public string nomeProtagonista = "Alice";
+
+    [Header("Diálogo automático do pastor")]
+    public bool iniciarAutomaticamenteAposFade = false;
+    public bool somenteAliceFalando = false;
+    public UnityEvent aoFecharDialogo;
 
     [Header("Falas do NPC")]
     [TextArea(2, 4)]
@@ -198,6 +204,27 @@ public class DialogueManager : MonoBehaviour
             donaCidaDialogoPosPuzzle = true;
             StartCoroutine(IniciarDialogoDonaCida());
         }
+
+        // Inicia automaticamente o diálogo do pastor após o fade de entrada.
+        if (nomeDoPersonagem == "Pastor" && iniciarAutomaticamenteAposFade)
+        {
+            StartCoroutine(IniciarDialogoPastorAposFade());
+        }
+    }
+
+    IEnumerator IniciarDialogoPastorAposFade()
+    {
+        // O FadePreto ativa esta variável durante a transição de entrada.
+        while (FadePreto.TransicaoAtiva)
+        {
+            yield return null;
+        }
+
+        // Aguarda um frame para garantir que a cena terminou de se preparar.
+        yield return null;
+
+        Debug.Log("Iniciando diálogo automático de Alice com o pastor.");
+        IniciarDialogoAutomatico();
     }
 
     IEnumerator IniciarDialogoDonaCida()
@@ -504,7 +531,7 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        if (!mostrandoResposta)
+        if (!mostrandoResposta && !somenteAliceFalando)
         {
             int indiceResposta = falaAtual;
 
@@ -543,10 +570,17 @@ public class DialogueManager : MonoBehaviour
 
     void MostrarFala()
     {
-        if (mostrandoResposta)
+        if (mostrandoResposta || somenteAliceFalando)
         {
             nomeNPC.text = nomeProtagonista;
-            textoDialogo.text = respostasAlice[respostaAtual];
+
+            textoDialogo.text = somenteAliceFalando
+                ? falas[falaAtual]
+                : respostasAlice[respostaAtual];
+
+            int indiceSpriteAlice = somenteAliceFalando
+                ? falaAtual
+                : respostaAtual;
 
             Sprite fechada = imagemDaAlice;
             Sprite aberta = null;
@@ -562,17 +596,19 @@ public class DialogueManager : MonoBehaviour
                 : aliceBocaAbertaPorResposta;
 
             if (spritesFechadosAlice != null &&
-                respostaAtual < spritesFechadosAlice.Length &&
-                spritesFechadosAlice[respostaAtual] != null)
+                indiceSpriteAlice >= 0 &&
+                indiceSpriteAlice < spritesFechadosAlice.Length &&
+                spritesFechadosAlice[indiceSpriteAlice] != null)
             {
-                fechada = spritesFechadosAlice[respostaAtual];
+                fechada = spritesFechadosAlice[indiceSpriteAlice];
             }
 
             if (spritesAbertosAlice != null &&
-                respostaAtual < spritesAbertosAlice.Length &&
-                spritesAbertosAlice[respostaAtual] != null)
+                indiceSpriteAlice >= 0 &&
+                indiceSpriteAlice < spritesAbertosAlice.Length &&
+                spritesAbertosAlice[indiceSpriteAlice] != null)
             {
-                aberta = spritesAbertosAlice[respostaAtual];
+                aberta = spritesAbertosAlice[indiceSpriteAlice];
             }
 
             ConfigurarAnimacaoAlice(fechada, aberta);
@@ -746,6 +782,9 @@ public class DialogueManager : MonoBehaviour
         falaEspecial = false;
 
         painelDialogo.SetActive(false);
+
+        // Permite iniciar a transformação do pastor ou outra ação configurada.
+        aoFecharDialogo?.Invoke();
 
         // Ações específicas do Delegado.
         if (nomeDoPersonagem == "Delegado" &&

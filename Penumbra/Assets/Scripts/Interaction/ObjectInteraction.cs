@@ -2,6 +2,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class ObjectInteraction : MonoBehaviour
 {
@@ -18,6 +19,11 @@ public class ObjectInteraction : MonoBehaviour
 
     [Header("Identificação da fita")]
     public bool primeiraFitaVHS = false;
+
+    [Header("Transição da terceira fita")]
+    public bool transportarParaIgreja = false;
+    public string nomeCenaDestino = "Igreja_Porta";
+    public FadePreto fadePreto;
 
     private bool itemColetado = false;
 
@@ -92,5 +98,18 @@ public class ObjectInteraction : MonoBehaviour
 
         if (coletarItem)
             Destroy(gameObject);
+
+        if (transportarParaIgreja)
+        {
+            if (fadePreto != null)
+            {
+                fadePreto.EscurecerECarregar(nomeCenaDestino);
+            }
+            else
+            {
+                Debug.LogWarning("FadePreto não conectado! Carregando sem transição.");
+                SceneManager.LoadScene(nomeCenaDestino);
+            }
+        }
     }
 }
