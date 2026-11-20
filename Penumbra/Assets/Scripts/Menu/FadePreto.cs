@@ -15,6 +15,11 @@ public class FadePreto : MonoBehaviour
     [Header("Cena da cutscene (modo B)")]
     [SerializeField] private bool clarearAoIniciar = false;
 
+    [Header("Áudio durante a transição")]
+    public AudioSource audioSource;
+    public AudioClip audioVidroQuebrando;
+    public float duracaoFadeAudio = 1.5f;
+
     [Header("Eventos")]
     [SerializeField] private UnityEvent aoFicarPreto;
     [SerializeField] private UnityEvent aoComecarCutscene;
@@ -22,7 +27,6 @@ public class FadePreto : MonoBehaviour
     private CanvasGroup grupo;
     private bool ocupado;
 
-    // Informa ao PlayerMovement se existe uma transição acontecendo.
     public static bool TransicaoAtiva { get; private set; }
 
     private void Awake()
@@ -53,6 +57,12 @@ public class FadePreto : MonoBehaviour
         StartCoroutine(RotinaCarregar(nomeCena));
     }
 
+    // Método para iniciar a fuga após o diálogo com o pastor.
+    public void IrParaIgrejaFuga()
+    {
+        EscurecerECarregar("Igreja_Fuga");
+    }
+
     private IEnumerator RotinaTransicao()
     {
         ocupado = true;
@@ -60,7 +70,6 @@ public class FadePreto : MonoBehaviour
         grupo.blocksRaycasts = true;
 
         yield return Fade(0f, 1f, duracaoEscurecer);
-
         aoFicarPreto?.Invoke();
 
         yield return new WaitForSecondsRealtime(tempoNoPreto);
@@ -82,7 +91,38 @@ public class FadePreto : MonoBehaviour
 
         yield return Fade(0f, 1f, duracaoEscurecer);
 
-        yield return new WaitForSecondsRealtime(tempoNoPreto);
+        if (audioSource != null && audioVidroQuebrando != null)
+        {
+            float volumeInicial = audioSource.volume;
+
+            audioSource.clip = audioVidroQuebrando;
+            audioSource.volume = volumeInicial;
+            audioSource.Play();
+
+            float tempoFade = Mathf.Min(
+                duracaoFadeAudio,
+                audioVidroQuebrando.length
+            );
+
+            float tempoAguardar = audioVidroQuebrando.length - tempoFade;
+
+            if (tempoAguardar > 0f)
+                yield return new WaitForSecondsRealtime(tempoAguardar);
+
+            yield return FadeAudio(
+                audioSource,
+                volumeInicial,
+                0f,
+                tempoFade
+            );
+
+            audioSource.Stop();
+            audioSource.volume = volumeInicial;
+        }
+        else
+        {
+            yield return new WaitForSecondsRealtime(tempoNoPreto);
+        }
 
         SceneManager.LoadScene(nomeCena);
     }
@@ -116,7 +156,6 @@ public class FadePreto : MonoBehaviour
         while (t < duracao)
         {
             t += Time.unscaledDeltaTime;
-
             float p = Mathf.Clamp01(t / duracao);
             float suave = p * p * (3f - 2f * p);
 
@@ -126,5 +165,37 @@ public class FadePreto : MonoBehaviour
         }
 
         grupo.alpha = para;
+    }
+
+    private IEnumerator FadeAudio(
+        AudioSource source,
+        float volumeInicial,
+        float volumeFinal,
+        float duracao)
+    {
+        float t = 0f;
+
+        if (duracao <= 0f)
+        {
+            source.volume = volumeFinal;
+            yield break;
+        }
+
+        while (t < duracao)
+        {
+            t += Time.unscaledDeltaTime;
+
+            float progresso = Mathf.Clamp01(t / duracao);
+
+            source.volume = Mathf.Lerp(
+                volumeInicial,
+                volumeFinal,
+                progresso
+            );
+
+            yield return null;
+        }
+
+        source.volume = volumeFinal;
     }
 }

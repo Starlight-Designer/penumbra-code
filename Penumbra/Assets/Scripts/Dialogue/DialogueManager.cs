@@ -50,6 +50,11 @@ public class DialogueManager : MonoBehaviour
     public Sprite aliceEspecialBocaFechada;
     public Sprite aliceEspecialBocaAberta;
 
+    [Header("Sprites especiais da Alice - cena da igreja")]
+    public Sprite aliceMereceMorrerBocaFechada;
+    public Sprite aliceMereceMorrerBocaAberta;
+    public Sprite alicePosTransformacaoSpriteFixo;
+
     [Header("Expressão especial do pescador - VAI EMBORA")]
     public Sprite pescadorVaiEmboraBocaFechada;
     public Sprite pescadorVaiEmboraBocaAberta;
@@ -82,6 +87,12 @@ public class DialogueManager : MonoBehaviour
     public bool iniciarAutomaticamenteAposFade = false;
     public bool somenteAliceFalando = false;
     public UnityEvent aoFecharDialogo;
+
+    [Header("Diálogo após a transformação do pastor")]
+    public UnityEvent aoFecharDialogoPosTransformacao;
+    private bool dialogoPosTransformacaoAtivo = false;
+    private bool dialogoPastorPosTransformacaoIniciado = false;
+    private bool dialogoPastorPosTransformacaoConcluido = false;
 
     [Header("Falas do NPC")]
     [TextArea(2, 4)]
@@ -328,6 +339,10 @@ public class DialogueManager : MonoBehaviour
 
         if (jogadorPerto && Input.GetKeyDown(KeyCode.F))
         {
+            // Os diálogos do pastor são automáticos e não podem ser reiniciados pela tecla F.
+            if (nomeDoPersonagem == "Pastor" && !dialogoAtivo)
+                return;
+
             if (!dialogoAtivo)
             {
                 IniciarDialogo();
@@ -341,6 +356,25 @@ public class DialogueManager : MonoBehaviour
                 AvancarDialogo();
             }
         }
+    }
+
+    // Inicia a fala curta de Alice depois que o pastor termina a transformação.
+    public void IniciarDialogoPosTransformacao()
+    {
+        if (dialogoAtivo ||
+            dialogoPastorPosTransformacaoIniciado ||
+            dialogoPastorPosTransformacaoConcluido)
+            return;
+
+        dialogoPastorPosTransformacaoIniciado = true;
+
+        somenteAliceFalando = true;
+        falas = new string[] { "..." };
+        respostasAlice = new string[0];
+        dialogoPosTransformacaoAtivo = true;
+
+        Debug.Log("Iniciando diálogo de Alice após a transformação do pastor.");
+        IniciarDialogoAutomatico();
     }
 
     public void IniciarDialogoAutomatico()
@@ -578,40 +612,76 @@ public class DialogueManager : MonoBehaviour
                 ? falas[falaAtual]
                 : respostasAlice[respostaAtual];
 
-            int indiceSpriteAlice = somenteAliceFalando
-                ? falaAtual
-                : respostaAtual;
+            // O diálogo "..." depois da transformação usa apenas um sprite fixo.
+            bool falaPosTransformacao =
+                dialogoPosTransformacaoAtivo && somenteAliceFalando;
 
-            Sprite fechada = imagemDaAlice;
-            Sprite aberta = null;
+            // A frase "VOCÊ MERECE MORRER" usa os sprites especiais
+            // de boca fechada e boca aberta configurados no Inspector.
+            bool falaMereceMorrer =
+                somenteAliceFalando &&
+                falas[falaAtual].ToUpperInvariant().Contains("VOCÊ MERECE MORRER");
 
-            Sprite[] spritesFechadosAlice =
-                nomeDoPersonagem == "Dona Cida" && donaCidaDialogoPosPuzzle
-                ? aliceBocaFechadaPorRespostaDepoisPuzzle
-                : aliceBocaFechadaPorResposta;
-
-            Sprite[] spritesAbertosAlice =
-                nomeDoPersonagem == "Dona Cida" && donaCidaDialogoPosPuzzle
-                ? aliceBocaAbertaPorRespostaDepoisPuzzle
-                : aliceBocaAbertaPorResposta;
-
-            if (spritesFechadosAlice != null &&
-                indiceSpriteAlice >= 0 &&
-                indiceSpriteAlice < spritesFechadosAlice.Length &&
-                spritesFechadosAlice[indiceSpriteAlice] != null)
+            if (falaPosTransformacao)
             {
-                fechada = spritesFechadosAlice[indiceSpriteAlice];
-            }
+                PararAnimacaoBoca();
 
-            if (spritesAbertosAlice != null &&
-                indiceSpriteAlice >= 0 &&
-                indiceSpriteAlice < spritesAbertosAlice.Length &&
-                spritesAbertosAlice[indiceSpriteAlice] != null)
+                if (imagemPersonagem != null)
+                {
+                    imagemPersonagem.sprite =
+                        alicePosTransformacaoSpriteFixo != null
+                        ? alicePosTransformacaoSpriteFixo
+                        : imagemDaAlice;
+                }
+            }
+            else
             {
-                aberta = spritesAbertosAlice[indiceSpriteAlice];
-            }
+                int indiceSpriteAlice = somenteAliceFalando
+                    ? falaAtual
+                    : respostaAtual;
 
-            ConfigurarAnimacaoAlice(fechada, aberta);
+                Sprite fechada = imagemDaAlice;
+                Sprite aberta = null;
+
+                Sprite[] spritesFechadosAlice =
+                    nomeDoPersonagem == "Dona Cida" && donaCidaDialogoPosPuzzle
+                    ? aliceBocaFechadaPorRespostaDepoisPuzzle
+                    : aliceBocaFechadaPorResposta;
+
+                Sprite[] spritesAbertosAlice =
+                    nomeDoPersonagem == "Dona Cida" && donaCidaDialogoPosPuzzle
+                    ? aliceBocaAbertaPorRespostaDepoisPuzzle
+                    : aliceBocaAbertaPorResposta;
+
+                if (spritesFechadosAlice != null &&
+                    indiceSpriteAlice >= 0 &&
+                    indiceSpriteAlice < spritesFechadosAlice.Length &&
+                    spritesFechadosAlice[indiceSpriteAlice] != null)
+                {
+                    fechada = spritesFechadosAlice[indiceSpriteAlice];
+                }
+
+                if (spritesAbertosAlice != null &&
+                    indiceSpriteAlice >= 0 &&
+                    indiceSpriteAlice < spritesAbertosAlice.Length &&
+                    spritesAbertosAlice[indiceSpriteAlice] != null)
+                {
+                    aberta = spritesAbertosAlice[indiceSpriteAlice];
+                }
+
+                if (falaMereceMorrer)
+                {
+                    fechada = aliceMereceMorrerBocaFechada != null
+                        ? aliceMereceMorrerBocaFechada
+                        : fechada;
+
+                    aberta = aliceMereceMorrerBocaAberta != null
+                        ? aliceMereceMorrerBocaAberta
+                        : aberta;
+                }
+
+                ConfigurarAnimacaoAlice(fechada, aberta);
+            }
         }
         else
         {
@@ -626,6 +696,7 @@ public class DialogueManager : MonoBehaviour
         // Salva a fala ou resposta atual do pescador.
         SalvarProgressoDialogoPescador();
     }
+
 
     void ConfigurarAnimacaoAlice(Sprite fechada, Sprite aberta)
     {
@@ -782,6 +853,16 @@ public class DialogueManager : MonoBehaviour
         falaEspecial = false;
 
         painelDialogo.SetActive(false);
+
+        // O segundo diálogo do pastor tem um evento próprio e não deve
+        // chamar novamente o evento que inicia a transformação.
+        if (dialogoPosTransformacaoAtivo)
+        {
+            dialogoPosTransformacaoAtivo = false;
+            dialogoPastorPosTransformacaoConcluido = true;
+            aoFecharDialogoPosTransformacao?.Invoke();
+            return;
+        }
 
         // Permite iniciar a transformação do pastor ou outra ação configurada.
         aoFecharDialogo?.Invoke();

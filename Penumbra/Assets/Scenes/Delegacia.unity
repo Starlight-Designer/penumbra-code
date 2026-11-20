@@ -277,7 +277,7 @@ GameObject:
   - component: {fileID: 315963012}
   - component: {fileID: 315963011}
   m_Layer: 0
-  m_Name: Image
+  m_Name: Event_System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -482,6 +482,9 @@ MonoBehaviour:
   tempoNoPreto: 0.5
   duracaoClarear: 1
   clarearAoIniciar: 1
+  audioSource: {fileID: 0}
+  audioVidroQuebrando: {fileID: 0}
+  duracaoFadeAudio: 1.5
   aoFicarPreto:
     m_PersistentCalls:
       m_Calls: []
@@ -1934,6 +1937,9 @@ MonoBehaviour:
   objectiveManager: {fileID: 1170436932}
   objetivoParaConcluir: 2
   primeiraFitaVHS: 1
+  transportarParaIgreja: 0
+  nomeCenaDestino: Igreja_Porta
+  fadePreto: {fileID: 0}
 --- !u!61 &1504889989
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3179,6 +3185,9 @@ MonoBehaviour:
   indiceRespostaPorFala: 
   aliceEspecialBocaFechada: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
   aliceEspecialBocaAberta: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
+  aliceMereceMorrerBocaFechada: {fileID: 0}
+  aliceMereceMorrerBocaAberta: {fileID: 0}
+  alicePosTransformacaoSpriteFixo: {fileID: 0}
   pescadorVaiEmboraBocaFechada: {fileID: 0}
   pescadorVaiEmboraBocaAberta: {fileID: 0}
   intervaloAnimacaoBoca: 0.2
@@ -3187,6 +3196,14 @@ MonoBehaviour:
   indicadorInteracao: {fileID: 786085694}
   nomeDoPersonagem: Delegado
   nomeProtagonista: Alice
+  iniciarAutomaticamenteAposFade: 0
+  somenteAliceFalando: 0
+  aoFecharDialogo:
+    m_PersistentCalls:
+      m_Calls: []
+  aoFecharDialogoPosTransformacao:
+    m_PersistentCalls:
+      m_Calls: []
   falas:
   - Oi sobrinha querida, como foi a sua viagem?
   - "ate falaria mas meus dialogos est\xE3o limitados por 3 ent deixa pra mais tarde quando a programadora ajeitar o script kkk"

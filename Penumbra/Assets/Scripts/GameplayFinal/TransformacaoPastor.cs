@@ -1,4 +1,3 @@
-
 using System.Collections;
 using UnityEngine;
 
@@ -12,6 +11,9 @@ public class TransformacaoPastor : MonoBehaviour
     public Sprite sprite2;
     public Sprite sprite3;
     public Sprite sprite4;
+
+    [Header("Diálogo após a transformação")]
+    public DialogueManager dialogueManager;
 
     [Header("Configurações do fade")]
     public float duracaoFadeOut = 0.8f;
@@ -50,6 +52,12 @@ public class TransformacaoPastor : MonoBehaviour
             return;
         }
 
+        if (dialogueManager == null)
+        {
+            Debug.LogError("DialogueManager não foi conectado ao TransformacaoPastor!");
+            return;
+        }
+
         transformacaoIniciada = true;
         StartCoroutine(RotinaTransformacao());
     }
@@ -60,23 +68,17 @@ public class TransformacaoPastor : MonoBehaviour
 
         for (int i = 1; i < sprites.Length; i++)
         {
-            // Desaparece o sprite atual.
             yield return StartCoroutine(Fade(1f, 0f, duracaoFadeOut));
-
-            // Troca para o próximo sprite.
             spriteRenderer.sprite = sprites[i];
-
-            // Aguarda um pequeno intervalo.
             yield return new WaitForSeconds(intervaloEntreSprites);
-
-            // Faz o próximo sprite aparecer.
             yield return StartCoroutine(Fade(0f, 1f, duracaoFadeIn));
         }
 
-        // Garante que o monstro permaneça visível.
         AlterarAlpha(1f);
-
         Debug.Log("Transformação do pastor concluída!");
+
+        // Depois de revelar o monstro, inicia a fala "..." de Alice.
+        dialogueManager.IniciarDialogoPosTransformacao();
     }
 
     private IEnumerator Fade(float inicio, float fim, float duracao)
@@ -92,12 +94,8 @@ public class TransformacaoPastor : MonoBehaviour
         while (tempo < duracao)
         {
             tempo += Time.deltaTime;
-
             float progresso = Mathf.Clamp01(tempo / duracao);
-            float alpha = Mathf.Lerp(inicio, fim, progresso);
-
-            AlterarAlpha(alpha);
-
+            AlterarAlpha(Mathf.Lerp(inicio, fim, progresso));
             yield return null;
         }
 
