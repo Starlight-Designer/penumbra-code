@@ -9,17 +9,13 @@ public class PastorPerseguicao : MonoBehaviour
     public Transform alice;
     public Animator animator;
 
-    [Header("Movimento normal")]
-    public float posicaoXFixa;
-    public float velocidadeVertical = 2f;
-    public float alturaMinima = -2.67f;
-    public float alturaMaxima = 0.01f;
-
-    [Header("Desvio de obstáculos")]
-    public float distanciaDeteccao = 7f;
-    public float distanciaSeguranca = 0.1f;
-    public float velocidadeDesvio = 4f;
+    [Header("Obstáculos")]
     public string tagObstaculo = "Obstaculo";
+    public float forcaArremesso = 8f;
+    public float impulsoVertical = 7f;
+    public float forcaRotacao = 180f;
+    public float gravidadeObstaculo = 2f;
+    public float tempoParaDestruir = 5f;
 
     [Header("Ataque")]
     public float velocidadeAtaque = 8f;
@@ -29,29 +25,13 @@ public class PastorPerseguicao : MonoBehaviour
     public UnityEvent aoCapturar;
 
     private Rigidbody2D rb;
-    private Collider2D colisorPastor;
 
     private bool atacando = false;
     private bool capturou = false;
-    private bool desviando = false;
-
-    private float alturaInicial;
-    private float alturaAlvo;
-
-    private Collider2D obstaculoAtual;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        colisorPastor = GetComponent<Collider2D>();
-
-        posicaoXFixa = rb.position.x;
-
-        alturaInicial = rb.position.y;
-        alturaAlvo = alturaInicial;
-
-        if (colisorPastor == null)
-            Debug.LogError("O pastor precisa de um Collider2D!");
     }
 
     private void FixedUpdate()
@@ -62,159 +42,82 @@ public class PastorPerseguicao : MonoBehaviour
         if (atacando)
         {
             MoverAteAlice();
-            return;
         }
-
-        if (desviando)
-        {
-            VerificarFimDesvio();
-        }
-        else
-        {
-            ProcurarObstaculo();
-        }
-
-        Vector2 destino = new Vector2(
-            posicaoXFixa,
-            Mathf.Clamp(alturaAlvo, alturaMinima, alturaMaxima)
-        );
-
-        rb.MovePosition(Vector2.MoveTowards(
-            rb.position,
-            destino,
-            velocidadeDesvio * Time.fixedDeltaTime
-        ));
     }
 
-    private void ProcurarObstaculo()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        Collider2D[] obstaculos = Physics2D.OverlapBoxAll(
-            new Vector2(
-                rb.position.x + distanciaDeteccao / 2f,
-                (alturaMinima + alturaMaxima) / 2f
-            ),
-            new Vector2(
-                distanciaDeteccao,
-                alturaMaxima - alturaMinima + 2f
-            ),
-            0f
-        );
-
-        Collider2D maisProximo = null;
-        float menorDistancia = float.MaxValue;
-
-        foreach (Collider2D obstaculo in obstaculos)
-        {
-            if (obstaculo == null ||
-                !obstaculo.CompareTag(tagObstaculo))
-                continue;
-
-            float distancia =
-                obstaculo.bounds.min.x - colisorPastor.bounds.max.x;
-
-            if (distancia >= 0f && distancia < menorDistancia)
-            {
-                menorDistancia = distancia;
-                maisProximo = obstaculo;
-            }
-        }
-
-        if (maisProximo == null)
-            return;
-
-        EscolherDesvio(maisProximo);
+        ArremessarObstaculo(collision.collider);
     }
 
-    private void EscolherDesvio(Collider2D obstaculo)
+    private void ArremessarObstaculo(Collider2D obstaculo)
     {
-        Bounds limitesPastor = colisorPastor.bounds;
-        Bounds limitesObstaculo = obstaculo.bounds;
+        if (!obstaculo.CompareTag(tagObstaculo))
+            return;
 
-        float deslocamentoCollider =
-            limitesPastor.center.y - rb.position.y;
+        Rigidbody2D rbObstaculo = obstaculo.attachedRigidbody;
 
-        float meiaAlturaPastor = limitesPastor.extents.y;
-
-        float alturaAcima =
-            limitesObstaculo.max.y +
-            distanciaSeguranca -
-            deslocamentoCollider +
-            meiaAlturaPastor;
-
-        float alturaAbaixo =
-            limitesObstaculo.min.y -
-            distanciaSeguranca -
-            deslocamentoCollider -
-            meiaAlturaPastor;
-
-        bool podeSubir = alturaAcima <= alturaMaxima;
-        bool podeDescer = alturaAbaixo >= alturaMinima;
-
-        if (!podeSubir && !podeDescer)
+        if (rbObstaculo == null)
         {
             Debug.LogWarning(
-                "Não existe espaço suficiente para desviar de " +
+                "O obstáculo precisa ter um Rigidbody2D: " +
                 obstaculo.name
             );
             return;
         }
 
-        if (podeSubir && podeDescer)
+        // Impede que o mesmo obstáculo seja arremessado novamente.
+        if (rbObstaculo.bodyType == RigidbodyType2D.Dynamic)
+            return;
+
+        // Para o movimento automático do obstáculo.
+        MovimentoObstaculo movimento =
+            obstaculo.GetComponent<MovimentoObstaculo>();
+
+        if (movimento != null)
+            movimento.Arremessar();
+
+        // Remove todos os colisores do obstáculo.
+        Collider2D[] colisores =
+            rbObstaculo.GetComponentsInChildren<Collider2D>();
+
+        foreach (Collider2D colisor in colisores)
         {
-            float distanciaSubir =
-                Mathf.Abs(alturaAcima - rb.position.y);
-
-            float distanciaDescer =
-                Mathf.Abs(alturaAbaixo - rb.position.y);
-
-            alturaAlvo = distanciaSubir <= distanciaDescer
-                ? alturaAcima
-                : alturaAbaixo;
-        }
-        else
-        {
-            alturaAlvo = podeSubir ? alturaAcima : alturaAbaixo;
+            colisor.enabled = false;
         }
 
-        obstaculoAtual = obstaculo;
-        desviando = true;
+        // Ativa a física.
+        rbObstaculo.bodyType = RigidbodyType2D.Dynamic;
+        rbObstaculo.gravityScale = gravidadeObstaculo;
+        rbObstaculo.constraints = RigidbodyConstraints2D.None;
+
+        rbObstaculo.linearVelocity = Vector2.zero;
+        rbObstaculo.angularVelocity = 0f;
+
+        // Lança o obstáculo para cima e para a direita.
+        Vector2 direcao = new Vector2(1f, 1f).normalized;
+
+        rbObstaculo.AddForce(
+            direcao * forcaArremesso +
+            Vector2.up * impulsoVertical,
+            ForceMode2D.Impulse
+        );
+
+        // Faz o obstáculo girar no ar.
+        float sentido = Random.value > 0.5f ? 1f : -1f;
+
+        rbObstaculo.AddTorque(
+            forcaRotacao * sentido,
+            ForceMode2D.Impulse
+        );
+
+        // Destrói o obstáculo depois do tempo configurado.
+        Destroy(rbObstaculo.gameObject, tempoParaDestruir);
 
         Debug.Log(
-            "Pastor iniciou desvio de " + obstaculo.name +
-            " | Altura escolhida: " + alturaAlvo
+            "Pastor arremessou e removeu a colisão de: " +
+            obstaculo.name
         );
-    }
-
-    private void VerificarFimDesvio()
-    {
-        if (obstaculoAtual == null)
-        {
-            FinalizarDesvio();
-            return;
-        }
-
-        float distanciaHorizontal =
-            obstaculoAtual.bounds.min.x -
-            colisorPastor.bounds.max.x;
-
-        if (distanciaHorizontal < -distanciaSeguranca)
-        {
-            Debug.Log(
-                "Pastor terminou de passar por " +
-                obstaculoAtual.name
-            );
-
-            FinalizarDesvio();
-        }
-    }
-
-    private void FinalizarDesvio()
-    {
-        desviando = false;
-        obstaculoAtual = null;
-
-        // Mantém a altura alcançada.
-        // Não retorna automaticamente ao centro.
     }
 
     private void MoverAteAlice()
@@ -249,8 +152,6 @@ public class PastorPerseguicao : MonoBehaviour
             return;
 
         atacando = true;
-        desviando = false;
-        obstaculoAtual = null;
 
         Debug.Log("O pastor começou a perseguir Alice!");
     }
@@ -258,26 +159,5 @@ public class PastorPerseguicao : MonoBehaviour
     public void EncerrarAtaque()
     {
         atacando = false;
-        alturaAlvo = alturaInicial;
-        desviando = false;
-        obstaculoAtual = null;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-
-        Gizmos.DrawWireCube(
-            new Vector3(
-                transform.position.x + distanciaDeteccao / 2f,
-                (alturaMinima + alturaMaxima) / 2f,
-                0f
-            ),
-            new Vector3(
-                distanciaDeteccao,
-                alturaMaxima - alturaMinima + 2f,
-                0f
-            )
-        );
     }
 }

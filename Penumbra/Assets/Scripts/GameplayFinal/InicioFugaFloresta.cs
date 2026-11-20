@@ -17,6 +17,15 @@ public class InicioFugaFloresta : MonoBehaviour
     public Animator animator;
     public Collider2D colisor;
 
+    [Header("Pastor")]
+    public Transform pastor;
+    public float posicaoInicialXPastor = -10f;
+    public float velocidadeEntradaPastor = 3.5f;
+
+    [Header("Componentes do Pastor")]
+    public Rigidbody2D rbPastor;
+    public Animator animatorPastor;
+
     [Header("Texto de instrucao")]
     public TMP_Text textoInstrucao;
     public float duracaoFadeInTexto = 1f;
@@ -26,6 +35,7 @@ public class InicioFugaFloresta : MonoBehaviour
     public GerenciadorObstaculos gerenciadorObstaculos;
 
     private Vector3 destinoFinal;
+    private Vector2 destinoFinalPastor;
 
     private void Start()
     {
@@ -35,22 +45,69 @@ public class InicioFugaFloresta : MonoBehaviour
             return;
         }
 
+        if (pastor == null)
+        {
+            Debug.LogError("Conecte o Pastor no Inspector!");
+            return;
+        }
+
+        if (rbPastor == null)
+            rbPastor = pastor.GetComponent<Rigidbody2D>();
+
+        if (rbPastor == null)
+        {
+            Debug.LogError("O Pastor precisa de um Rigidbody2D!");
+            return;
+        }
+
+        if (animatorPastor == null)
+            animatorPastor = pastor.GetComponent<Animator>();
+
         if (colisor == null)
             colisor = alice.GetComponent<Collider2D>();
 
+        // Guarda as posições finais dos dois personagens.
         destinoFinal = alice.position;
+        destinoFinalPastor = rbPastor.position;
 
+        // Bloqueia o controle da Alice.
         playerMovement.enabled = false;
         rb.linearVelocity = Vector2.zero;
 
         if (colisor != null)
             colisor.enabled = false;
 
+        // Posiciona Alice no início da entrada.
         alice.position = new Vector3(
             posicaoInicialX,
             destinoFinal.y,
             destinoFinal.z
         );
+
+        rb.position = new Vector2(
+            posicaoInicialX,
+            destinoFinal.y
+        );
+
+        // Posiciona o Pastor no início da entrada.
+        rbPastor.linearVelocity = Vector2.zero;
+
+        pastor.position = new Vector3(
+            posicaoInicialXPastor,
+            destinoFinalPastor.y,
+            pastor.position.z
+        );
+
+        rbPastor.position = new Vector2(
+            posicaoInicialXPastor,
+            destinoFinalPastor.y
+        );
+
+        if (animator != null)
+            animator.SetBool("Andando", false);
+
+        if (animatorPastor != null)
+            animatorPastor.SetBool("Andando", false);
 
         if (textoInstrucao != null)
         {
@@ -66,6 +123,7 @@ public class InicioFugaFloresta : MonoBehaviour
         while (FadePreto.TransicaoAtiva)
             yield return null;
 
+        // Inicia a animação de corrida dos dois.
         if (animator != null)
         {
             animator.SetBool("Andando", true);
@@ -73,29 +131,55 @@ public class InicioFugaFloresta : MonoBehaviour
             animator.SetFloat("MoveY", 0f);
         }
 
-        while (Vector2.Distance(rb.position, destinoFinal) > 0.05f)
+        if (animatorPastor != null)
         {
-            Vector2 proximaPosicao = Vector2.MoveTowards(
+            animatorPastor.SetBool("Andando", true);
+            animatorPastor.SetFloat("MoveX", 1f);
+            animatorPastor.SetFloat("MoveY", 0f);
+        }
+
+        // Alice e Pastor caminham simultaneamente.
+        while (
+            Vector2.Distance(rb.position, destinoFinal) > 0.05f ||
+            Vector2.Distance(rbPastor.position, destinoFinalPastor) > 0.05f
+        )
+        {
+            Vector2 proximaPosicaoAlice = Vector2.MoveTowards(
                 rb.position,
                 new Vector2(destinoFinal.x, destinoFinal.y),
                 velocidadeEntrada * Time.fixedDeltaTime
             );
 
-            rb.MovePosition(proximaPosicao);
+            Vector2 proximaPosicaoPastor = Vector2.MoveTowards(
+                rbPastor.position,
+                destinoFinalPastor,
+                velocidadeEntradaPastor * Time.fixedDeltaTime
+            );
+
+            rb.MovePosition(proximaPosicaoAlice);
+            rbPastor.MovePosition(proximaPosicaoPastor);
 
             yield return new WaitForFixedUpdate();
         }
 
+        // Garante que os dois estejam exatamente nos destinos.
         rb.position = new Vector2(destinoFinal.x, destinoFinal.y);
         rb.linearVelocity = Vector2.zero;
 
+        rbPastor.position = destinoFinalPastor;
+        rbPastor.linearVelocity = Vector2.zero;
+
         if (animator != null)
             animator.SetBool("Andando", false);
+
+        if (animatorPastor != null)
+            animatorPastor.SetBool("Andando", false);
 
         // Mostra o texto com Fade In.
         if (textoInstrucao != null)
         {
             textoInstrucao.gameObject.SetActive(true);
+
             yield return StartCoroutine(
                 FadeTexto(0f, 1f, duracaoFadeInTexto)
             );

@@ -1,5 +1,6 @@
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GerenciadorObstaculos : MonoBehaviour
@@ -32,7 +33,12 @@ public class GerenciadorObstaculos : MonoBehaviour
     [Header("Quantidade")]
     public int quantidadeObstaculos = 10;
 
+    [Header("Final da fuga")]
+    public FinalFugaFloresta finalFuga;
+    public float esperaAposUltimoObstaculo = 3f;
+
     private bool obstaculosIniciados = false;
+    private List<GameObject> obstaculosCriados = new List<GameObject>();
 
     public void IniciarObstaculos()
     {
@@ -54,13 +60,6 @@ public class GerenciadorObstaculos : MonoBehaviour
             else
                 prefabEscolhido = obstaculoTronco;
 
-            Debug.Log(
-                "Obstáculo " + (i + 1) +
-                " | Arbusto: " + (obstaculoArbusto != null) +
-                " | Tronco: " + (obstaculoTronco != null) +
-                " | Escolhido: " + (prefabEscolhido != null)
-            );
-
             if (prefabEscolhido != null)
             {
                 float altura = posicoesY.Length > i
@@ -73,11 +72,13 @@ public class GerenciadorObstaculos : MonoBehaviour
                     0f
                 );
 
-                Instantiate(
+                GameObject novoObstaculo = Instantiate(
                     prefabEscolhido,
                     posicao,
                     Quaternion.identity
                 );
+
+                obstaculosCriados.Add(novoObstaculo);
 
                 Debug.Log("Obstáculo " + (i + 1) + " criado!");
             }
@@ -86,9 +87,39 @@ public class GerenciadorObstaculos : MonoBehaviour
                 Debug.LogWarning("Prefab de obstáculo não conectado!");
             }
 
-            yield return new WaitForSeconds(intervalo);
+            if (i < quantidadeObstaculos - 1)
+                yield return new WaitForSeconds(intervalo);
         }
 
-        Debug.Log("Os 10 obstáculos foram criados!");
+        Debug.Log("Todos os obstáculos foram criados!");
+
+        // Espera todos os obstáculos desaparecerem.
+        while (true)
+        {
+            obstaculosCriados.RemoveAll(
+                obstaculo => obstaculo == null
+            );
+
+            if (obstaculosCriados.Count == 0)
+                break;
+
+            yield return null;
+        }
+
+        Debug.Log("Todos os obstáculos desapareceram!");
+
+        // Espera 3 segundos antes do encerramento.
+        yield return new WaitForSeconds(esperaAposUltimoObstaculo);
+
+        if (finalFuga != null)
+        {
+            finalFuga.IniciarFinal();
+        }
+        else
+        {
+            Debug.LogError(
+                "FinalFugaFloresta não foi conectado no Inspector!"
+            );
+        }
     }
 }

@@ -1316,6 +1316,65 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &756935867
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 756935869}
+  - component: {fileID: 756935868}
+  m_Layer: 0
+  m_Name: FinalFuga
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &756935868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756935867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a117b0fe6bc9046983baa623cd2cdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FinalFugaFloresta
+  alice: {fileID: 170554948}
+  rbAlice: {fileID: 170554946}
+  movimentoAlice: {fileID: 170554944}
+  animatorAlice: {fileID: 170554941}
+  velocidadeAlice: 1
+  posicaoFinalAliceX: 0
+  pastor: {fileID: 2011458297}
+  rbPastor: {fileID: 2011458295}
+  animatorPastor: {fileID: 2011458293}
+  perseguicaoPastor: {fileID: 2011458298}
+  velocidadePastor: 5
+  cameraJogo: {fileID: 672503366}
+  margemSaidaPastor: 0.1
+  fadePreto: {fileID: 533472207}
+  nomeCenaCutscene: NomeDaCutscene
+--- !u!4 &756935869
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 756935867}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.41659, y: -0.1034, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &780370338
 GameObject:
   m_ObjectHideFlags: 0
@@ -1468,6 +1527,8 @@ MonoBehaviour:
   - -2.67
   intervalo: 3
   quantidadeObstaculos: 10
+  finalFuga: {fileID: 756935868}
+  esperaAposUltimoObstaculo: 3
 --- !u!1 &1046565241
 GameObject:
   m_ObjectHideFlags: 0
@@ -1772,6 +1833,11 @@ MonoBehaviour:
   rb: {fileID: 170554946}
   animator: {fileID: 170554941}
   colisor: {fileID: 170554945}
+  pastor: {fileID: 2011458297}
+  posicaoInicialXPastor: -50
+  velocidadeEntradaPastor: 5
+  rbPastor: {fileID: 2011458295}
+  animatorPastor: {fileID: 2011458293}
   textoInstrucao: {fileID: 180007676}
   duracaoFadeInTexto: 1
   duracaoFadeOutTexto: 1
@@ -3042,15 +3108,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PastorPerseguicao
   alice: {fileID: 170554948}
-  animator: {fileID: 0}
-  posicaoXFixa: -7
-  velocidadeVertical: 2
-  alturaMinima: -2.67
-  alturaMaxima: 0.01
-  distanciaDeteccao: 7
-  distanciaSeguranca: 0.1
-  velocidadeDesvio: 4
+  animator: {fileID: 2011458293}
   tagObstaculo: Obstaculo
+  forcaArremesso: 8
+  impulsoVertical: 7
+  forcaRotacao: 180
+  gravidadeObstaculo: 2
+  tempoParaDestruir: 5
   velocidadeAtaque: 8
   distanciaCaptura: 0.5
   aoCapturar:
@@ -3522,3 +3586,4 @@ SceneRoots:
   - {fileID: 1029994141}
   - {fileID: 1346583443}
   - {fileID: 2011458297}
+  - {fileID: 756935869}
