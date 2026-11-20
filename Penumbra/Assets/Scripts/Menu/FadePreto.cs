@@ -1,16 +1,9 @@
+
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-// Coloque em uma Image preta que cobre a tela inteira (filha direta do Canvas, por cima de tudo).
-//
-// MODO A, mesma cena:  chame Transicao()
-//   escurece -> fica preto (aoFicarPreto: troque o menu pela cutscene) -> clareia aos poucos (aoComecarCutscene)
-//
-// MODO B, outra cena:  chame EscurecerECarregar("NomeDaCena") no menu
-//   e, na cena da cutscene, tenha um FadePreto com "Clarear Ao Iniciar" marcado:
-//   ele começa preto e clareia sozinho, disparando aoComecarCutscene.
 [RequireComponent(typeof(CanvasGroup))]
 public class FadePreto : MonoBehaviour
 {
@@ -23,17 +16,23 @@ public class FadePreto : MonoBehaviour
     [SerializeField] private bool clarearAoIniciar = false;
 
     [Header("Eventos")]
-    [SerializeField] private UnityEvent aoFicarPreto;       // a tela está 100% preta (ex.: desligar o menu, ligar a cutscene)
-    [SerializeField] private UnityEvent aoComecarCutscene;  // o preto começou a sumir (ex.: dar Play na cutscene)
+    [SerializeField] private UnityEvent aoFicarPreto;
+    [SerializeField] private UnityEvent aoComecarCutscene;
 
     private CanvasGroup grupo;
     private bool ocupado;
+
+    // Informa ao PlayerMovement se existe uma transição acontecendo.
+    public static bool TransicaoAtiva { get; private set; }
 
     private void Awake()
     {
         grupo = GetComponent<CanvasGroup>();
         grupo.alpha = clarearAoIniciar ? 1f : 0f;
         grupo.blocksRaycasts = clarearAoIniciar;
+
+        if (clarearAoIniciar)
+            TransicaoAtiva = true;
     }
 
     private void Start()
@@ -42,14 +41,12 @@ public class FadePreto : MonoBehaviour
             StartCoroutine(ClarearInicial());
     }
 
-    // Modo A: ligue no OnClick do botão Jogar / Confirmar reinício
     public void Transicao()
     {
         if (ocupado) return;
         StartCoroutine(RotinaTransicao());
     }
 
-    // Modo B: ligue no OnClick, escrevendo o nome da cena da cutscene
     public void EscurecerECarregar(string nomeCena)
     {
         if (ocupado) return;
@@ -59,26 +56,32 @@ public class FadePreto : MonoBehaviour
     private IEnumerator RotinaTransicao()
     {
         ocupado = true;
-        grupo.blocksRaycasts = true; // bloqueia cliques durante a transição
+        TransicaoAtiva = true;
+        grupo.blocksRaycasts = true;
 
         yield return Fade(0f, 1f, duracaoEscurecer);
 
         aoFicarPreto?.Invoke();
+
         yield return new WaitForSecondsRealtime(tempoNoPreto);
 
         aoComecarCutscene?.Invoke();
+
         yield return Fade(1f, 0f, duracaoClarear);
 
         grupo.blocksRaycasts = false;
         ocupado = false;
+        TransicaoAtiva = false;
     }
 
     private IEnumerator RotinaCarregar(string nomeCena)
     {
         ocupado = true;
+        TransicaoAtiva = true;
         grupo.blocksRaycasts = true;
 
         yield return Fade(0f, 1f, duracaoEscurecer);
+
         yield return new WaitForSecondsRealtime(tempoNoPreto);
 
         SceneManager.LoadScene(nomeCena);
@@ -87,27 +90,41 @@ public class FadePreto : MonoBehaviour
     private IEnumerator ClarearInicial()
     {
         ocupado = true;
+        TransicaoAtiva = true;
 
         yield return new WaitForSecondsRealtime(tempoNoPreto);
 
         aoComecarCutscene?.Invoke();
+
         yield return Fade(1f, 0f, duracaoClarear);
 
         grupo.blocksRaycasts = false;
         ocupado = false;
+        TransicaoAtiva = false;
     }
 
     private IEnumerator Fade(float de, float para, float duracao)
     {
         float t = 0f;
+
+        if (duracao <= 0f)
+        {
+            grupo.alpha = para;
+            yield break;
+        }
+
         while (t < duracao)
         {
-            t += Time.unscaledDeltaTime; // funciona mesmo com o jogo pausado
+            t += Time.unscaledDeltaTime;
+
             float p = Mathf.Clamp01(t / duracao);
-            float suave = p * p * (3f - 2f * p); // começa e termina devagar
+            float suave = p * p * (3f - 2f * p);
+
             grupo.alpha = Mathf.Lerp(de, para, suave);
+
             yield return null;
         }
+
         grupo.alpha = para;
     }
 }

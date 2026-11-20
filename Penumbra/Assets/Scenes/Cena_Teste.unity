@@ -585,7 +585,7 @@ MonoBehaviour:
   nomeCena: Floresta
   spawnNoDestino: Caminho_Floresta
   gerenciadorPensamentos: {fileID: 1846865664}
-  fade: {fileID: 0}
+  fade: {fileID: 791754793}
 --- !u!61 &293628690
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1117,7 +1117,7 @@ MonoBehaviour:
   nomeCena: Peixaria
   spawnNoDestino: Peixaria
   gerenciadorPensamentos: {fileID: 1846865664}
-  fade: {fileID: 0}
+  fade: {fileID: 791754793}
 --- !u!61 &503311174
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2170,16 +2170,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 791754791}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 0.00926, y: 0.00926, z: 0.00926}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1199982187}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -960, y: -540}
-  m_SizeDelta: {x: 0.00024414062, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &791754793
 MonoBehaviour:
@@ -2193,10 +2193,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94094667253a107449812b0933d5b74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FadePreto
-  duracaoEscurecer: 2
+  duracaoEscurecer: 1
   tempoNoPreto: 0.5
-  duracaoClarear: 2.5
-  clarearAoIniciar: 0
+  duracaoClarear: 1
+  clarearAoIniciar: 1
   aoFicarPreto:
     m_PersistentCalls:
       m_Calls: []
@@ -2494,7 +2494,7 @@ MonoBehaviour:
   nomeCena: Casa_Mae_Bianca
   spawnNoDestino: Casa_Mae_Bianca
   gerenciadorPensamentos: {fileID: 1846865664}
-  fade: {fileID: 0}
+  fade: {fileID: 791754793}
 --- !u!114 &983127601 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 190753545989280076, guid: d203bc604eda018478067294fc183da5, type: 3}
@@ -2877,7 +2877,7 @@ MonoBehaviour:
   nomeCena: Delegacia
   spawnNoDestino: Delegacia
   gerenciadorPensamentos: {fileID: 0}
-  fade: {fileID: 0}
+  fade: {fileID: 791754793}
 --- !u!1 &1177831144
 GameObject:
   m_ObjectHideFlags: 0

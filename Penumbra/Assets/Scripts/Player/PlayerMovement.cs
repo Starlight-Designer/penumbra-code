@@ -23,10 +23,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // Bloqueia a movimentação durante diálogos,
-        // inventário aberto ou bloqueio manual.
         if (DialogueManager.DialogoGlobalAtivo ||
             InventoryManager.InventarioAberto ||
+            InventoryManager.InventarioBloqueado ||
+            FadePreto.TransicaoAtiva ||
             movimentoBloqueado)
         {
             movement = Vector2.zero;
@@ -37,10 +37,13 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 input = Vector2.zero;
 
-        if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed) input.y += 1;
-        if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed) input.y -= 1;
-        if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed) input.x -= 1;
-        if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed) input.x += 1;
+        if (Keyboard.current != null)
+        {
+            if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed) input.y += 1;
+            if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed) input.y -= 1;
+            if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed) input.x -= 1;
+            if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed) input.x += 1;
+        }
 
         movement = input.normalized;
 
@@ -51,8 +54,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (DialogueManager.DialogoGlobalAtivo ||
             InventoryManager.InventarioAberto ||
+            InventoryManager.InventarioBloqueado ||
+            FadePreto.TransicaoAtiva ||
             movimentoBloqueado)
         {
+            movement = Vector2.zero;
             rb.linearVelocity = Vector2.zero;
             return;
         }
@@ -60,7 +66,6 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = movement * speed;
     }
 
-    // Bloqueia ou libera o jogador
     public void BloquearMovimento(bool bloquear)
     {
         movimentoBloqueado = bloquear;
@@ -69,14 +74,10 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = Vector2.zero;
 
         if (sr != null)
-        {
             sr.enabled = !bloquear;
-        }
 
         if (animator != null)
-        {
             animator.SetBool("Andando", false);
-        }
     }
 
     private void AtualizarAnimacao()
