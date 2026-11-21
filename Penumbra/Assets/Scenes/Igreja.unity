@@ -353,6 +353,10 @@ MonoBehaviour:
   tempoNoPreto: 0.5
   duracaoClarear: 1
   clarearAoIniciar: 1
+  audioSource: {fileID: 0}
+  audioVidroQuebrando: {fileID: 0}
+  duracaoFadeAudio: 1.5
+  atrasoAudioAposFade: 0
   aoFicarPreto:
     m_PersistentCalls:
       m_Calls: []
@@ -1197,6 +1201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PortaAlmoxarifado
   nomeCena: Almoxarifado
   fadePreto: {fileID: 432419267}
+  colliderPorta: {fileID: 1398892220}
 --- !u!114 &1398892226
 MonoBehaviour:
   m_ObjectHideFlags: 0

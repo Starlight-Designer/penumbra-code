@@ -923,35 +923,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1623727279}
-  - component: {fileID: 1623727278}
+  - component: {fileID: 1623727280}
   m_Layer: 0
-  m_Name: CutsceneFita2Manager
+  m_Name: CutsceneFita3Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1623727278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1623727277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 895d906cbf352194993e4bcf4466b2af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CutsceneFita2Manager
-  reprodutorVideo: {fileID: 1993274217}
-  textoPularCutscene: {fileID: 1779614393}
-  grupoTextoPular: {fileID: 1779614395}
-  duracaoFadeTextoPular: 1
-  duracaoFadeOutTextoPular: 0.5
-  painelPausaCutscene: {fileID: 849212566}
-  telaPreta: {fileID: 40818393}
-  duracaoFadePreto: 1.5
-  cenaDestinoCasoNaoEncontre: Casa_Mae_Bianca
 --- !u!4 &1623727279
 Transform:
   m_ObjectHideFlags: 0
@@ -967,6 +946,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1623727280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1623727277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06591a01e5d798347855bd6f4680bfd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneFita3Manager
+  reprodutorVideo: {fileID: 1993274217}
+  textoPularCutscene: {fileID: 1779614393}
+  grupoTextoPular: {fileID: 1779614395}
+  duracaoFadeTextoPular: 1
+  duracaoFadeOutTextoPular: 0.5
+  painelPausaCutscene: {fileID: 849212566}
+  telaPreta: {fileID: 40818393}
+  duracaoFadePreto: 1.5
+  cenaDestinoCasoNaoEncontre: Almoxarifado
 --- !u!1 &1666514170
 GameObject:
   m_ObjectHideFlags: 0
@@ -1004,7 +1004,7 @@ MonoBehaviour:
   painelPausaCutscene: {fileID: 849212566}
   telaPreta: {fileID: 40818393}
   duracaoFadePreto: 1.5
-  nomeCenaDestino: Delegacia
+  nomeCenaDestino: Almoxarifado
 --- !u!4 &1666514172
 Transform:
   m_ObjectHideFlags: 0

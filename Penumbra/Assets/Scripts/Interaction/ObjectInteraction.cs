@@ -20,12 +20,16 @@ public class ObjectInteraction : MonoBehaviour
     [Header("Identificação das fitas")]
     public bool primeiraFitaVHS = false;
     public bool segundaFitaVHS = false;
+    public bool terceiraFitaVHS = false;
 
     [Header("Cutscene da primeira fita")]
     public string nomeCenaCutsceneFita1 = "Cutscene_Fita_1";
 
     [Header("Cutscene da segunda fita")]
     public string nomeCenaCutsceneFita2 = "Cutscene_Fita_2";
+
+    [Header("Cutscene da terceira fita")]
+    public string nomeCenaCutsceneFita3 = "Cutscene_Fita_3";
 
     [Header("Transição da terceira fita")]
     public bool transportarParaIgreja = false;
@@ -40,11 +44,17 @@ public class ObjectInteraction : MonoBehaviour
     private const string CHAVE_CENA_RETORNO_FITA2 =
         "CenaRetornoCutsceneFita2";
 
+    private const string CHAVE_CENA_RETORNO_FITA3 =
+        "CenaRetornoCutsceneFita3";
+
     private const string CHAVE_BLOQUEIO_FITA1 =
         "BloquearAlicePosFita1";
 
     private const string CHAVE_BLOQUEIO_FITA2 =
         "BloquearAlicePosFita2";
+
+    private const string CHAVE_BLOQUEIO_FITA3 =
+        "BloquearAlicePosFita3";
 
     void Start()
     {
@@ -60,6 +70,13 @@ public class ObjectInteraction : MonoBehaviour
 
         if (segundaFitaVHS &&
             PlayerPrefs.GetInt("FitaVHS02Coletada", 0) == 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (terceiraFitaVHS &&
+            PlayerPrefs.GetInt("FitaVHS03Coletada", 0) == 1)
         {
             Destroy(gameObject);
             return;
@@ -107,6 +124,15 @@ public class ObjectInteraction : MonoBehaviour
             PlayerPrefs.Save();
         }
 
+        // Bloqueia Alice imediatamente ao pegar a terceira fita.
+        if (coletarItem && terceiraFitaVHS)
+        {
+            DialogueManager.DialogoGlobalAtivo = true;
+
+            PlayerPrefs.SetInt(CHAVE_BLOQUEIO_FITA3, 1);
+            PlayerPrefs.Save();
+        }
+
         if (coletarItem)
         {
             InventoryManager.instance.AdicionarItem(nomeItem);
@@ -120,6 +146,12 @@ public class ObjectInteraction : MonoBehaviour
             if (segundaFitaVHS)
             {
                 PlayerPrefs.SetInt("FitaVHS02Coletada", 1);
+                PlayerPrefs.Save();
+            }
+
+            if (terceiraFitaVHS)
+            {
+                PlayerPrefs.SetInt("FitaVHS03Coletada", 1);
                 PlayerPrefs.Save();
             }
 
@@ -178,6 +210,22 @@ public class ObjectInteraction : MonoBehaviour
             PlayerPrefs.Save();
 
             SceneManager.LoadScene(nomeCenaCutsceneFita2);
+            yield break;
+        }
+
+        // Inicia a cutscene depois da coleta da terceira fita.
+        if (coletarItem && terceiraFitaVHS)
+        {
+            string cenaAtual = SceneManager.GetActiveScene().name;
+
+            PlayerPrefs.SetString(
+                CHAVE_CENA_RETORNO_FITA3,
+                cenaAtual
+            );
+
+            PlayerPrefs.Save();
+
+            SceneManager.LoadScene(nomeCenaCutsceneFita3);
             yield break;
         }
 

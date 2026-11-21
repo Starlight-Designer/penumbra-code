@@ -23,32 +23,39 @@ public class CaixaAlmoxarifado : MonoBehaviour
 
     private bool fitaJaRevelada = false;
 
+    private Collider2D colisorCaixa;
+
     void Start()
     {
+        colisorCaixa = GetComponent<Collider2D>();
+
         fitaJaRevelada =
             PlayerPrefs.GetInt(CHAVE_FITA, 0) == 1;
 
-        // A fita fica escondida até ser descoberta
+        // A fita fica escondida até ser descoberta.
         if (fitaVHS != null)
         {
             fitaVHS.SetActive(fitaJaRevelada);
+        }
+
+        // Se a fita já foi revelada anteriormente,
+        // impede novos cliques na caixa.
+        if (fitaJaRevelada && revelarFita)
+        {
+            BloquearCliques();
         }
     }
 
     private void OnMouseDown()
     {
+        if (fitaJaRevelada && revelarFita)
+            return;
+
         if (gerenciadorPensamentos == null)
         {
             Debug.LogWarning(
                 "Conecte o GerenciadorPensamentos na caixa: " + gameObject.name
             );
-            return;
-        }
-
-        // Se já revelou a fita, permite visualizar novamente o pensamento
-        if (revelarFita && fitaJaRevelada)
-        {
-            MostrarMensagem(null);
             return;
         }
 
@@ -97,6 +104,20 @@ public class CaixaAlmoxarifado : MonoBehaviour
             fitaVHS.SetActive(true);
         }
 
+        // Impede que a caixa seja clicada novamente.
+        BloquearCliques();
+
+        // Libera a interação com a fita VHS.
+        DialogueManager.DialogoGlobalAtivo = false;
+
         Debug.Log("A fita VHS foi revelada no Almoxarifado!");
+    }
+
+    void BloquearCliques()
+    {
+        if (colisorCaixa != null)
+        {
+            colisorCaixa.enabled = false;
+        }
     }
 }

@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,7 +26,34 @@ public class SceneTransition : MonoBehaviour
     [Header("Transição de cena")]
     public FadePreto fade;
 
+    [Header("Bloqueio durante Fade In")]
+    [SerializeField] private Collider2D colliderPorta;
+
     private bool transicaoIniciada = false;
+
+    private IEnumerator Start()
+    {
+        if (colliderPorta == null)
+            colliderPorta = GetComponent<Collider2D>();
+
+        // Se a cena começou com Fade In,
+        // bloqueia a interação com a porta.
+        if (FadePreto.TransicaoAtiva)
+        {
+            if (colliderPorta != null)
+                colliderPorta.enabled = false;
+
+            // Aguarda o Fade In terminar.
+            while (FadePreto.TransicaoAtiva)
+                yield return null;
+
+            // Libera a porta.
+            if (colliderPorta != null)
+                colliderPorta.enabled = true;
+
+            Debug.Log("Fade In finalizado. Porta da igreja liberada.");
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -35,9 +63,12 @@ public class SceneTransition : MonoBehaviour
         if (transicaoIniciada)
             return;
 
+        // Impede a transição enquanto o Fade estiver ativo.
+        if (FadePreto.TransicaoAtiva)
+            return;
+
         int objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
 
-        // BLOQUEIA A FLORESTA ATÉ O OBJETIVO 9
         if (nomeCena == "Floresta")
         {
             if (objetivoAtual < 9)
@@ -85,8 +116,6 @@ public class SceneTransition : MonoBehaviour
                 PlayerPrefs.Save();
             }
 
-            // O padre opcional desaparece definitivamente
-            // quando Alice entra na casa da mãe da Bianca.
             PadreOpicional.RegistrarEntradaNaCasaDaBianca();
         }
 
@@ -114,29 +143,22 @@ public class SceneTransition : MonoBehaviour
             }
         }
 
-        // CONCLUI O OBJETIVO DE EXPLORAR A FLORESTA
-        // AO ENTRAR NA CENA CAMINHO_IGREJA
         if (nomeCena == "Caminho_Igreja" && objetivoAtual == 9)
         {
             PlayerPrefs.SetInt("ObjetivoAtual", 10);
             PlayerPrefs.Save();
         }
 
-        // Guarda o spawn da próxima cena.
         SpawnData.proximoSpawn = spawnNoDestino;
 
-        // Impede que a transição seja iniciada mais de uma vez.
         transicaoIniciada = true;
 
         if (fade != null)
         {
-            // Igreja_Porta continua usando o áudio padrão
-            // do FadePreto (vidro quebrando).
             if (nomeCena == "Igreja_Porta")
             {
                 fade.EscurecerECarregarComAudioPadrao(nomeCena);
             }
-            // Áudio individual escolhido no Inspector.
             else if (usarAudio && audioTransicao != null)
             {
                 fade.EscurecerECarregarComAudio(
@@ -147,7 +169,6 @@ public class SceneTransition : MonoBehaviour
                     duracaoFadeAudio
                 );
             }
-            // Todos os outros pontos sem áudio ficam silenciosos.
             else
             {
                 fade.EscurecerECarregar(nomeCena);

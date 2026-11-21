@@ -566,6 +566,10 @@ MonoBehaviour:
   tempoNoPreto: 0.5
   duracaoClarear: 1
   clarearAoIniciar: 1
+  audioSource: {fileID: 0}
+  audioVidroQuebrando: {fileID: 0}
+  duracaoFadeAudio: 1.5
+  atrasoAudioAposFade: 0
   aoFicarPreto:
     m_PersistentCalls:
       m_Calls: []
@@ -662,7 +666,12 @@ MonoBehaviour:
   objectiveManager: {fileID: 716759234}
   objetivoParaConcluir: 11
   primeiraFitaVHS: 0
-  transportarParaIgreja: 1
+  segundaFitaVHS: 0
+  terceiraFitaVHS: 1
+  nomeCenaCutsceneFita1: Cutscene_Fita_1
+  nomeCenaCutsceneFita2: Cutscene_Fita_2
+  nomeCenaCutsceneFita3: Cutscene_Fita_3
+  transportarParaIgreja: 0
   nomeCenaDestino: Igreja_Porta
   fadePreto: {fileID: 240507348}
 --- !u!61 &243393669
@@ -2551,6 +2560,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1736761645}
   - component: {fileID: 1736761644}
+  - component: {fileID: 1736761646}
   m_Layer: 0
   m_Name: GerenciadorPensamentos
   m_TagString: Untagged
@@ -2574,10 +2584,25 @@ MonoBehaviour:
   nomePensamento: {fileID: 1661268725}
   textoPensamento: {fileID: 421529924}
   imagemAlice: {fileID: 1962200508}
-  aliceBocaFechada: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
-  aliceBocaAberta: {fileID: 9219117700405776107, guid: 2df1845dda8af0b4db05f8f6c7d0b086, type: 3}
+  aliceBocaFechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  aliceBocaAberta: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
   velocidadeTexto: 0.03
   intervaloAnimacaoBoca: 0.2
+  audioVozAlice: {fileID: 1736761646}
+  vozAlice: {fileID: 8300000, guid: 0edf421f225543e47a748e88ecdc250a, type: 3}
+  volumeVoz: 1
+  fita2Pensamento1Fechada: {fileID: 0}
+  fita2Pensamento1Aberta: {fileID: 0}
+  fita2Pensamento2Fechada: {fileID: 0}
+  fita2Pensamento2Aberta: {fileID: 0}
+  fita2Pensamento3Fechada: {fileID: 0}
+  fita2Pensamento3Aberta: {fileID: 0}
+  fita2Pensamento4Fechada: {fileID: 0}
+  fita2Pensamento4Aberta: {fileID: 0}
+  fita2Pensamento5Fechada: {fileID: 0}
+  fita2Pensamento5Aberta: {fileID: 0}
+  fita3Pensamento6Fechada: {fileID: 1766667236818194794, guid: 232ff096cf08c4940a72759cd09ce5e9, type: 3}
+  fita3Pensamento6Aberta: {fileID: 8136755554462697388, guid: 89c0a869d7611a541b5b90de0e1e217b, type: 3}
 --- !u!4 &1736761645
 Transform:
   m_ObjectHideFlags: 0
@@ -2593,6 +2618,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1736761646
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736761643}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1820453163
 GameObject:
   m_ObjectHideFlags: 0

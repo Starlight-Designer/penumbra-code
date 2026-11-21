@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GerenciadorPensamentos : MonoBehaviour
 {
@@ -47,6 +48,10 @@ public class GerenciadorPensamentos : MonoBehaviour
     public Sprite fita2Pensamento5Fechada;
     public Sprite fita2Pensamento5Aberta;
 
+    [Header("Sprites - Sexto pensamento da terceira fita")]
+    public Sprite fita3Pensamento6Fechada;
+    public Sprite fita3Pensamento6Aberta;
+
     private bool pensamentoAtivo = false;
     private bool textoDigitando = false;
 
@@ -70,6 +75,12 @@ public class GerenciadorPensamentos : MonoBehaviour
     private const string CHAVE_BLOQUEIO_FITA2 =
         "BloquearAlicePosFita2";
 
+    private const string CHAVE_INICIAR_PENSAMENTOS_FITA3 =
+        "IniciarPensamentosPosFita3";
+
+    private const string CHAVE_BLOQUEIO_FITA3 =
+        "BloquearAlicePosFita3";
+
     void Start()
     {
         painelPensamentos.SetActive(false);
@@ -85,7 +96,10 @@ public class GerenciadorPensamentos : MonoBehaviour
         bool bloqueioFita2 =
             PlayerPrefs.GetInt(CHAVE_BLOQUEIO_FITA2, 0) == 1;
 
-        if (bloqueioFita1 || bloqueioFita2)
+        bool bloqueioFita3 =
+            PlayerPrefs.GetInt(CHAVE_BLOQUEIO_FITA3, 0) == 1;
+
+        if (bloqueioFita1 || bloqueioFita2 || bloqueioFita3)
         {
             DialogueManager.DialogoGlobalAtivo = true;
         }
@@ -95,27 +109,36 @@ public class GerenciadorPensamentos : MonoBehaviour
             PlayerPrefs.SetInt(CHAVE_INICIAR_PENSAMENTOS_FITA1, 0);
             PlayerPrefs.Save();
 
-            StartCoroutine(IniciarPensamentosAutomaticamente(false));
+            StartCoroutine(IniciarPensamentosAutomaticamente(1));
         }
         else if (PlayerPrefs.GetInt(CHAVE_INICIAR_PENSAMENTOS_FITA2, 0) == 1)
         {
             PlayerPrefs.SetInt(CHAVE_INICIAR_PENSAMENTOS_FITA2, 0);
             PlayerPrefs.Save();
 
-            StartCoroutine(IniciarPensamentosAutomaticamente(true));
+            StartCoroutine(IniciarPensamentosAutomaticamente(2));
+        }
+        else if (PlayerPrefs.GetInt(CHAVE_INICIAR_PENSAMENTOS_FITA3, 0) == 1)
+        {
+            PlayerPrefs.SetInt(CHAVE_INICIAR_PENSAMENTOS_FITA3, 0);
+            PlayerPrefs.Save();
+
+            StartCoroutine(IniciarPensamentosAutomaticamente(3));
         }
     }
 
-    private IEnumerator IniciarPensamentosAutomaticamente(bool segundaFita)
+    private IEnumerator IniciarPensamentosAutomaticamente(int numeroFita)
     {
         yield return null;
 
         DialogueManager.DialogoGlobalAtivo = true;
 
-        if (segundaFita)
-            IniciarPensamentosPosFita2();
-        else
+        if (numeroFita == 1)
             IniciarPensamentosPosFita1();
+        else if (numeroFita == 2)
+            IniciarPensamentosPosFita2();
+        else if (numeroFita == 3)
+            IniciarPensamentosPosFita3();
     }
 
     void Update()
@@ -310,6 +333,72 @@ public class GerenciadorPensamentos : MonoBehaviour
         DialogueManager.DialogoGlobalAtivo = false;
 
         Debug.Log("Pensamentos da segunda fita finalizados. Alice pode se movimentar.");
+    }
+
+    // =========================================================
+    // TERCEIRA FITA VHS
+    // =========================================================
+
+    private void IniciarPensamentosPosFita3()
+    {
+        MostrarPensamento(
+            "...",
+            MostrarSegundoPensamentoFita3
+        );
+    }
+
+    private void MostrarSegundoPensamentoFita3()
+    {
+        MostrarPensamento(
+            "...",
+            MostrarTerceiroPensamentoFita3
+        );
+    }
+
+    private void MostrarTerceiroPensamentoFita3()
+    {
+        MostrarPensamento(
+            "...",
+            MostrarQuartoPensamentoFita3
+        );
+    }
+
+    private void MostrarQuartoPensamentoFita3()
+    {
+        MostrarPensamento(
+            "Foi...ele...",
+            MostrarQuintoPensamentoFita3
+        );
+    }
+
+    private void MostrarQuintoPensamentoFita3()
+    {
+        MostrarPensamento(
+            "Ele que matou a Bianca....",
+            MostrarSextoPensamentoFita3
+        );
+    }
+
+    private void MostrarSextoPensamentoFita3()
+    {
+        MostrarPensamento(
+            "EU PRECISO MOSTRAR ISSO PRO MEU TIO",
+            FinalizarPensamentosPosFita3,
+            fita3Pensamento6Fechada,
+            fita3Pensamento6Aberta
+        );
+    }
+
+    private void FinalizarPensamentosPosFita3()
+    {
+        PlayerPrefs.SetInt(CHAVE_BLOQUEIO_FITA3, 0);
+        PlayerPrefs.Save();
+
+        DialogueManager.DialogoGlobalAtivo = false;
+
+        Debug.Log("Pensamentos da terceira fita finalizados. Indo para a Igreja.");
+
+        SceneManager.LoadScene("Igreja_Porta");
     }
 
     // =========================================================
