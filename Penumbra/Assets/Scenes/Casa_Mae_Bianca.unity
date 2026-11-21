@@ -1222,6 +1222,19 @@ MonoBehaviour:
   aliceBocaAberta: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
   velocidadeTexto: 0.03
   intervaloAnimacaoBoca: 0.2
+  audioVozAlice: {fileID: 1403115647}
+  vozAlice: {fileID: 8300000, guid: 0edf421f225543e47a748e88ecdc250a, type: 3}
+  volumeVoz: 1
+  fita2Pensamento1Fechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita2Pensamento1Aberta: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita2Pensamento2Fechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita2Pensamento2Aberta: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita2Pensamento3Fechada: {fileID: 1766667236818194794, guid: 232ff096cf08c4940a72759cd09ce5e9, type: 3}
+  fita2Pensamento3Aberta: {fileID: 1766667236818194794, guid: 232ff096cf08c4940a72759cd09ce5e9, type: 3}
+  fita2Pensamento4Fechada: {fileID: 1766667236818194794, guid: 232ff096cf08c4940a72759cd09ce5e9, type: 3}
+  fita2Pensamento4Aberta: {fileID: 1766667236818194794, guid: 232ff096cf08c4940a72759cd09ce5e9, type: 3}
+  fita2Pensamento5Fechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita2Pensamento5Aberta: {fileID: 8512984223476161493, guid: 3f104814154a0e3409fa54b3b1e5202b, type: 3}
 --- !u!4 &646546815
 Transform:
   m_ObjectHideFlags: 0
@@ -1732,6 +1745,10 @@ MonoBehaviour:
   tempoNoPreto: 0.5
   duracaoClarear: 1
   clarearAoIniciar: 1
+  audioSource: {fileID: 0}
+  audioVidroQuebrando: {fileID: 0}
+  duracaoFadeAudio: 1.5
+  atrasoAudioAposFade: 0
   aoFicarPreto:
     m_PersistentCalls:
       m_Calls: []
@@ -2204,6 +2221,7 @@ GameObject:
   - component: {fileID: 1403115646}
   - component: {fileID: 1403115645}
   - component: {fileID: 1403115644}
+  - component: {fileID: 1403115647}
   m_Layer: 0
   m_Name: maebianca_0
   m_TagString: Untagged
@@ -2381,17 +2399,42 @@ MonoBehaviour:
   aliceBocaAbertaPorRespostaDepoisPuzzle:
   - {fileID: -3576318855423470051, guid: 68cc4fda4bafab749aad3f4c1eb34f30, type: 3}
   - {fileID: -3576318855423470051, guid: 68cc4fda4bafab749aad3f4c1eb34f30, type: 3}
+  aliceBocaFechadaPorRespostaDepoisPeixaria: []
+  aliceBocaAbertaPorRespostaDepoisPeixaria: []
   indiceRespostaPorFala: 00000000ffffffff01000000i
   aliceEspecialBocaFechada: {fileID: 0}
   aliceEspecialBocaAberta: {fileID: 0}
+  aliceMereceMorrerBocaFechada: {fileID: 0}
+  aliceMereceMorrerBocaAberta: {fileID: 0}
+  alicePosTransformacaoSpriteFixo: {fileID: 0}
   pescadorVaiEmboraBocaFechada: {fileID: 0}
   pescadorVaiEmboraBocaAberta: {fileID: 0}
   intervaloAnimacaoBoca: 0.2
   velocidadeTexto: 0.03
+  audioVoz: {fileID: 1403115647}
+  vozAlice: {fileID: 8300000, guid: 0edf421f225543e47a748e88ecdc250a, type: 3}
+  vozNPC: {fileID: 8300000, guid: ec65ef3263d5e3047b20ba510de5a3c9, type: 3}
+  volumeVoz: 1
   painelPuzzlePeixes: {fileID: 0}
   indicadorInteracao: {fileID: 1508290170}
   nomeDoPersonagem: Dona Cida
   nomeProtagonista: Alice
+  pastorOpcional: 0
+  gerenciadorPensamentos: {fileID: 0}
+  pensamentoPastor1: "Que cara bizarro... n\xE3o quero falar com ele, ele me d\xE1 uma sensa\xE7\xE3o estranha..."
+  pensamentoPastor2: Bom, vamos voltar para o que eu estava fazendo.
+  alicePastorPensamento1Fechada: {fileID: 0}
+  alicePastorPensamento1Aberta: {fileID: 0}
+  alicePastorPensamento2Fechada: {fileID: 0}
+  alicePastorPensamento2Aberta: {fileID: 0}
+  iniciarAutomaticamenteAposFade: 0
+  somenteAliceFalando: 0
+  aoFecharDialogo:
+    m_PersistentCalls:
+      m_Calls: []
+  aoFecharDialogoPosTransformacao:
+    m_PersistentCalls:
+      m_Calls: []
   falas:
   - "eu fico muito triste em falar sobre minha \xFAnica filha, antes de eu lhe ajudar vc poderia me ajudar?"
   - ...
@@ -2399,6 +2442,8 @@ MonoBehaviour:
   respostasAlice:
   - Claro dona cida, oq vc deseja?
   - Eu te ajudo sim dona cida, deixa comigo
+  falasPadreOpicional: []
+  respostasAlicePadreOpicional: []
   falasDepoisPuzzle: []
   respostasAliceDepoisPuzzle: []
   falasDepoisPuzzleDonaCida:
@@ -2457,6 +2502,103 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 8, y: 8}
   m_EdgeRadius: 0
+--- !u!82 &1403115647
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403115641}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1435280775
 GameObject:
   m_ObjectHideFlags: 0
@@ -3476,6 +3618,19 @@ MonoBehaviour:
   aliceBocaAberta: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
   velocidadeTexto: 0.03
   intervaloAnimacaoBoca: 0.2
+  audioVozAlice: {fileID: 0}
+  vozAlice: {fileID: 0}
+  volumeVoz: 1
+  fita2Pensamento1Fechada: {fileID: 0}
+  fita2Pensamento1Aberta: {fileID: 0}
+  fita2Pensamento2Fechada: {fileID: 0}
+  fita2Pensamento2Aberta: {fileID: 0}
+  fita2Pensamento3Fechada: {fileID: 0}
+  fita2Pensamento3Aberta: {fileID: 0}
+  fita2Pensamento4Fechada: {fileID: 0}
+  fita2Pensamento4Aberta: {fileID: 0}
+  fita2Pensamento5Fechada: {fileID: 0}
+  fita2Pensamento5Aberta: {fileID: 0}
 --- !u!114 &1748555874 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2271938704757487324, guid: 72502ecefa2f3ee4d96aad2ce64cdf84, type: 3}
@@ -3706,6 +3861,12 @@ MonoBehaviour:
   objectiveManager: {fileID: 1339761633}
   objetivoParaConcluir: 8
   primeiraFitaVHS: 0
+  segundaFitaVHS: 1
+  nomeCenaCutsceneFita1: Cutscene_Fita_1
+  nomeCenaCutsceneFita2: Cutscene_Fita_2
+  transportarParaIgreja: 0
+  nomeCenaDestino: Igreja_Porta
+  fadePreto: {fileID: 0}
 --- !u!61 &1849240033
 BoxCollider2D:
   m_ObjectHideFlags: 0

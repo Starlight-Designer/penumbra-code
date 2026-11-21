@@ -27,6 +27,26 @@ public class GerenciadorPensamentos : MonoBehaviour
     [Range(0f, 1f)]
     public float volumeVoz = 1f;
 
+    [Header("Sprites - Pensamento 1 da segunda fita")]
+    public Sprite fita2Pensamento1Fechada;
+    public Sprite fita2Pensamento1Aberta;
+
+    [Header("Sprites - Pensamento 2 da segunda fita")]
+    public Sprite fita2Pensamento2Fechada;
+    public Sprite fita2Pensamento2Aberta;
+
+    [Header("Sprites - Pensamento 3 da segunda fita")]
+    public Sprite fita2Pensamento3Fechada;
+    public Sprite fita2Pensamento3Aberta;
+
+    [Header("Sprites - Pensamento 4 da segunda fita")]
+    public Sprite fita2Pensamento4Fechada;
+    public Sprite fita2Pensamento4Aberta;
+
+    [Header("Sprites - Pensamento 5 da segunda fita")]
+    public Sprite fita2Pensamento5Fechada;
+    public Sprite fita2Pensamento5Aberta;
+
     private bool pensamentoAtivo = false;
     private bool textoDigitando = false;
 
@@ -38,11 +58,17 @@ public class GerenciadorPensamentos : MonoBehaviour
     private Sprite bocaFechadaAtual;
     private Sprite bocaAbertaAtual;
 
-    private const string CHAVE_INICIAR_PENSAMENTOS =
+    private const string CHAVE_INICIAR_PENSAMENTOS_FITA1 =
         "IniciarPensamentosPosFita1";
 
     private const string CHAVE_BLOQUEIO_FITA1 =
         "BloquearAlicePosFita1";
+
+    private const string CHAVE_INICIAR_PENSAMENTOS_FITA2 =
+        "IniciarPensamentosPosFita2";
+
+    private const string CHAVE_BLOQUEIO_FITA2 =
+        "BloquearAlicePosFita2";
 
     void Start()
     {
@@ -53,28 +79,43 @@ public class GerenciadorPensamentos : MonoBehaviour
         bocaFechadaAtual = aliceBocaFechada;
         bocaAbertaAtual = aliceBocaAberta;
 
-        // Mantém Alice bloqueada ao retornar da cutscene.
-        if (PlayerPrefs.GetInt(CHAVE_BLOQUEIO_FITA1, 0) == 1)
+        bool bloqueioFita1 =
+            PlayerPrefs.GetInt(CHAVE_BLOQUEIO_FITA1, 0) == 1;
+
+        bool bloqueioFita2 =
+            PlayerPrefs.GetInt(CHAVE_BLOQUEIO_FITA2, 0) == 1;
+
+        if (bloqueioFita1 || bloqueioFita2)
         {
             DialogueManager.DialogoGlobalAtivo = true;
         }
 
-        if (PlayerPrefs.GetInt(CHAVE_INICIAR_PENSAMENTOS, 0) == 1)
+        if (PlayerPrefs.GetInt(CHAVE_INICIAR_PENSAMENTOS_FITA1, 0) == 1)
         {
-            PlayerPrefs.SetInt(CHAVE_INICIAR_PENSAMENTOS, 0);
+            PlayerPrefs.SetInt(CHAVE_INICIAR_PENSAMENTOS_FITA1, 0);
             PlayerPrefs.Save();
 
-            StartCoroutine(IniciarPensamentosAutomaticamente());
+            StartCoroutine(IniciarPensamentosAutomaticamente(false));
+        }
+        else if (PlayerPrefs.GetInt(CHAVE_INICIAR_PENSAMENTOS_FITA2, 0) == 1)
+        {
+            PlayerPrefs.SetInt(CHAVE_INICIAR_PENSAMENTOS_FITA2, 0);
+            PlayerPrefs.Save();
+
+            StartCoroutine(IniciarPensamentosAutomaticamente(true));
         }
     }
 
-    private IEnumerator IniciarPensamentosAutomaticamente()
+    private IEnumerator IniciarPensamentosAutomaticamente(bool segundaFita)
     {
         yield return null;
 
         DialogueManager.DialogoGlobalAtivo = true;
 
-        IniciarPensamentosPosFita1();
+        if (segundaFita)
+            IniciarPensamentosPosFita2();
+        else
+            IniciarPensamentosPosFita1();
     }
 
     void Update()
@@ -115,13 +156,15 @@ public class GerenciadorPensamentos : MonoBehaviour
             audioVozAlice.Stop();
     }
 
-    // Mantém compatibilidade com os pensamentos já existentes.
+    // =========================================================
+    // MOSTRAR PENSAMENTOS
+    // =========================================================
+
     public void MostrarPensamento(string mensagem)
     {
         MostrarPensamento(mensagem, null);
     }
 
-    // Pensamento com ação ao fechar.
     public void MostrarPensamento(string mensagem, Action aoFechar)
     {
         MostrarPensamento(
@@ -132,7 +175,6 @@ public class GerenciadorPensamentos : MonoBehaviour
         );
     }
 
-    // Pensamento com rosto personalizado.
     public void MostrarPensamento(
         string mensagem,
         Action aoFechar,
@@ -169,7 +211,7 @@ public class GerenciadorPensamentos : MonoBehaviour
     }
 
     // =========================================================
-    // SEQUÊNCIA DE PENSAMENTOS APÓS A PRIMEIRA FITA VHS
+    // PRIMEIRA FITA VHS
     // =========================================================
 
     private void IniciarPensamentosPosFita1()
@@ -196,7 +238,6 @@ public class GerenciadorPensamentos : MonoBehaviour
         );
     }
 
-    // Só libera Alice depois que o terceiro pensamento for fechado.
     private void FinalizarPensamentosPosFita1()
     {
         PlayerPrefs.SetInt(CHAVE_BLOQUEIO_FITA1, 0);
@@ -204,7 +245,71 @@ public class GerenciadorPensamentos : MonoBehaviour
 
         DialogueManager.DialogoGlobalAtivo = false;
 
-        Debug.Log("Pensamentos finalizados. Alice pode se movimentar.");
+        Debug.Log("Pensamentos da primeira fita finalizados.");
+    }
+
+    // =========================================================
+    // SEGUNDA FITA VHS
+    // =========================================================
+
+    private void IniciarPensamentosPosFita2()
+    {
+        MostrarPensamento(
+            "Esse cara...",
+            MostrarSegundoPensamentoFita2,
+            fita2Pensamento1Fechada,
+            fita2Pensamento1Aberta
+        );
+    }
+
+    private void MostrarSegundoPensamentoFita2()
+    {
+        MostrarPensamento(
+            "Será que?...",
+            MostrarTerceiroPensamentoFita2,
+            fita2Pensamento2Fechada,
+            fita2Pensamento2Aberta
+        );
+    }
+
+    private void MostrarTerceiroPensamentoFita2()
+    {
+        MostrarPensamento(
+            "Eu preciso ser enxerida mesmo que eu seja presa.",
+            MostrarQuartoPensamentoFita2,
+            fita2Pensamento3Fechada,
+            fita2Pensamento3Aberta
+        );
+    }
+
+    private void MostrarQuartoPensamentoFita2()
+    {
+        MostrarPensamento(
+            "Bianca, eu vou descobrir o que aconteceu com você, custe o que custar.",
+            MostrarQuintoPensamentoFita2,
+            fita2Pensamento4Fechada,
+            fita2Pensamento4Aberta
+        );
+    }
+
+    private void MostrarQuintoPensamentoFita2()
+    {
+        MostrarPensamento(
+            "Obrigada, Dona Cida. Eu prometo que vou descobrir o que aconteceu com a sua filha.",
+            FinalizarPensamentosPosFita2,
+            fita2Pensamento5Fechada,
+            fita2Pensamento5Aberta
+        );
+    }
+
+    private void FinalizarPensamentosPosFita2()
+    {
+        PlayerPrefs.SetInt(CHAVE_BLOQUEIO_FITA2, 0);
+        PlayerPrefs.Save();
+
+        DialogueManager.DialogoGlobalAtivo = false;
+
+        Debug.Log("Pensamentos da segunda fita finalizados. Alice pode se movimentar.");
     }
 
     // =========================================================
@@ -317,8 +422,6 @@ public class GerenciadorPensamentos : MonoBehaviour
         Action acao = acaoAoFechar;
         acaoAoFechar = null;
 
-        // Se existe outro pensamento na sequência,
-        // mantém o bloqueio ativo.
         if (acao != null)
         {
             acao.Invoke();
