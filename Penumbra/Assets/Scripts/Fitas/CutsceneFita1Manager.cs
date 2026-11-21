@@ -31,6 +31,9 @@ public class CutsceneFita1Manager : MonoBehaviour
     private const string CHAVE_CENA_RETORNO_FITA1 =
         "CenaRetornoCutsceneFita1";
 
+    private const string CHAVE_INICIAR_PENSAMENTOS =
+        "IniciarPensamentosPosFita1";
+
     private void Start()
     {
         if (reprodutorVideo == null)
@@ -181,6 +184,10 @@ public class CutsceneFita1Manager : MonoBehaviour
             );
         }
 
+        // Avisa à delegacia que deve iniciar os pensamentos de Alice.
+        PlayerPrefs.SetInt(CHAVE_INICIAR_PENSAMENTOS, 1);
+        PlayerPrefs.Save();
+
         Time.timeScale = 1f;
 
         SceneManager.LoadScene(cenaRetorno);
@@ -190,8 +197,7 @@ public class CutsceneFita1Manager : MonoBehaviour
         CanvasGroup grupo,
         float inicio,
         float fim,
-        float duracao
-    )
+        float duracao)
     {
         if (grupo == null)
             yield break;

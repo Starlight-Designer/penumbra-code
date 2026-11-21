@@ -1751,6 +1751,58 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5718351597716681392, guid: d203bc604eda018478067294fc183da5, type: 3}
   m_PrefabInstance: {fileID: 964623366}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1343853584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1343853586}
+  - component: {fileID: 1343853585}
+  m_Layer: 0
+  m_Name: Gerenciador_Pensamentos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1343853585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343853584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 059bd9a3d074c0647b782a02ac2ccf5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GerenciadorPensamentos
+  painelPensamentos: {fileID: 1574866700}
+  nomePensamento: {fileID: 621801754}
+  textoPensamento: {fileID: 1435412923}
+  imagemAlice: {fileID: 501820862}
+  aliceBocaFechada: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
+  aliceBocaAberta: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
+  velocidadeTexto: 0.03
+  intervaloAnimacaoBoca: 0.2
+--- !u!4 &1343853586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343853584}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 951.00494, y: 522.5085, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1355167773
 GameObject:
   m_ObjectHideFlags: 0
@@ -3606,3 +3658,4 @@ SceneRoots:
   - {fileID: 1001932057}
   - {fileID: 1084885123}
   - {fileID: 13548361}
+  - {fileID: 1343853586}

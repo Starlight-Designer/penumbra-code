@@ -32,12 +32,34 @@ public class GerenciadorPensamentos : MonoBehaviour
     private Sprite bocaFechadaAtual;
     private Sprite bocaAbertaAtual;
 
+    private const string CHAVE_INICIAR_PENSAMENTOS =
+        "IniciarPensamentosPosFita1";
+
     void Start()
     {
         painelPensamentos.SetActive(false);
 
         bocaFechadaAtual = aliceBocaFechada;
         bocaAbertaAtual = aliceBocaAberta;
+
+        // Verifica se Alice acabou de assistir à primeira fita.
+        if (PlayerPrefs.GetInt(CHAVE_INICIAR_PENSAMENTOS, 0) == 1)
+        {
+            // Impede que a sequência seja repetida.
+            PlayerPrefs.SetInt(CHAVE_INICIAR_PENSAMENTOS, 0);
+            PlayerPrefs.Save();
+
+            // Inicia automaticamente após carregar a cena.
+            StartCoroutine(IniciarPensamentosAutomaticamente());
+        }
+    }
+
+    private IEnumerator IniciarPensamentosAutomaticamente()
+    {
+        // Aguarda um frame para a cena terminar de carregar.
+        yield return null;
+
+        IniciarPensamentosPosFita1();
     }
 
     void Update()
@@ -55,13 +77,13 @@ public class GerenciadorPensamentos : MonoBehaviour
         }
     }
 
-    // Mantém compatibilidade com os pensamentos já existentes
+    // Mantém compatibilidade com os pensamentos já existentes.
     public void MostrarPensamento(string mensagem)
     {
         MostrarPensamento(mensagem, null);
     }
 
-    // Pensamento com ação ao fechar
+    // Pensamento com ação ao fechar.
     public void MostrarPensamento(string mensagem, Action aoFechar)
     {
         MostrarPensamento(
@@ -72,7 +94,7 @@ public class GerenciadorPensamentos : MonoBehaviour
         );
     }
 
-    // Pensamento com rosto personalizado
+    // Pensamento com rosto personalizado.
     public void MostrarPensamento(
         string mensagem,
         Action aoFechar,
@@ -106,6 +128,30 @@ public class GerenciadorPensamentos : MonoBehaviour
 
         IniciarDigitacao();
         IniciarAnimacaoBoca();
+    }
+
+    // Sequência de pensamentos após a primeira fita VHS.
+    private void IniciarPensamentosPosFita1()
+    {
+        MostrarPensamento(
+            "Nossa...",
+            MostrarSegundoPensamento
+        );
+    }
+
+    private void MostrarSegundoPensamento()
+    {
+        MostrarPensamento(
+            "Eu preciso descobrir mais sobre esse caso.",
+            MostrarTerceiroPensamento
+        );
+    }
+
+    private void MostrarTerceiroPensamento()
+    {
+        MostrarPensamento(
+            "Vou à peixaria conversar com o pescador. Talvez ele saiba algo sobre este caso."
+        );
     }
 
     void IniciarDigitacao()
@@ -187,7 +233,7 @@ public class GerenciadorPensamentos : MonoBehaviour
 
         textoPensamento.maxVisibleCharacters = int.MaxValue;
 
-        // Restaura o rosto original da Alice
+        // Restaura o rosto original da Alice.
         bocaFechadaAtual = aliceBocaFechada;
         bocaAbertaAtual = aliceBocaAberta;
 
@@ -196,7 +242,7 @@ public class GerenciadorPensamentos : MonoBehaviour
 
         painelPensamentos.SetActive(false);
 
-        // Executa a ação somente depois que o painel for fechado
+        // Executa a próxima ação somente depois de fechar.
         Action acao = acaoAoFechar;
         acaoAoFechar = null;
 
