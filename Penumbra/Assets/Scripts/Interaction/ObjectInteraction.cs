@@ -33,6 +33,9 @@ public class ObjectInteraction : MonoBehaviour
     private const string CHAVE_CENA_RETORNO_FITA1 =
         "CenaRetornoCutsceneFita1";
 
+    private const string CHAVE_BLOQUEIO_FITA1 =
+        "BloquearAlicePosFita1";
+
     void Start()
     {
         if (textoInteracao != null)
@@ -68,6 +71,15 @@ public class ObjectInteraction : MonoBehaviour
         }
 
         itemColetado = true;
+
+        // Bloqueia Alice imediatamente ao pegar a primeira fita.
+        if (coletarItem && primeiraFitaVHS)
+        {
+            DialogueManager.DialogoGlobalAtivo = true;
+
+            PlayerPrefs.SetInt(CHAVE_BLOQUEIO_FITA1, 1);
+            PlayerPrefs.Save();
+        }
 
         if (coletarItem)
         {

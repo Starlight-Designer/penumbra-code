@@ -21,6 +21,12 @@ public class GerenciadorPensamentos : MonoBehaviour
     public float velocidadeTexto = 0.03f;
     public float intervaloAnimacaoBoca = 0.2f;
 
+    [Header("Áudio da Alice")]
+    public AudioSource audioVozAlice;
+    public AudioClip vozAlice;
+    [Range(0f, 1f)]
+    public float volumeVoz = 1f;
+
     private bool pensamentoAtivo = false;
     private bool textoDigitando = false;
 
@@ -35,29 +41,38 @@ public class GerenciadorPensamentos : MonoBehaviour
     private const string CHAVE_INICIAR_PENSAMENTOS =
         "IniciarPensamentosPosFita1";
 
+    private const string CHAVE_BLOQUEIO_FITA1 =
+        "BloquearAlicePosFita1";
+
     void Start()
     {
         painelPensamentos.SetActive(false);
 
+        PararAudioVoz();
+
         bocaFechadaAtual = aliceBocaFechada;
         bocaAbertaAtual = aliceBocaAberta;
 
-        // Verifica se Alice acabou de assistir à primeira fita.
+        // Mantém Alice bloqueada ao retornar da cutscene.
+        if (PlayerPrefs.GetInt(CHAVE_BLOQUEIO_FITA1, 0) == 1)
+        {
+            DialogueManager.DialogoGlobalAtivo = true;
+        }
+
         if (PlayerPrefs.GetInt(CHAVE_INICIAR_PENSAMENTOS, 0) == 1)
         {
-            // Impede que a sequência seja repetida.
             PlayerPrefs.SetInt(CHAVE_INICIAR_PENSAMENTOS, 0);
             PlayerPrefs.Save();
 
-            // Inicia automaticamente após carregar a cena.
             StartCoroutine(IniciarPensamentosAutomaticamente());
         }
     }
 
     private IEnumerator IniciarPensamentosAutomaticamente()
     {
-        // Aguarda um frame para a cena terminar de carregar.
         yield return null;
+
+        DialogueManager.DialogoGlobalAtivo = true;
 
         IniciarPensamentosPosFita1();
     }
@@ -75,6 +90,29 @@ public class GerenciadorPensamentos : MonoBehaviour
         {
             FecharPensamento();
         }
+    }
+
+    // =========================================================
+    // ÁUDIO DA ALICE
+    // =========================================================
+
+    private void IniciarAudioVoz()
+    {
+        PararAudioVoz();
+
+        if (audioVozAlice == null || vozAlice == null)
+            return;
+
+        audioVozAlice.clip = vozAlice;
+        audioVozAlice.volume = volumeVoz;
+        audioVozAlice.loop = true;
+        audioVozAlice.Play();
+    }
+
+    private void PararAudioVoz()
+    {
+        if (audioVozAlice != null && audioVozAlice.isPlaying)
+            audioVozAlice.Stop();
     }
 
     // Mantém compatibilidade com os pensamentos já existentes.
@@ -130,7 +168,10 @@ public class GerenciadorPensamentos : MonoBehaviour
         IniciarAnimacaoBoca();
     }
 
-    // Sequência de pensamentos após a primeira fita VHS.
+    // =========================================================
+    // SEQUÊNCIA DE PENSAMENTOS APÓS A PRIMEIRA FITA VHS
+    // =========================================================
+
     private void IniciarPensamentosPosFita1()
     {
         MostrarPensamento(
@@ -150,9 +191,25 @@ public class GerenciadorPensamentos : MonoBehaviour
     private void MostrarTerceiroPensamento()
     {
         MostrarPensamento(
-            "Vou à peixaria conversar com o pescador. Talvez ele saiba algo sobre este caso."
+            "Vou à peixaria conversar com o pescador. Talvez ele saiba algo sobre este caso.",
+            FinalizarPensamentosPosFita1
         );
     }
+
+    // Só libera Alice depois que o terceiro pensamento for fechado.
+    private void FinalizarPensamentosPosFita1()
+    {
+        PlayerPrefs.SetInt(CHAVE_BLOQUEIO_FITA1, 0);
+        PlayerPrefs.Save();
+
+        DialogueManager.DialogoGlobalAtivo = false;
+
+        Debug.Log("Pensamentos finalizados. Alice pode se movimentar.");
+    }
+
+    // =========================================================
+    // DIGITAÇÃO DO TEXTO
+    // =========================================================
 
     void IniciarDigitacao()
     {
@@ -163,6 +220,9 @@ public class GerenciadorPensamentos : MonoBehaviour
         textoPensamento.ForceMeshUpdate();
 
         textoDigitando = true;
+
+        IniciarAudioVoz();
+
         digitacaoTexto = StartCoroutine(AnimarTexto());
     }
 
@@ -173,12 +233,15 @@ public class GerenciadorPensamentos : MonoBehaviour
         for (int i = 0; i <= totalCaracteres; i++)
         {
             textoPensamento.maxVisibleCharacters = i;
+
             yield return new WaitForSeconds(velocidadeTexto);
         }
 
         textoPensamento.maxVisibleCharacters = int.MaxValue;
         textoDigitando = false;
         digitacaoTexto = null;
+
+        PararAudioVoz();
     }
 
     void CompletarTexto()
@@ -191,7 +254,13 @@ public class GerenciadorPensamentos : MonoBehaviour
 
         textoPensamento.maxVisibleCharacters = int.MaxValue;
         textoDigitando = false;
+
+        PararAudioVoz();
     }
+
+    // =========================================================
+    // ANIMAÇÃO DA BOCA
+    // =========================================================
 
     void IniciarAnimacaoBoca()
     {
@@ -215,8 +284,14 @@ public class GerenciadorPensamentos : MonoBehaviour
         }
     }
 
+    // =========================================================
+    // FECHAR PENSAMENTO
+    // =========================================================
+
     void FecharPensamento()
     {
+        PararAudioVoz();
+
         if (digitacaoTexto != null)
             StopCoroutine(digitacaoTexto);
 
@@ -229,11 +304,8 @@ public class GerenciadorPensamentos : MonoBehaviour
         textoDigitando = false;
         pensamentoAtivo = false;
 
-        DialogueManager.DialogoGlobalAtivo = false;
-
         textoPensamento.maxVisibleCharacters = int.MaxValue;
 
-        // Restaura o rosto original da Alice.
         bocaFechadaAtual = aliceBocaFechada;
         bocaAbertaAtual = aliceBocaAberta;
 
@@ -242,11 +314,23 @@ public class GerenciadorPensamentos : MonoBehaviour
 
         painelPensamentos.SetActive(false);
 
-        // Executa a próxima ação somente depois de fechar.
         Action acao = acaoAoFechar;
         acaoAoFechar = null;
 
+        // Se existe outro pensamento na sequência,
+        // mantém o bloqueio ativo.
         if (acao != null)
+        {
             acao.Invoke();
+        }
+        else
+        {
+            DialogueManager.DialogoGlobalAtivo = false;
+        }
+    }
+
+    private void OnDisable()
+    {
+        PararAudioVoz();
     }
 }

@@ -73,6 +73,10 @@ public class SceneTransition : MonoBehaviour
                 PlayerPrefs.SetInt("ObjetivoAtual", 5);
                 PlayerPrefs.Save();
             }
+
+            // O padre opcional desaparece definitivamente
+            // quando Alice entra na casa da mãe da Bianca.
+            PadreOpicional.RegistrarEntradaNaCasaDaBianca();
         }
 
         if (nomeCena == "Quarto_Bianca")

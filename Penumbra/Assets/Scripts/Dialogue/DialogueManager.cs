@@ -43,6 +43,10 @@ public class DialogueManager : MonoBehaviour
     public Sprite[] aliceBocaFechadaPorRespostaDepoisPuzzle;
     public Sprite[] aliceBocaAbertaPorRespostaDepoisPuzzle;
 
+    [Header("Sprites da Alice - respostas pós-puzzle da Peixaria")]
+    public Sprite[] aliceBocaFechadaPorRespostaDepoisPeixaria;
+    public Sprite[] aliceBocaAbertaPorRespostaDepoisPeixaria;
+
     [Header("Índice da resposta da Alice por fala do NPC")]
     public int[] indiceRespostaPorFala;
 
@@ -70,6 +74,13 @@ public class DialogueManager : MonoBehaviour
     [Header("Animação do texto")]
     public float velocidadeTexto = 0.03f;
 
+    [Header("Áudio das vozes")]
+    public AudioSource audioVoz;
+    public AudioClip vozAlice;
+    public AudioClip vozNPC;
+    [Range(0f, 1f)]
+    public float volumeVoz = 1f;
+
     private Coroutine digitacaoTexto;
     private bool textoDigitando = false;
 
@@ -82,6 +93,28 @@ public class DialogueManager : MonoBehaviour
     [Header("Configuração do NPC")]
     public string nomeDoPersonagem = "Delegado";
     public string nomeProtagonista = "Alice";
+
+    [Header("Configuração do Pastor")]
+    public bool pastorOpcional = false;
+
+    [Header("Pensamentos após diálogo com o Pastor")]
+    public GerenciadorPensamentos gerenciadorPensamentos;
+
+    [TextArea(2, 4)]
+    public string pensamentoPastor1 =
+        "Que cara bizarro... não quero falar com ele, ele me dá uma sensação estranha...";
+
+    [TextArea(2, 4)]
+    public string pensamentoPastor2 =
+        "Bom, vamos voltar para o que eu estava fazendo.";
+
+    [Header("Sprites do primeiro pensamento")]
+    public Sprite alicePastorPensamento1Fechada;
+    public Sprite alicePastorPensamento1Aberta;
+
+    [Header("Sprites do segundo pensamento")]
+    public Sprite alicePastorPensamento2Fechada;
+    public Sprite alicePastorPensamento2Aberta;
 
     [Header("Diálogo automático do pastor")]
     public bool iniciarAutomaticamenteAposFade = false;
@@ -101,6 +134,14 @@ public class DialogueManager : MonoBehaviour
     [Header("Respostas da Alice")]
     [TextArea(2, 4)]
     public string[] respostasAlice;
+
+    [Header("Falas do Padre Opicional")]
+    [TextArea(2, 4)]
+    public string[] falasPadreOpicional;
+
+    [Header("Respostas da Alice ao Padre Opicional")]
+    [TextArea(2, 4)]
+    public string[] respostasAlicePadreOpicional;
 
     [Header("Falas do pescador após o puzzle")]
     [TextArea(2, 4)]
@@ -143,7 +184,6 @@ public class DialogueManager : MonoBehaviour
     private string[] falasOriginais;
     private string[] respostasOriginais;
 
-    // Controle de continuidade do diálogo final do pescador.
     private const string CHAVE_DIALOGO_PESCADOR_INICIADO =
         "DialogoFinalPescadorIniciado";
 
@@ -162,8 +202,19 @@ public class DialogueManager : MonoBehaviour
 
         painelDialogo.SetActive(false);
 
+        PararAudioVoz();
+
         if (indicadorInteracao != null)
             indicadorInteracao.SetActive(false);
+
+        // Configura as falas específicas do Pastor opcional.
+        if (pastorOpcional)
+        {
+            falas = falasPadreOpicional;
+            respostasAlice = respostasAlicePadreOpicional;
+
+            Debug.Log("Diálogo do Pastor opcional configurado!");
+        }
 
         if (nomeDoPersonagem == "Pescador")
         {
@@ -174,7 +225,6 @@ public class DialogueManager : MonoBehaviour
                 PlayerPrefs.GetInt("PescadorPrimeiraConversa", 0) == 1 &&
                 PlayerPrefs.GetInt("DialogoFinalPescadorConcluido", 0) == 0;
 
-            // Verifica se existe um diálogo final interrompido.
             if (PlayerPrefs.GetInt("PescadorPuzzleConcluido", 0) == 1 &&
                 PlayerPrefs.GetInt("DialogoFinalPescadorConcluido", 0) == 0 &&
                 PlayerPrefs.GetInt(CHAVE_DIALOGO_PESCADOR_INICIADO, 0) == 1)
@@ -183,7 +233,6 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
-        // Configuração do item do Delegado.
         if (nomeDoPersonagem == "Delegado" && itemParaRevelar != null)
         {
             bool conversou =
@@ -195,7 +244,6 @@ public class DialogueManager : MonoBehaviour
             itemParaRevelar.SetActive(conversou && !fitaColetada);
         }
 
-        // Configuração da segunda fita da Dona Cida.
         if (nomeDoPersonagem == "Dona Cida" && itemParaRevelar != null)
         {
             bool fitaLiberada =
@@ -204,7 +252,6 @@ public class DialogueManager : MonoBehaviour
             itemParaRevelar.SetActive(fitaLiberada);
         }
 
-        // Verifica se Alice chegou após concluir o puzzle do quarto.
         if (nomeDoPersonagem == "Dona Cida" &&
             PlayerPrefs.GetInt("IniciarDialogoDonaCida", 0) == 1)
         {
@@ -216,22 +263,47 @@ public class DialogueManager : MonoBehaviour
             StartCoroutine(IniciarDialogoDonaCida());
         }
 
-        // Inicia automaticamente o diálogo do pastor após o fade de entrada.
         if (nomeDoPersonagem == "Pastor" && iniciarAutomaticamenteAposFade)
         {
             StartCoroutine(IniciarDialogoPastorAposFade());
         }
     }
 
+    // =========================================================
+    // ÁUDIO DAS VOZES
+    // =========================================================
+
+    void IniciarAudioVoz(bool aliceFalando)
+    {
+        PararAudioVoz();
+
+        if (audioVoz == null)
+            return;
+
+        AudioClip vozAtual = aliceFalando ? vozAlice : vozNPC;
+
+        if (vozAtual == null)
+            return;
+
+        audioVoz.clip = vozAtual;
+        audioVoz.volume = volumeVoz;
+        audioVoz.loop = true;
+        audioVoz.Play();
+    }
+
+    void PararAudioVoz()
+    {
+        if (audioVoz != null && audioVoz.isPlaying)
+            audioVoz.Stop();
+    }
+
     IEnumerator IniciarDialogoPastorAposFade()
     {
-        // O FadePreto ativa esta variável durante a transição de entrada.
         while (FadePreto.TransicaoAtiva)
         {
             yield return null;
         }
 
-        // Aguarda um frame para garantir que a cena terminou de se preparar.
         yield return null;
 
         Debug.Log("Iniciando diálogo automático de Alice com o pastor.");
@@ -247,7 +319,6 @@ public class DialogueManager : MonoBehaviour
         IniciarDialogoAutomatico();
     }
 
-    // Retoma o diálogo final do pescador de onde parou.
     IEnumerator RetomarDialogoFinalPescador()
     {
         yield return null;
@@ -297,7 +368,6 @@ public class DialogueManager : MonoBehaviour
         MostrarFala();
     }
 
-    // Salva a posição atual do diálogo final do pescador.
     void SalvarProgressoDialogoPescador()
     {
         if (nomeDoPersonagem != "Pescador" ||
@@ -339,9 +409,14 @@ public class DialogueManager : MonoBehaviour
 
         if (jogadorPerto && Input.GetKeyDown(KeyCode.F))
         {
-            // Os diálogos do pastor são automáticos e não podem ser reiniciados pela tecla F.
-            if (nomeDoPersonagem == "Pastor" && !dialogoAtivo)
+            // O Pastor inimigo não inicia diálogo por interação.
+            // O Pastor opcional pode conversar normalmente com F.
+            if (nomeDoPersonagem == "Pastor" &&
+                !pastorOpcional &&
+                !dialogoAtivo)
+            {
                 return;
+            }
 
             if (!dialogoAtivo)
             {
@@ -358,7 +433,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    // Inicia a fala curta de Alice depois que o pastor termina a transformação.
     public void IniciarDialogoPosTransformacao()
     {
         if (dialogoAtivo ||
@@ -442,7 +516,7 @@ public class DialogueManager : MonoBehaviour
             PlayerPrefs.GetInt("PuzzleQuartoConcluido", 0) == 0)
         {
             MostrarFalaEspecial(
-                "O quarto da Bianca é o primeiro da esquerda para a direita, pode entrar lá, a porta tá aberta.",
+                "O quarto da Bianca é o primeiro da esquerda para a direita, a porta tá aberta.",
                 nomeDoPersonagem
             );
             return;
@@ -612,12 +686,9 @@ public class DialogueManager : MonoBehaviour
                 ? falas[falaAtual]
                 : respostasAlice[respostaAtual];
 
-            // O diálogo "..." depois da transformação usa apenas um sprite fixo.
             bool falaPosTransformacao =
                 dialogoPosTransformacaoAtivo && somenteAliceFalando;
 
-            // A frase "VOCÊ MERECE MORRER" usa os sprites especiais
-            // de boca fechada e boca aberta configurados no Inspector.
             bool falaMereceMorrer =
                 somenteAliceFalando &&
                 falas[falaAtual].ToUpperInvariant().Contains("VOCÊ MERECE MORRER");
@@ -643,15 +714,33 @@ public class DialogueManager : MonoBehaviour
                 Sprite fechada = imagemDaAlice;
                 Sprite aberta = null;
 
-                Sprite[] spritesFechadosAlice =
-                    nomeDoPersonagem == "Dona Cida" && donaCidaDialogoPosPuzzle
-                    ? aliceBocaFechadaPorRespostaDepoisPuzzle
-                    : aliceBocaFechadaPorResposta;
+                Sprite[] spritesFechadosAlice;
+                Sprite[] spritesAbertosAlice;
 
-                Sprite[] spritesAbertosAlice =
-                    nomeDoPersonagem == "Dona Cida" && donaCidaDialogoPosPuzzle
-                    ? aliceBocaAbertaPorRespostaDepoisPuzzle
-                    : aliceBocaAbertaPorResposta;
+                if (nomeDoPersonagem == "Pescador" && dialogoFinalPescador)
+                {
+                    spritesFechadosAlice =
+                        aliceBocaFechadaPorRespostaDepoisPeixaria;
+
+                    spritesAbertosAlice =
+                        aliceBocaAbertaPorRespostaDepoisPeixaria;
+                }
+                else if (nomeDoPersonagem == "Dona Cida" && donaCidaDialogoPosPuzzle)
+                {
+                    spritesFechadosAlice =
+                        aliceBocaFechadaPorRespostaDepoisPuzzle;
+
+                    spritesAbertosAlice =
+                        aliceBocaAbertaPorRespostaDepoisPuzzle;
+                }
+                else
+                {
+                    spritesFechadosAlice =
+                        aliceBocaFechadaPorResposta;
+
+                    spritesAbertosAlice =
+                        aliceBocaAbertaPorResposta;
+                }
 
                 if (spritesFechadosAlice != null &&
                     indiceSpriteAlice >= 0 &&
@@ -693,10 +782,8 @@ public class DialogueManager : MonoBehaviour
 
         IniciarDigitacao();
 
-        // Salva a fala ou resposta atual do pescador.
         SalvarProgressoDialogoPescador();
     }
-
 
     void ConfigurarAnimacaoAlice(Sprite fechada, Sprite aberta)
     {
@@ -803,6 +890,10 @@ public class DialogueManager : MonoBehaviour
         textoDialogo.ForceMeshUpdate();
 
         textoDigitando = true;
+
+        bool aliceFalando = nomeNPC.text == nomeProtagonista;
+        IniciarAudioVoz(aliceFalando);
+
         digitacaoTexto = StartCoroutine(AnimarTexto());
     }
 
@@ -821,6 +912,8 @@ public class DialogueManager : MonoBehaviour
 
         textoDigitando = false;
         digitacaoTexto = null;
+
+        PararAudioVoz();
     }
 
     void CompletarTexto()
@@ -833,10 +926,58 @@ public class DialogueManager : MonoBehaviour
 
         textoDialogo.maxVisibleCharacters = int.MaxValue;
         textoDigitando = false;
+
+        PararAudioVoz();
+    }
+
+    // =========================================================
+    // PENSAMENTOS AUTOMÁTICOS APÓS O PASTOR
+    // =========================================================
+
+    IEnumerator IniciarPensamentosPastor()
+    {
+        // Aguarda um frame para não reutilizar o F
+        // que acabou de fechar o diálogo.
+        yield return null;
+
+        if (gerenciadorPensamentos == null)
+        {
+            Debug.LogError(
+                "GerenciadorPensamentos não foi conectado no DialogueManager do Pastor!"
+            );
+
+            yield break;
+        }
+
+        gerenciadorPensamentos.MostrarPensamento(
+            pensamentoPastor1,
+            MostrarSegundoPensamentoPastor,
+            alicePastorPensamento1Fechada,
+            alicePastorPensamento1Aberta
+        );
+
+        Debug.Log("Primeiro pensamento após o diálogo com o Pastor iniciado.");
+    }
+
+    void MostrarSegundoPensamentoPastor()
+    {
+        if (gerenciadorPensamentos == null)
+            return;
+
+        gerenciadorPensamentos.MostrarPensamento(
+            pensamentoPastor2,
+            null,
+            alicePastorPensamento2Fechada,
+            alicePastorPensamento2Aberta
+        );
+
+        Debug.Log("Segundo pensamento após o diálogo com o Pastor iniciado.");
     }
 
     void FinalizarDialogo()
     {
+        PararAudioVoz();
+
         if (digitacaoTexto != null)
         {
             StopCoroutine(digitacaoTexto);
@@ -854,8 +995,21 @@ public class DialogueManager : MonoBehaviour
 
         painelDialogo.SetActive(false);
 
-        // O segundo diálogo do pastor tem um evento próprio e não deve
-        // chamar novamente o evento que inicia a transformação.
+        // O diálogo do Pastor opcional não altera objetivos
+        // e não executa callbacks de outros personagens.
+        if (pastorOpcional)
+        {
+            jogadorPerto = false;
+
+            if (indicadorInteracao != null)
+                indicadorInteracao.SetActive(false);
+
+            // Inicia os pensamentos automáticos da Alice.
+            StartCoroutine(IniciarPensamentosPastor());
+
+            return;
+        }
+
         if (dialogoPosTransformacaoAtivo)
         {
             dialogoPosTransformacaoAtivo = false;
@@ -864,10 +1018,8 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // Permite iniciar a transformação do pastor ou outra ação configurada.
         aoFecharDialogo?.Invoke();
 
-        // Ações específicas do Delegado.
         if (nomeDoPersonagem == "Delegado" &&
             PlayerPrefs.GetInt("DelegadoConversou", 0) == 0)
         {
@@ -878,7 +1030,6 @@ public class DialogueManager : MonoBehaviour
                 itemParaRevelar.SetActive(true);
         }
 
-        // Ações específicas do Pescador.
         if (nomeDoPersonagem == "Pescador")
         {
             bool puzzleConcluido =
@@ -924,7 +1075,6 @@ public class DialogueManager : MonoBehaviour
 
                 PlayerPrefs.SetInt("DialogoFinalPescadorConcluido", 1);
 
-                // Apaga o progresso salvo porque o diálogo foi concluído.
                 PlayerPrefs.DeleteKey(CHAVE_DIALOGO_PESCADOR_INICIADO);
                 PlayerPrefs.DeleteKey(CHAVE_FALA_PESCADOR);
                 PlayerPrefs.DeleteKey(CHAVE_RESPOSTA_PESCADOR);
@@ -940,7 +1090,6 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // Ações específicas da Dona Cida.
         if (nomeDoPersonagem == "Dona Cida")
         {
             bool puzzleDoQuartoConcluido =
@@ -1030,7 +1179,6 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // Conclusão do objetivo configurado para os outros NPCs.
         if (objectiveManager != null &&
             PlayerPrefs.GetInt("ObjetivoAtual", 0) == objetivoParaConcluir)
         {
@@ -1048,5 +1196,10 @@ public class DialogueManager : MonoBehaviour
     {
         if (other.CompareTag("Player"))
             jogadorPerto = false;
+    }
+
+    private void OnDisable()
+    {
+        PararAudioVoz();
     }
 }

@@ -25,6 +25,8 @@ public class ObjectiveManager : MonoBehaviour
         "Investigue o Almoxarifado."
     };
 
+    private const string CHAVE_NPC_LIBERADO = "NPCOpcionalLiberado";
+
     void Start()
     {
         objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
@@ -40,6 +42,13 @@ public class ObjectiveManager : MonoBehaviour
 
         if (objetivoAtual < objetivos.Length)
         {
+            // Verifica se o objetivo concluído é o do pescador.
+            if (objetivoAtual == 3)
+            {
+                PlayerPrefs.SetInt(CHAVE_NPC_LIBERADO, 1);
+                Debug.Log("NPC OPCIONAL LIBERADO NA CENA_Teste!");
+            }
+
             objetivoAtual++;
 
             PlayerPrefs.SetInt("ObjetivoAtual", objetivoAtual);
