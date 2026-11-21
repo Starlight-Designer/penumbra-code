@@ -1,5 +1,7 @@
 
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
 {
@@ -10,6 +12,12 @@ public class SceneTransition : MonoBehaviour
 
     [Header("Pensamentos da Alice")]
     public GerenciadorPensamentos gerenciadorPensamentos;
+
+    [Header("Áudio da porta")]
+    public AudioSource audioPorta;
+    public AudioClip somAbrirPorta;
+    [Range(0f, 1f)]
+    public float volumeSomPorta = 1f;
 
     [Header("Transição de cena")]
     public FadePreto fade;
@@ -117,6 +125,36 @@ public class SceneTransition : MonoBehaviour
         // Impede que a transição seja iniciada mais de uma vez
         transicaoIniciada = true;
 
+        // Inicia a sequência de áudio e transição
+        StartCoroutine(TocarAudioETransicionar());
+    }
+
+    private IEnumerator TocarAudioETransicionar()
+    {
+        // Reproduz o som específico desta porta
+        if (somAbrirPorta != null)
+        {
+            if (audioPorta == null)
+                audioPorta = GetComponent<AudioSource>();
+
+            if (audioPorta != null)
+            {
+                audioPorta.PlayOneShot(somAbrirPorta, volumeSomPorta);
+            }
+            else
+            {
+                AudioSource.PlayClipAtPoint(
+                    somAbrirPorta,
+                    transform.position,
+                    volumeSomPorta
+                );
+            }
+
+            // Aguarda o som terminar
+            yield return new WaitForSecondsRealtime(somAbrirPorta.length);
+        }
+
+        // Inicia o fade e carrega a próxima cena
         if (fade != null)
         {
             fade.EscurecerECarregar(nomeCena);
@@ -124,7 +162,7 @@ public class SceneTransition : MonoBehaviour
         else
         {
             Debug.LogWarning("FadePreto não foi conectado! Carregando cena sem transição.");
-            UnityEngine.SceneManagement.SceneManager.LoadScene(nomeCena);
+            SceneManager.LoadScene(nomeCena);
         }
     }
 

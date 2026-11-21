@@ -1,9 +1,11 @@
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(AudioSource))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
@@ -12,18 +14,28 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private PastorPerseguicao pastor;
     [SerializeField] private string tagObstaculo = "Obstaculo";
 
+    [Header("Áudio dos Passos")]
+    [SerializeField] private AudioClip somPassos;
+    [SerializeField] private float intervaloPassos = 0.4f;
+
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer sr;
+    private AudioSource audioPassos;
     private Vector2 movement;
 
     private bool movimentoBloqueado = false;
+    private Coroutine rotinaPassos;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+        audioPassos = GetComponent<AudioSource>();
+
+        audioPassos.playOnAwake = false;
+        audioPassos.loop = false;
     }
 
     void Update()
@@ -36,7 +48,10 @@ public class PlayerMovement : MonoBehaviour
         {
             movement = Vector2.zero;
             rb.linearVelocity = Vector2.zero;
+
             AtualizarAnimacao();
+            AtualizarAudioPassos();
+
             return;
         }
 
@@ -53,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
         movement = input.normalized;
 
         AtualizarAnimacao();
+        AtualizarAudioPassos();
     }
 
     void FixedUpdate()
@@ -71,6 +87,49 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = movement * speed;
     }
 
+    private void AtualizarAudioPassos()
+    {
+        bool andando = movement != Vector2.zero;
+
+        if (andando && somPassos != null)
+        {
+            if (rotinaPassos == null)
+            {
+                rotinaPassos = StartCoroutine(TocarPassos());
+            }
+        }
+        else
+        {
+            PararPassos();
+        }
+    }
+
+    private IEnumerator TocarPassos()
+    {
+        while (movement != Vector2.zero && somPassos != null)
+        {
+            audioPassos.PlayOneShot(somPassos);
+
+            yield return new WaitForSeconds(intervaloPassos);
+        }
+
+        rotinaPassos = null;
+    }
+
+    private void PararPassos()
+    {
+        if (rotinaPassos != null)
+        {
+            StopCoroutine(rotinaPassos);
+            rotinaPassos = null;
+        }
+
+        if (audioPassos != null)
+        {
+            audioPassos.Stop();
+        }
+    }
+
     public void BloquearMovimento(bool bloquear)
     {
         movimentoBloqueado = bloquear;
@@ -78,11 +137,18 @@ public class PlayerMovement : MonoBehaviour
         movement = Vector2.zero;
         rb.linearVelocity = Vector2.zero;
 
+        PararPassos();
+
         if (sr != null)
             sr.enabled = !bloquear;
 
         if (animator != null)
             animator.SetBool("Andando", false);
+    }
+
+    private void OnDisable()
+    {
+        PararPassos();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

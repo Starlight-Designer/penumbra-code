@@ -1,11 +1,14 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MusicaMenu : MonoBehaviour
 {
     public AudioSource audioSource;
     public float duracaoFade = 2f;
+    [Range(0f, 1f)]
+    public float volumeMaximo = 1f;
 
     private Coroutine fadeAtual;
 
@@ -16,7 +19,7 @@ public class MusicaMenu : MonoBehaviour
 
         if (audioSource == null)
         {
-            Debug.LogError("AudioSource da música do menu não encontrado!");
+            Debug.LogError("AudioSource não encontrado!");
             return;
         }
 
@@ -38,9 +41,7 @@ public class MusicaMenu : MonoBehaviour
         if (fadeAtual != null)
             StopCoroutine(fadeAtual);
 
-        fadeAtual = StartCoroutine(
-            AlterarVolume(1f)
-        );
+        fadeAtual = StartCoroutine(AlterarVolume(volumeMaximo));
     }
 
     public void FadeOut()
@@ -51,9 +52,7 @@ public class MusicaMenu : MonoBehaviour
         if (fadeAtual != null)
             StopCoroutine(fadeAtual);
 
-        fadeAtual = StartCoroutine(
-            AlterarVolume(0f)
-        );
+        fadeAtual = StartCoroutine(AlterarVolume(0f));
     }
 
     private IEnumerator AlterarVolume(float volumeDestino)
@@ -80,5 +79,14 @@ public class MusicaMenu : MonoBehaviour
             audioSource.Stop();
 
         fadeAtual = null;
+    }
+
+    public IEnumerator FadeOutECarregarCena(string nomeCena)
+    {
+        FadeOut();
+
+        yield return new WaitForSecondsRealtime(duracaoFade);
+
+        SceneManager.LoadScene(nomeCena);
     }
 }

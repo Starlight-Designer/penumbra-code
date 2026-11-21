@@ -482,8 +482,8 @@ MonoBehaviour:
   tempoNoPreto: 0.5
   duracaoClarear: 1
   clarearAoIniciar: 1
-  audioSource: {fileID: 0}
-  audioVidroQuebrando: {fileID: 0}
+  audioSource: {fileID: 793622155}
+  audioVidroQuebrando: {fileID: 8300000, guid: f3b4af11b36d2ff4092036cc5a868efd, type: 3}
   duracaoFadeAudio: 1.5
   atrasoAudioAposFade: 0
   aoFicarPreto:
@@ -894,6 +894,7 @@ GameObject:
   - component: {fileID: 793622154}
   - component: {fileID: 793622153}
   - component: {fileID: 793622152}
+  - component: {fileID: 793622155}
   m_Layer: 0
   m_Name: Saida_Delegacia
   m_TagString: Untagged
@@ -916,6 +917,9 @@ MonoBehaviour:
   nomeCena: Cena_Teste
   spawnNoDestino: FrenteDelegacia
   gerenciadorPensamentos: {fileID: 0}
+  audioPorta: {fileID: 0}
+  somAbrirPorta: {fileID: 0}
+  volumeSomPorta: 1
   fade: {fileID: 561443066}
 --- !u!61 &793622153
 BoxCollider2D:
@@ -978,6 +982,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 28.99}
+--- !u!82 &793622155
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793622151}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &916262522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1792,6 +1893,16 @@ MonoBehaviour:
   audioVozAlice: {fileID: 1343853587}
   vozAlice: {fileID: 8300000, guid: 0edf421f225543e47a748e88ecdc250a, type: 3}
   volumeVoz: 1
+  fita2Pensamento1Fechada: {fileID: 0}
+  fita2Pensamento1Aberta: {fileID: 0}
+  fita2Pensamento2Fechada: {fileID: 0}
+  fita2Pensamento2Aberta: {fileID: 0}
+  fita2Pensamento3Fechada: {fileID: 0}
+  fita2Pensamento3Aberta: {fileID: 0}
+  fita2Pensamento4Fechada: {fileID: 0}
+  fita2Pensamento4Aberta: {fileID: 0}
+  fita2Pensamento5Fechada: {fileID: 0}
+  fita2Pensamento5Aberta: {fileID: 0}
 --- !u!4 &1343853586
 Transform:
   m_ObjectHideFlags: 0
@@ -2091,7 +2202,9 @@ MonoBehaviour:
   objectiveManager: {fileID: 1170436932}
   objetivoParaConcluir: 2
   primeiraFitaVHS: 1
+  segundaFitaVHS: 0
   nomeCenaCutsceneFita1: Cutscene_Fita_1
+  nomeCenaCutsceneFita2: Cutscene_Fita_2
   transportarParaIgreja: 0
   nomeCenaDestino: Cutscene_Fita_1
   fadePreto: {fileID: 561443066}
@@ -2651,6 +2764,14 @@ PrefabInstance:
     - target: {fileID: 133734196685289774, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
       propertyPath: posicaoInicial.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4691917285036432859, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
+      propertyPath: somPassos
+      value: 
+      objectReference: {fileID: 8300000, guid: 723a355fa6ae58e41b65cedbaeac130e, type: 3}
+    - target: {fileID: 4691917285036432859, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
+      propertyPath: intervaloPassos
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6024332924137142566, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
       propertyPath: m_Size.x
@@ -3344,6 +3465,8 @@ MonoBehaviour:
   donaCidaBocaAbertaPorFalaDepoisPuzzle: []
   aliceBocaFechadaPorRespostaDepoisPuzzle: []
   aliceBocaAbertaPorRespostaDepoisPuzzle: []
+  aliceBocaFechadaPorRespostaDepoisPeixaria: []
+  aliceBocaAbertaPorRespostaDepoisPeixaria: []
   indiceRespostaPorFala: 
   aliceEspecialBocaFechada: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
   aliceEspecialBocaAberta: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
@@ -3362,6 +3485,14 @@ MonoBehaviour:
   indicadorInteracao: {fileID: 786085694}
   nomeDoPersonagem: Delegado
   nomeProtagonista: Alice
+  pastorOpcional: 0
+  gerenciadorPensamentos: {fileID: 0}
+  pensamentoPastor1: "Que cara bizarro... n\xE3o quero falar com ele, ele me d\xE1 uma sensa\xE7\xE3o estranha..."
+  pensamentoPastor2: Bom, vamos voltar para o que eu estava fazendo.
+  alicePastorPensamento1Fechada: {fileID: 0}
+  alicePastorPensamento1Aberta: {fileID: 0}
+  alicePastorPensamento2Fechada: {fileID: 0}
+  alicePastorPensamento2Aberta: {fileID: 0}
   iniciarAutomaticamenteAposFade: 0
   somenteAliceFalando: 0
   aoFecharDialogo:
@@ -3379,6 +3510,8 @@ MonoBehaviour:
   - ' Oi tio! Quer dizer , delegado Juarez.'
   - "Foi sim,  s\xF3 uma hist\xF3ria esquisita que escutei mas tudo tranquilo\u2026inclusive tio, o senhor sabe de alguma lenda ou algo assim por aqui?"
   - "A\xED tio eu to falando s\xE9rio, ouvi no barco a hist\xF3ria de uma tal de Bianca, menina que simplesmente sumiu\u2026o senhor sabe desse caso?"
+  falasPadreOpicional: []
+  respostasAlicePadreOpicional: []
   falasDepoisPuzzle: []
   respostasAliceDepoisPuzzle: []
   falasDepoisPuzzleDonaCida: []

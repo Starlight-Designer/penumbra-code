@@ -3658,6 +3658,14 @@ PrefabInstance:
       propertyPath: posicaoInicial.y
       value: -3
       objectReference: {fileID: 0}
+    - target: {fileID: 4691917285036432859, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
+      propertyPath: somPassos
+      value: 
+      objectReference: {fileID: 8300000, guid: 75089aaf10acdfa439e270bf53e7ce8d, type: 3}
+    - target: {fileID: 4691917285036432859, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
+      propertyPath: intervaloPassos
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6024332924137142566, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
       propertyPath: m_Size.x
       value: 0.67

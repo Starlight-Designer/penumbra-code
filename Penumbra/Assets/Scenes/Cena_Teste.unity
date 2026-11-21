@@ -1714,6 +1714,10 @@ PrefabInstance:
       propertyPath: posicaoInicial.y
       value: -2
       objectReference: {fileID: 0}
+    - target: {fileID: 4691917285036432859, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
+      propertyPath: somPassos
+      value: 
+      objectReference: {fileID: 8300000, guid: 2f2339c291eaca1499e0c5976cf6c45a, type: 3}
     - target: {fileID: 6024332924137142566, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
       propertyPath: m_Size.x
       value: 1
@@ -3092,6 +3096,7 @@ MonoBehaviour:
   painelConfirmarReinicio: {fileID: 0}
   sliderVolume: {fileID: 0}
   fade: {fileID: 0}
+  musicaMenu: {fileID: 0}
 --- !u!4 &1101832311
 Transform:
   m_ObjectHideFlags: 0
@@ -4367,6 +4372,16 @@ MonoBehaviour:
   audioVozAlice: {fileID: 0}
   vozAlice: {fileID: 0}
   volumeVoz: 1
+  fita2Pensamento1Fechada: {fileID: 0}
+  fita2Pensamento1Aberta: {fileID: 0}
+  fita2Pensamento2Fechada: {fileID: 0}
+  fita2Pensamento2Aberta: {fileID: 0}
+  fita2Pensamento3Fechada: {fileID: 0}
+  fita2Pensamento3Aberta: {fileID: 0}
+  fita2Pensamento4Fechada: {fileID: 0}
+  fita2Pensamento4Aberta: {fileID: 0}
+  fita2Pensamento5Fechada: {fileID: 0}
+  fita2Pensamento5Aberta: {fileID: 0}
 --- !u!1001 &1896033737
 PrefabInstance:
   m_ObjectHideFlags: 0

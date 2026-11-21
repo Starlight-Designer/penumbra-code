@@ -2083,6 +2083,10 @@ MonoBehaviour:
   tempoNoPreto: 0.5
   duracaoClarear: 1
   clarearAoIniciar: 1
+  audioSource: {fileID: 0}
+  audioVidroQuebrando: {fileID: 0}
+  duracaoFadeAudio: 1.5
+  atrasoAudioAposFade: 0
   aoFicarPreto:
     m_PersistentCalls:
       m_Calls: []
@@ -5472,6 +5476,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4691917285036432859, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
+      propertyPath: somPassos
+      value: 
+      objectReference: {fileID: 8300000, guid: 2f2339c291eaca1499e0c5976cf6c45a, type: 3}
     - target: {fileID: 6024332924137142566, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
       propertyPath: m_Offset.x
       value: 0.07

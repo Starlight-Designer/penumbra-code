@@ -14,6 +14,9 @@ public class MovimentoIgrejaFuga : MonoBehaviour
     public float alturaFinalPastor = 3f;
     public float velocidadePastor = 2f;
 
+    [Header("Áudio de ambientação")]
+    public MusicaMenu musicaAmbiente;
+
     [Header("Transição para a floresta")]
     public FadePreto fadePreto;
     public float tempoAntesDaTransicao = 3f;
@@ -92,6 +95,25 @@ public class MovimentoIgrejaFuga : MonoBehaviour
 
         yield return new WaitForSeconds(tempoAntesDaTransicao);
 
+        // Faz o fade out da ambientação da igreja.
+        if (musicaAmbiente != null)
+        {
+            Debug.Log("Iniciando fade out da ambientação da igreja!");
+
+            musicaAmbiente.FadeOut();
+
+            yield return new WaitForSecondsRealtime(
+                musicaAmbiente.duracaoFade
+            );
+        }
+        else
+        {
+            Debug.LogWarning(
+                "Música de ambientação não foi conectada no MovimentoIgrejaFuga!"
+            );
+        }
+
+        // Depois do fade out do áudio, inicia a transição visual.
         if (fadePreto != null)
         {
             fadePreto.EscurecerECarregar(nomeCenaDestino);

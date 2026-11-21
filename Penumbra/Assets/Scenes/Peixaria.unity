@@ -272,6 +272,14 @@ MonoBehaviour:
   indicadorInteracao: {fileID: 1697331666}
   nomeDoPersonagem: Pescador
   nomeProtagonista: Alice
+  pastorOpcional: 0
+  gerenciadorPensamentos: {fileID: 0}
+  pensamentoPastor1: "Que cara bizarro... n\xE3o quero falar com ele, ele me d\xE1 uma sensa\xE7\xE3o estranha..."
+  pensamentoPastor2: Bom, vamos voltar para o que eu estava fazendo.
+  alicePastorPensamento1Fechada: {fileID: 0}
+  alicePastorPensamento1Aberta: {fileID: 0}
+  alicePastorPensamento2Fechada: {fileID: 0}
+  alicePastorPensamento2Aberta: {fileID: 0}
   iniciarAutomaticamenteAposFade: 0
   somenteAliceFalando: 0
   aoFecharDialogo:
@@ -284,6 +292,8 @@ MonoBehaviour:
   - "O que voc\xEA quer saber sobre Bianca?\nN\xE3o vou abrir o bico de gra\xE7a. Se quiser informa\xE7\xF5es, vai ter que me ajudar a organizar esses peixes primeiro."
   respostasAlice:
   - Tudo bem, eu ajudo.
+  falasPadreOpicional: []
+  respostasAlicePadreOpicional: []
   falasDepoisPuzzle:
   - Pode ir embora ja, obrigado pela a ajuda.
   - 'Menina- '
@@ -10116,6 +10126,10 @@ PrefabInstance:
       propertyPath: posicaoInicial.y
       value: -2.23
       objectReference: {fileID: 0}
+    - target: {fileID: 4691917285036432859, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
+      propertyPath: somPassos
+      value: 
+      objectReference: {fileID: 8300000, guid: 2f2339c291eaca1499e0c5976cf6c45a, type: 3}
     - target: {fileID: 6024332924137142566, guid: 9300da40b8fdb8548977525dfd50c502, type: 3}
       propertyPath: m_Offset.x
       value: 0.14
