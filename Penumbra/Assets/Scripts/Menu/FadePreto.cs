@@ -15,7 +15,7 @@ public class FadePreto : MonoBehaviour
     [Header("Cena da cutscene (modo B)")]
     [SerializeField] private bool clarearAoIniciar = false;
 
-    [Header("Áudio durante a transição")]
+    [Header("Áudio padrão durante a transição")]
     public AudioSource audioSource;
     public AudioClip audioVidroQuebrando;
     public float duracaoFadeAudio = 1.5f;
@@ -52,13 +52,57 @@ public class FadePreto : MonoBehaviour
         StartCoroutine(RotinaTransicao());
     }
 
+    // Transição SEM áudio.
     public void EscurecerECarregar(string nomeCena)
     {
         if (ocupado) return;
-        StartCoroutine(RotinaCarregar(nomeCena));
+
+        StartCoroutine(
+            RotinaCarregar(
+                nomeCena,
+                null,
+                null,
+                0f,
+                0f
+            )
+        );
     }
 
-    // Método para iniciar a fuga após o diálogo com o pastor.
+    // Transição usando explicitamente o áudio padrão.
+    // Utilizada pela Igreja_Porta.
+    public void EscurecerECarregarComAudioPadrao(string nomeCena)
+    {
+        EscurecerECarregarComAudio(
+            nomeCena,
+            audioVidroQuebrando,
+            audioSource,
+            atrasoAudioAposFade,
+            duracaoFadeAudio
+        );
+    }
+
+    // Transição com áudio escolhido individualmente pelo ponto de saída.
+    public void EscurecerECarregarComAudio(
+        string nomeCena,
+        AudioClip audio,
+        AudioSource fonteAudio,
+        float atraso,
+        float duracaoFade
+    )
+    {
+        if (ocupado) return;
+
+        StartCoroutine(
+            RotinaCarregar(
+                nomeCena,
+                audio,
+                fonteAudio,
+                atraso,
+                duracaoFade
+            )
+        );
+    }
+
     public void IrParaIgrejaFuga()
     {
         EscurecerECarregar("Igreja_Fuga");
@@ -84,53 +128,73 @@ public class FadePreto : MonoBehaviour
         TransicaoAtiva = false;
     }
 
-    private IEnumerator RotinaCarregar(string nomeCena)
+    private IEnumerator RotinaCarregar(
+        string nomeCena,
+        AudioClip audio,
+        AudioSource fonteAudio,
+        float atraso,
+        float duracaoFade
+    )
     {
         ocupado = true;
         TransicaoAtiva = true;
         grupo.blocksRaycasts = true;
 
-        // Primeiro, escurece a tela completamente.
+        // Escurece a tela.
         yield return Fade(0f, 1f, duracaoEscurecer);
 
-        // Espera o tempo escolhido antes de tocar o vidro.
-        if (atrasoAudioAposFade > 0f)
+        // Aguarda o atraso configurado.
+        if (atraso > 0f)
+            yield return new WaitForSecondsRealtime(atraso);
+
+        // Só reproduz áudio quando um clip foi informado.
+        if (audio != null)
         {
-            yield return new WaitForSecondsRealtime(
-                atrasoAudioAposFade
-            );
-        }
+            if (fonteAudio != null)
+            {
+                float volumeInicial = fonteAudio.volume;
 
-        if (audioSource != null && audioVidroQuebrando != null)
-        {
-            float volumeInicial = audioSource.volume;
+                fonteAudio.PlayOneShot(audio);
 
-            audioSource.clip = audioVidroQuebrando;
-            audioSource.volume = volumeInicial;
-            audioSource.Play();
+                float tempoFade = Mathf.Min(
+                    duracaoFade,
+                    audio.length
+                );
 
-            float tempoFade = Mathf.Min(
-                duracaoFadeAudio,
-                audioVidroQuebrando.length
-            );
+                float tempoAguardar = audio.length - tempoFade;
 
-            float tempoAguardar = audioVidroQuebrando.length - tempoFade;
+                if (tempoAguardar > 0f)
+                {
+                    yield return new WaitForSecondsRealtime(
+                        tempoAguardar
+                    );
+                }
 
-            if (tempoAguardar > 0f)
-                yield return new WaitForSecondsRealtime(tempoAguardar);
+                yield return FadeAudio(
+                    fonteAudio,
+                    volumeInicial,
+                    0f,
+                    tempoFade
+                );
 
-            yield return FadeAudio(
-                audioSource,
-                volumeInicial,
-                0f,
-                tempoFade
-            );
+                fonteAudio.Stop();
+                fonteAudio.volume = volumeInicial;
+            }
+            else
+            {
+                AudioSource.PlayClipAtPoint(
+                    audio,
+                    Camera.main != null
+                        ? Camera.main.transform.position
+                        : Vector3.zero
+                );
 
-            audioSource.Stop();
-            audioSource.volume = volumeInicial;
+                yield return new WaitForSecondsRealtime(audio.length);
+            }
         }
         else
         {
+            // Sem áudio, utiliza a espera normal.
             yield return new WaitForSecondsRealtime(tempoNoPreto);
         }
 
@@ -166,6 +230,7 @@ public class FadePreto : MonoBehaviour
         while (t < duracao)
         {
             t += Time.unscaledDeltaTime;
+
             float p = Mathf.Clamp01(t / duracao);
             float suave = p * p * (3f - 2f * p);
 
@@ -181,7 +246,8 @@ public class FadePreto : MonoBehaviour
         AudioSource source,
         float volumeInicial,
         float volumeFinal,
-        float duracao)
+        float duracao
+    )
     {
         float t = 0f;
 

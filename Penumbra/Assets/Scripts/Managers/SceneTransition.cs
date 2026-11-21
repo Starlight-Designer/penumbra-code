@@ -1,5 +1,4 @@
 
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,11 +12,15 @@ public class SceneTransition : MonoBehaviour
     [Header("Pensamentos da Alice")]
     public GerenciadorPensamentos gerenciadorPensamentos;
 
-    [Header("Áudio da porta")]
-    public AudioSource audioPorta;
-    public AudioClip somAbrirPorta;
-    [Range(0f, 1f)]
-    public float volumeSomPorta = 1f;
+    [Header("Áudio da transição")]
+    public bool usarAudio = false;
+    public AudioClip audioTransicao;
+    public AudioSource fonteAudio;
+
+    [Range(0f, 5f)]
+    public float atrasoAudio = 0f;
+
+    public float duracaoFadeAudio = 1.5f;
 
     [Header("Transição de cena")]
     public FadePreto fade;
@@ -119,49 +122,43 @@ public class SceneTransition : MonoBehaviour
             PlayerPrefs.Save();
         }
 
-        // Guarda o spawn da próxima cena
+        // Guarda o spawn da próxima cena.
         SpawnData.proximoSpawn = spawnNoDestino;
 
-        // Impede que a transição seja iniciada mais de uma vez
+        // Impede que a transição seja iniciada mais de uma vez.
         transicaoIniciada = true;
 
-        // Inicia a sequência de áudio e transição
-        StartCoroutine(TocarAudioETransicionar());
-    }
-
-    private IEnumerator TocarAudioETransicionar()
-    {
-        // Reproduz o som específico desta porta
-        if (somAbrirPorta != null)
-        {
-            if (audioPorta == null)
-                audioPorta = GetComponent<AudioSource>();
-
-            if (audioPorta != null)
-            {
-                audioPorta.PlayOneShot(somAbrirPorta, volumeSomPorta);
-            }
-            else
-            {
-                AudioSource.PlayClipAtPoint(
-                    somAbrirPorta,
-                    transform.position,
-                    volumeSomPorta
-                );
-            }
-
-            // Aguarda o som terminar
-            yield return new WaitForSecondsRealtime(somAbrirPorta.length);
-        }
-
-        // Inicia o fade e carrega a próxima cena
         if (fade != null)
         {
-            fade.EscurecerECarregar(nomeCena);
+            // Igreja_Porta continua usando o áudio padrão
+            // do FadePreto (vidro quebrando).
+            if (nomeCena == "Igreja_Porta")
+            {
+                fade.EscurecerECarregarComAudioPadrao(nomeCena);
+            }
+            // Áudio individual escolhido no Inspector.
+            else if (usarAudio && audioTransicao != null)
+            {
+                fade.EscurecerECarregarComAudio(
+                    nomeCena,
+                    audioTransicao,
+                    fonteAudio,
+                    atrasoAudio,
+                    duracaoFadeAudio
+                );
+            }
+            // Todos os outros pontos sem áudio ficam silenciosos.
+            else
+            {
+                fade.EscurecerECarregar(nomeCena);
+            }
         }
         else
         {
-            Debug.LogWarning("FadePreto não foi conectado! Carregando cena sem transição.");
+            Debug.LogWarning(
+                "FadePreto não foi conectado! Carregando cena sem transição."
+            );
+
             SceneManager.LoadScene(nomeCena);
         }
     }
@@ -174,7 +171,9 @@ public class SceneTransition : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Gerenciador de pensamentos não foi conectado ao SceneTransition!");
+            Debug.LogWarning(
+                "Gerenciador de pensamentos não foi conectado ao SceneTransition!"
+            );
         }
     }
 }

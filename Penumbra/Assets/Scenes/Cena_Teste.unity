@@ -585,6 +585,11 @@ MonoBehaviour:
   nomeCena: Floresta
   spawnNoDestino: Caminho_Floresta
   gerenciadorPensamentos: {fileID: 1846865664}
+  usarAudio: 0
+  audioTransicao: {fileID: 0}
+  fonteAudio: {fileID: 0}
+  atrasoAudio: 0
+  duracaoFadeAudio: 1.5
   fade: {fileID: 791754793}
 --- !u!61 &293628690
 BoxCollider2D:
@@ -1499,6 +1504,11 @@ MonoBehaviour:
   nomeCena: Peixaria
   spawnNoDestino: Peixaria
   gerenciadorPensamentos: {fileID: 1846865664}
+  usarAudio: 0
+  audioTransicao: {fileID: 0}
+  fonteAudio: {fileID: 0}
+  atrasoAudio: 0
+  duracaoFadeAudio: 1.5
   fade: {fileID: 791754793}
 --- !u!61 &503311174
 BoxCollider2D:
@@ -2599,8 +2609,8 @@ MonoBehaviour:
   tempoNoPreto: 0.5
   duracaoClarear: 1
   clarearAoIniciar: 1
-  audioSource: {fileID: 0}
-  audioVidroQuebrando: {fileID: 0}
+  audioSource: {fileID: 1117491625}
+  audioVidroQuebrando: {fileID: 8300000, guid: f3b4af11b36d2ff4092036cc5a868efd, type: 3}
   duracaoFadeAudio: 1.5
   atrasoAudioAposFade: 0
   aoFicarPreto:
@@ -2900,6 +2910,11 @@ MonoBehaviour:
   nomeCena: Casa_Mae_Bianca
   spawnNoDestino: Casa_Mae_Bianca
   gerenciadorPensamentos: {fileID: 1846865664}
+  usarAudio: 1
+  audioTransicao: {fileID: 0}
+  fonteAudio: {fileID: 0}
+  atrasoAudio: 0
+  duracaoFadeAudio: 1.5
   fade: {fileID: 791754793}
 --- !u!114 &983127601 stripped
 MonoBehaviour:
@@ -3341,6 +3356,7 @@ GameObject:
   - component: {fileID: 1117491623}
   - component: {fileID: 1117491622}
   - component: {fileID: 1117491624}
+  - component: {fileID: 1117491625}
   m_Layer: 0
   m_Name: Entrada_Delegacia
   m_TagString: Untagged
@@ -3424,7 +3440,109 @@ MonoBehaviour:
   nomeCena: Delegacia
   spawnNoDestino: Delegacia
   gerenciadorPensamentos: {fileID: 0}
+  usarAudio: 1
+  audioTransicao: {fileID: 0}
+  fonteAudio: {fileID: 0}
+  atrasoAudio: 0
+  duracaoFadeAudio: 1.5
   fade: {fileID: 791754793}
+--- !u!82 &1117491625
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117491621}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1177831144
 GameObject:
   m_ObjectHideFlags: 0
