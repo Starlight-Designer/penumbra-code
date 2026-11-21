@@ -142,8 +142,8 @@ public class CutsceneManager : MonoBehaviour
         textoPularCutscene.SetActive(false);
         painelPausaCutscene.SetActive(false);
 
-        PlayerPrefs.SetInt("CutsceneInicialAssistida", 1);
-        PlayerPrefs.Save();
+        // A cutscene final não altera o registro
+        // de que a cutscene inicial foi assistida.
 
         DialogueManager.DialogoGlobalAtivo = false;
 

@@ -29,19 +29,28 @@ public class MenuManager : MonoBehaviour
 
     public void Jogar()
     {
+        // Se existe uma partida salva, continua de onde parou.
         if (PlayerPrefs.GetInt("TemPartidaSalva", 0) == 1)
         {
-            string cenaSalva = PlayerPrefs.GetString("CenaSalva", "Cena_Teste");
+            string cenaSalva = PlayerPrefs.GetString(
+                "CenaSalva",
+                "Cena_Teste"
+            );
+
             SceneManager.LoadScene(cenaSalva);
+            return;
         }
-        else if (PlayerPrefs.GetInt("CutsceneInicialAssistida", 0) == 0)
+
+        // Se ainda não assistiu à abertura, reproduz a cutscene.
+        if (PlayerPrefs.GetInt("CutsceneInicialAssistida", 0) == 0)
         {
             IrParaCutscene();
+            return;
         }
-        else
-        {
-            SceneManager.LoadScene("Cena_Teste");
-        }
+
+        // Se já assistiu à abertura e não há partida salva,
+        // entra diretamente no jogo.
+        SceneManager.LoadScene("Cena_Teste");
     }
 
     public void AbrirCreditos()
@@ -66,21 +75,21 @@ public class MenuManager : MonoBehaviour
 
     public void ConfirmarReinicio()
     {
-        // Guardar as configurações de áudio
+        // Guardar as configurações de áudio.
         float volumeGeral = PlayerPrefs.GetFloat("VolumeGeral", 1f);
         float volumeMusica = PlayerPrefs.GetFloat("VolumeMusica", 1f);
         float volumeCutscenes = PlayerPrefs.GetFloat("VolumeCutscenes", 1f);
 
-        // Limpar o inventário
+        // Limpar o inventário.
         if (InventoryManager.instance != null)
         {
             InventoryManager.instance.LimparInventario();
         }
 
-        // Limpar o progresso do jogo
+        // Limpar o progresso do jogo.
         PlayerPrefs.DeleteAll();
 
-        // Restaurar as configurações de áudio
+        // Restaurar as configurações de áudio.
         PlayerPrefs.SetFloat("VolumeGeral", volumeGeral);
         PlayerPrefs.SetFloat("VolumeMusica", volumeMusica);
         PlayerPrefs.SetFloat("VolumeCutscenes", volumeCutscenes);
@@ -89,7 +98,7 @@ public class MenuManager : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        // Iniciar uma nova partida
+        // Iniciar uma nova partida pela cutscene inicial.
         IrParaCutscene();
     }
 

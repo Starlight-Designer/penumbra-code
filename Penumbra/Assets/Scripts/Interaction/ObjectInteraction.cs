@@ -20,12 +20,18 @@ public class ObjectInteraction : MonoBehaviour
     [Header("Identificação da fita")]
     public bool primeiraFitaVHS = false;
 
+    [Header("Cutscene da primeira fita")]
+    public string nomeCenaCutsceneFita1 = "Cutscene_Fita_1";
+
     [Header("Transição da terceira fita")]
     public bool transportarParaIgreja = false;
     public string nomeCenaDestino = "Igreja_Porta";
     public FadePreto fadePreto;
 
     private bool itemColetado = false;
+
+    private const string CHAVE_CENA_RETORNO_FITA1 =
+        "CenaRetornoCutsceneFita1";
 
     void Start()
     {
@@ -98,6 +104,22 @@ public class ObjectInteraction : MonoBehaviour
 
         if (coletarItem)
             Destroy(gameObject);
+
+        // Inicia a cutscene depois da coleta da primeira fita.
+        if (coletarItem && primeiraFitaVHS)
+        {
+            string cenaAtual = SceneManager.GetActiveScene().name;
+
+            PlayerPrefs.SetString(
+                CHAVE_CENA_RETORNO_FITA1,
+                cenaAtual
+            );
+
+            PlayerPrefs.Save();
+
+            SceneManager.LoadScene(nomeCenaCutsceneFita1);
+            yield break;
+        }
 
         if (transportarParaIgreja)
         {

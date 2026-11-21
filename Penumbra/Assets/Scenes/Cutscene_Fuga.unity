@@ -829,11 +829,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 296479116}
-  - {fileID: 106103047}
   - {fileID: 1460859275}
   - {fileID: 237108190}
   - {fileID: 1865328246}
   - {fileID: 717060578}
+  - {fileID: 106103047}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1166,8 +1166,8 @@ MonoBehaviour:
   painelPausa: {fileID: 106103048}
   painelObjetivos: {fileID: 0}
   videoCutscene: {fileID: 803649383}
-  nomePainelPausa: Painel_Pausa
-  nomePainelObjetivos: Painel_Objetivos
+  nomePainelPausa: Painel_Pausa (1)
+  nomePainelObjetivos: 
 --- !u!4 &1498870502
 Transform:
   m_ObjectHideFlags: 0

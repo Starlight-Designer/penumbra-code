@@ -485,6 +485,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   audioVidroQuebrando: {fileID: 0}
   duracaoFadeAudio: 1.5
+  atrasoAudioAposFade: 0
   aoFicarPreto:
     m_PersistentCalls:
       m_Calls: []
@@ -1247,14 +1248,14 @@ RectTransform:
   m_GameObject: {fileID: 1017800078}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.39, y: 1.39, z: 1.39}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1170436930}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -350}
   m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1017800080
@@ -1937,9 +1938,10 @@ MonoBehaviour:
   objectiveManager: {fileID: 1170436932}
   objetivoParaConcluir: 2
   primeiraFitaVHS: 1
+  nomeCenaCutsceneFita1: Cutscene_Fita_1
   transportarParaIgreja: 0
-  nomeCenaDestino: Igreja_Porta
-  fadePreto: {fileID: 0}
+  nomeCenaDestino: Cutscene_Fita_1
+  fadePreto: {fileID: 561443066}
 --- !u!61 &1504889989
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3174,8 +3176,14 @@ MonoBehaviour:
   imagemDaAlice: {fileID: -6968551063855250685, guid: 9c5b06353e4f8294db5cc0299fca110f, type: 3}
   imagemDaAliceBocaAberta: {fileID: -3576318855423470051, guid: 68cc4fda4bafab749aad3f4c1eb34f30, type: 3}
   imagemNPCBocaAberta: {fileID: -6501494232570338453, guid: b6bfd7c226f1c5c479c1a6e52fa08b55, type: 3}
-  aliceBocaFechadaPorResposta: []
-  aliceBocaAbertaPorResposta: []
+  aliceBocaFechadaPorResposta:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
+  aliceBocaAbertaPorResposta:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 9219117700405776107, guid: 2df1845dda8af0b4db05f8f6c7d0b086, type: 3}
   npcBocaFechadaPorFala: []
   npcBocaAbertaPorFala: []
   donaCidaBocaFechadaPorFalaDepoisPuzzle: []
@@ -3205,13 +3213,14 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   falas:
-  - Oi sobrinha querida, como foi a sua viagem?
-  - "ate falaria mas meus dialogos est\xE3o limitados por 3 ent deixa pra mais tarde quando a programadora ajeitar o script kkk"
-  - tchau prr
+  - Olha minha sobrinha favorita!
+  - "T\xE1 tudo bem minha sobrinha, por enquanto sem formalidades, como foi no barco tudo certo?"
+  - "Lendas tem um monte, j\xE1 ouviu falar no curupira?"
+  - "J\xE1 que voc\xEA t\xE1 t\xE3o interessada nessa tal lenda assiste essa fita, a lenda veio desse caso."
   respostasAlice:
-  - Foi tranquila! Mas escutei sobre uma lenda dessa cidade, pode me falar um pouco sobre?
-  - ata kkkkj ent fds essa porra.
-  - tchau veio broxa kkj
+  - ' Oi tio! Quer dizer , delegado Juarez.'
+  - "Foi sim,  s\xF3 uma hist\xF3ria esquisita que escutei mas tudo tranquilo\u2026inclusive tio, o senhor sabe de alguma lenda ou algo assim por aqui?"
+  - "A\xED tio eu to falando s\xE9rio, ouvi no barco a hist\xF3ria de uma tal de Bianca, menina que simplesmente sumiu\u2026o senhor sabe desse caso?"
   falasDepoisPuzzle: []
   respostasAliceDepoisPuzzle: []
   falasDepoisPuzzleDonaCida: []
