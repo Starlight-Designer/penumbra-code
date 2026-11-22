@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -10,6 +9,10 @@ public class ObjetoLivroArrastavel : MonoBehaviour
 
     [Header("Destaque")]
     public DestaqueSprite2D destaque;
+
+    [Header("Áudio")]
+    public AudioSource fonteAudio;
+    public AudioClip somPegarItem;
 
     private Camera cameraPrincipal;
     private Vector3 posicaoOriginal;
@@ -25,6 +28,9 @@ public class ObjetoLivroArrastavel : MonoBehaviour
     {
         cameraPrincipal = Camera.main;
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (fonteAudio == null)
+            fonteAudio = GetComponent<AudioSource>();
 
         if (destaque == null)
             destaque = GetComponent<DestaqueSprite2D>();
@@ -48,6 +54,7 @@ public class ObjetoLivroArrastavel : MonoBehaviour
             return;
 
         arrastando = true;
+        TocarSom(somPegarItem);
 
         posicaoOriginal = transform.position;
         ordemOriginal = spriteRenderer.sortingOrder;
@@ -56,7 +63,6 @@ public class ObjetoLivroArrastavel : MonoBehaviour
         deslocamento = transform.position - mouse;
 
         spriteRenderer.sortingOrder = ordemOriginal + 100;
-
         AtualizarDestaque();
     }
 
@@ -66,14 +72,12 @@ public class ObjetoLivroArrastavel : MonoBehaviour
             return;
 
         Vector3 mouse = ObterPosicaoMouse();
-
         transform.position = mouse + deslocamento;
 
-        bool sobreEstante = estante != null &&
-            estante.GetComponent<Collider2D>().OverlapPoint(mouse);
+        Collider2D colisor = estante.GetComponent<Collider2D>();
+        bool sobreEstante = colisor != null && colisor.OverlapPoint(mouse);
 
-        if (estante != null)
-            estante.Destacar(sobreEstante);
+        estante.Destacar(sobreEstante);
     }
 
     void OnMouseUp()
@@ -84,9 +88,7 @@ public class ObjetoLivroArrastavel : MonoBehaviour
         arrastando = false;
 
         Vector2 posicaoMouse = ObterPosicaoMouse();
-
-        bool aceito = estante != null &&
-            estante.TentarEncaixar(this, posicaoMouse);
+        bool aceito = estante != null && estante.TentarEncaixar(this, posicaoMouse);
 
         if (!aceito)
         {
@@ -116,6 +118,17 @@ public class ObjetoLivroArrastavel : MonoBehaviour
     {
         if (destaque != null)
             destaque.Destacar(mouseEmCima || arrastando);
+    }
+
+    void TocarSom(AudioClip som)
+    {
+        if (som == null)
+            return;
+
+        if (fonteAudio != null)
+            fonteAudio.PlayOneShot(som);
+        else
+            AudioSource.PlayClipAtPoint(som, transform.position);
     }
 
     public void ConfirmarEncaixe()

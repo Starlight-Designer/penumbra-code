@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class PuzzleEstante : MonoBehaviour
@@ -12,8 +11,18 @@ public class PuzzleEstante : MonoBehaviour
     public Collider2D colisorEstante;
     public DestaqueSprite2D destaqueEstante;
 
+    [Header("Áudio do encaixe")]
+    public AudioSource fonteAudio;
+    public AudioClip somOrganizarLivros;
+
     private int pilhasOrganizadas = 0;
     private bool estanteCompleta = false;
+
+    void Awake()
+    {
+        if (fonteAudio == null)
+            fonteAudio = GetComponent<AudioSource>();
+    }
 
     public bool TentarEncaixar(ObjetoLivroArrastavel livro, Vector2 posicao)
     {
@@ -29,6 +38,7 @@ public class PuzzleEstante : MonoBehaviour
         pilhasOrganizadas++;
 
         livro.ConfirmarEncaixe();
+        TocarSom(somOrganizarLivros);
 
         if (pilhasOrganizadas == 1)
         {
@@ -49,6 +59,17 @@ public class PuzzleEstante : MonoBehaviour
         }
 
         return true;
+    }
+
+    void TocarSom(AudioClip som)
+    {
+        if (som == null)
+            return;
+
+        if (fonteAudio != null)
+            fonteAudio.PlayOneShot(som);
+        else
+            AudioSource.PlayClipAtPoint(som, transform.position);
     }
 
     public void Destacar(bool valor)

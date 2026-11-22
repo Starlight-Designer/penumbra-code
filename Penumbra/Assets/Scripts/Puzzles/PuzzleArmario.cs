@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class PuzzleArmario : MonoBehaviour
@@ -7,8 +6,18 @@ public class PuzzleArmario : MonoBehaviour
     public Collider2D colisorArmario;
     public DestaqueSprite2D destaqueArmario;
 
+    [Header("Áudio do encaixe")]
+    public AudioSource fonteAudio;
+    public AudioClip somGuardarRoupa;
+
     private int roupasGuardadas = 0;
     private bool armarioCompleto = false;
+
+    void Awake()
+    {
+        if (fonteAudio == null)
+            fonteAudio = GetComponent<AudioSource>();
+    }
 
     public bool TentarGuardar(RoupaArrastavel roupa, Vector2 posicao)
     {
@@ -17,13 +26,12 @@ public class PuzzleArmario : MonoBehaviour
 
         if (colisorArmario == null ||
             !colisorArmario.OverlapPoint(posicao))
-        {
             return false;
-        }
 
         roupasGuardadas++;
 
         roupa.ConfirmarEncaixe();
+        TocarSom(somGuardarRoupa);
 
         Debug.Log("Roupa guardada! Total: " + roupasGuardadas);
 
@@ -40,6 +48,17 @@ public class PuzzleArmario : MonoBehaviour
         }
 
         return true;
+    }
+
+    void TocarSom(AudioClip som)
+    {
+        if (som == null)
+            return;
+
+        if (fonteAudio != null)
+            fonteAudio.PlayOneShot(som);
+        else
+            AudioSource.PlayClipAtPoint(som, transform.position);
     }
 
     public void Destacar(bool valor)

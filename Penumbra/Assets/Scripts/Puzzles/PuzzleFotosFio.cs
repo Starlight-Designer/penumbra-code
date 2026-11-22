@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class PuzzleFotosFio : MonoBehaviour
@@ -10,8 +9,18 @@ public class PuzzleFotosFio : MonoBehaviour
     public Collider2D colisorFio;
     public DestaqueSprite2D destaqueFio;
 
+    [Header("Áudio do encaixe")]
+    public AudioSource fonteAudio;
+    public AudioClip somEncaixarFoto;
+
     private int fotosPenduradas = 0;
     private bool fioCompleto = false;
+
+    void Awake()
+    {
+        if (fonteAudio == null)
+            fonteAudio = GetComponent<AudioSource>();
+    }
 
     public bool TentarPendurar(FotoArrastavel foto, Vector2 posicao)
     {
@@ -34,6 +43,7 @@ public class PuzzleFotosFio : MonoBehaviour
         }
 
         foto.ConfirmarEncaixe(posicoesFotos[indice]);
+        TocarSom(somEncaixarFoto);
 
         fotosPenduradas++;
 
@@ -53,6 +63,17 @@ public class PuzzleFotosFio : MonoBehaviour
         }
 
         return true;
+    }
+
+    void TocarSom(AudioClip som)
+    {
+        if (som == null)
+            return;
+
+        if (fonteAudio != null)
+            fonteAudio.PlayOneShot(som);
+        else
+            AudioSource.PlayClipAtPoint(som, transform.position);
     }
 
     public void Destacar(bool valor)

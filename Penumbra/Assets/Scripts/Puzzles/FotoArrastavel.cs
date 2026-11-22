@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -15,6 +14,10 @@ public class FotoArrastavel : MonoBehaviour
     [Header("Destaque")]
     public DestaqueSprite2D destaque;
 
+    [Header("Áudio")]
+    public AudioSource fonteAudio;
+    public AudioClip somPegarItem;
+
     private Camera cameraPrincipal;
     private Vector3 posicaoOriginal;
     private Vector3 deslocamento;
@@ -29,6 +32,9 @@ public class FotoArrastavel : MonoBehaviour
     {
         cameraPrincipal = Camera.main;
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (fonteAudio == null)
+            fonteAudio = GetComponent<AudioSource>();
 
         if (destaque == null)
             destaque = GetComponent<DestaqueSprite2D>();
@@ -52,6 +58,7 @@ public class FotoArrastavel : MonoBehaviour
             return;
 
         arrastando = true;
+        TocarSom(somPegarItem);
 
         posicaoOriginal = transform.position;
         ordemOriginal = spriteRenderer.sortingOrder;
@@ -70,13 +77,10 @@ public class FotoArrastavel : MonoBehaviour
             return;
 
         Vector3 mouse = ObterPosicaoMouse();
-
         transform.position = mouse + deslocamento;
 
         Collider2D colisor = fio.GetComponent<Collider2D>();
-
-        bool sobreFio = colisor != null &&
-            colisor.OverlapPoint(mouse);
+        bool sobreFio = colisor != null && colisor.OverlapPoint(mouse);
 
         fio.Destacar(sobreFio);
     }
@@ -89,9 +93,7 @@ public class FotoArrastavel : MonoBehaviour
         arrastando = false;
 
         Vector2 posicaoMouse = ObterPosicaoMouse();
-
-        bool aceito = fio != null &&
-            fio.TentarPendurar(this, posicaoMouse);
+        bool aceito = fio != null && fio.TentarPendurar(this, posicaoMouse);
 
         if (!aceito)
         {
@@ -123,6 +125,17 @@ public class FotoArrastavel : MonoBehaviour
             destaque.Destacar(mouseEmCima || arrastando);
     }
 
+    void TocarSom(AudioClip som)
+    {
+        if (som == null)
+            return;
+
+        if (fonteAudio != null)
+            fonteAudio.PlayOneShot(som);
+        else
+            AudioSource.PlayClipAtPoint(som, transform.position);
+    }
+
     public int ObterIndice()
     {
         return indiceFoto;
@@ -140,7 +153,6 @@ public class FotoArrastavel : MonoBehaviour
             destaque.Destacar(false);
 
         transform.SetParent(posicao);
-
         spriteRenderer.sortingOrder = ordemOriginal;
     }
 }
