@@ -1288,4 +1288,25 @@ public class DialogueManager : MonoBehaviour
         // é desativado ou a cena é descarregada.
         DialogoGlobalAtivo = false;
     }
+
+#if UNITY_EDITOR
+    // Reinicia somente o progresso do pescador ao iniciar uma nova sessão
+    // de teste no Play Mode. Não afeta versões compiladas do jogo.
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void ReiniciarPuzzlePeixesAoIniciarPlayMode()
+    {
+        PlayerPrefs.DeleteKey("PescadorPrimeiraConversa");
+        PlayerPrefs.DeleteKey("PescadorPuzzleConcluido");
+        PlayerPrefs.DeleteKey("DialogoFinalPescadorConcluido");
+
+        PlayerPrefs.DeleteKey("DialogoFinalPescadorIniciado");
+        PlayerPrefs.DeleteKey("DialogoFinalPescadorFala");
+        PlayerPrefs.DeleteKey("DialogoFinalPescadorResposta");
+        PlayerPrefs.DeleteKey("DialogoFinalPescadorMostrandoResposta");
+
+        PlayerPrefs.Save();
+        Debug.Log("Puzzle dos peixes reiniciado para uma nova sessão de teste!");
+    }
+#endif
+
 }

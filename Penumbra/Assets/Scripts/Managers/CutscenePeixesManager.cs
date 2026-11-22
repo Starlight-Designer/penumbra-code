@@ -1,14 +1,12 @@
 
 using UnityEngine;
 using UnityEngine.Video;
-using System.Collections;
 
 public class CutscenePeixesManager : MonoBehaviour
 {
     [Header("Reprodução do vídeo")]
     public VideoPlayer reprodutorVideo;
     public GameObject imagemCutscene;
-    public GameObject textoPularCutscene;
 
     [Header("Diálogo final")]
     public DialogueManager dialogoPescador;
@@ -37,9 +35,6 @@ public class CutscenePeixesManager : MonoBehaviour
     {
         if (imagemCutscene != null)
             imagemCutscene.SetActive(false);
-
-        if (textoPularCutscene != null)
-            textoPularCutscene.SetActive(false);
 
         if (reprodutorVideo != null)
             reprodutorVideo.loopPointReached += FinalizarCutscene;
@@ -75,13 +70,6 @@ public class CutscenePeixesManager : MonoBehaviour
         {
             OcultarPersonagens();
         }
-
-        if (!cutsceneIniciada || cutsceneFinalizada)
-            return;
-
-        // E continua sendo usada somente para pular a cutscene.
-        if (Input.GetKeyDown(KeyCode.E))
-            FinalizarCutscene();
     }
 
     void OcultarPersonagens()
@@ -148,31 +136,7 @@ public class CutscenePeixesManager : MonoBehaviour
             imagemCutscene.transform.SetAsLastSibling();
         }
 
-        if (textoPularCutscene != null)
-        {
-            textoPularCutscene.SetActive(false);
-            textoPularCutscene.transform.SetAsLastSibling();
-        }
-
         reprodutorVideo.Play();
-
-        StartCoroutine(MostrarTextoPular());
-    }
-
-    IEnumerator MostrarTextoPular()
-    {
-        yield return new WaitForSecondsRealtime(3f);
-
-        if (!cutsceneFinalizada && textoPularCutscene != null)
-        {
-            textoPularCutscene.SetActive(true);
-            textoPularCutscene.transform.SetAsLastSibling();
-        }
-    }
-
-    public void PularCutscene()
-    {
-        FinalizarCutscene();
     }
 
     void FinalizarCutscene(VideoPlayer video = null)
@@ -186,9 +150,6 @@ public class CutscenePeixesManager : MonoBehaviour
 
         if (imagemCutscene != null)
             imagemCutscene.SetActive(false);
-
-        if (textoPularCutscene != null)
-            textoPularCutscene.SetActive(false);
 
         // Remove o popup original e todos os popups extras.
         if (painelPopupPeixes != null)

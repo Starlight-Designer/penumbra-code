@@ -7,6 +7,9 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
     [Header("Popup do puzzle")]
     public GameObject painelPopupPeixes;
 
+    [Header("Bloqueio dos peixes")]
+    public CanvasGroup grupoInteracaoPeixes;
+
     [Header("Som do popup")]
     public AudioSource audioPopup;
 
@@ -35,6 +38,13 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
 
             if (grupoPopup == null)
                 Debug.LogError("Adicione um CanvasGroup ao PainelPopupPeixes!");
+        }
+
+        if (grupoInteracaoPeixes == null)
+        {
+            Debug.LogError(
+                "Conecte o Grupo Interacao Peixes no Inspector!"
+            );
         }
     }
 
@@ -90,10 +100,35 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         }
     }
 
+    private void BloquearInteracaoPeixes()
+    {
+        if (grupoInteracaoPeixes == null)
+            return;
+
+        grupoInteracaoPeixes.interactable = false;
+        grupoInteracaoPeixes.blocksRaycasts = false;
+
+        Debug.Log("Interação com os peixes bloqueada!");
+    }
+
+    private void LiberarInteracaoPeixes()
+    {
+        if (grupoInteracaoPeixes == null)
+            return;
+
+        grupoInteracaoPeixes.interactable = true;
+        grupoInteracaoPeixes.blocksRaycasts = true;
+
+        Debug.Log("Interação com os peixes liberada!");
+    }
+
     private void MostrarPopup()
     {
         if (painelPopupPeixes == null)
             return;
+
+        // Bloqueia os peixes enquanto o popup estiver aberto.
+        BloquearInteracaoPeixes();
 
         painelPopupPeixes.SetActive(true);
 
@@ -140,6 +175,7 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         else if (painelPopupPeixes != null)
         {
             painelPopupPeixes.SetActive(false);
+            LiberarInteracaoPeixes();
         }
     }
 
@@ -157,6 +193,9 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         grupoPopup.alpha = 0f;
         painelPopupPeixes.SetActive(false);
         animacaoAtual = null;
+
+        // Só libera os peixes depois que o popup desaparece.
+        LiberarInteracaoPeixes();
     }
 
     private IEnumerator AparecerPopupsExtras()
@@ -213,7 +252,6 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
                 grupoNovo.blocksRaycasts = false;
             }
 
-            // Reproduz o áudio em cada popup extra.
             AudioSource somNovoPopup =
                 novoPopup.GetComponent<AudioSource>();
 
@@ -226,7 +264,6 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
             yield return new WaitForSeconds(intervaloEntrePopups);
         }
 
-        // Inicia a cutscene depois que todos os popups aparecerem.
         if (cutscenePeixesManager != null)
         {
             Debug.Log("Iniciando cutscene dos peixes!");
