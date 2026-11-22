@@ -1235,6 +1235,8 @@ MonoBehaviour:
   fita2Pensamento4Aberta: {fileID: 1766667236818194794, guid: 232ff096cf08c4940a72759cd09ce5e9, type: 3}
   fita2Pensamento5Fechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
   fita2Pensamento5Aberta: {fileID: 8512984223476161493, guid: 3f104814154a0e3409fa54b3b1e5202b, type: 3}
+  fita3Pensamento6Fechada: {fileID: 0}
+  fita3Pensamento6Aberta: {fileID: 0}
 --- !u!4 &646546815
 Transform:
   m_ObjectHideFlags: 0
@@ -1839,9 +1841,11 @@ MonoBehaviour:
   nomeCena: Cena_Teste
   spawnNoDestino: FrenteCasa
   gerenciadorPensamentos: {fileID: 0}
-  audioPorta: {fileID: 0}
-  somAbrirPorta: {fileID: 0}
-  volumeSomPorta: 1
+  usarAudio: 1
+  audioTransicao: {fileID: 8300000, guid: ea5ad18be598ae8459f2a20df6c08da2, type: 3}
+  fonteAudio: {fileID: 930301289}
+  atrasoAudio: 0
+  duracaoFadeAudio: 1.5
   fade: {fileID: 925904048}
 --- !u!61 &930301287
 BoxCollider2D:
@@ -3638,9 +3642,11 @@ MonoBehaviour:
   nomeCena: Quarto_Bianca
   spawnNoDestino: Quarto
   gerenciadorPensamentos: {fileID: 646546814}
-  audioPorta: {fileID: 0}
-  somAbrirPorta: {fileID: 0}
-  volumeSomPorta: 1
+  usarAudio: 1
+  audioTransicao: {fileID: 8300000, guid: ea5ad18be598ae8459f2a20df6c08da2, type: 3}
+  fonteAudio: {fileID: 1702077010}
+  atrasoAudio: 0
+  duracaoFadeAudio: 1.5
   fade: {fileID: 925904048}
 --- !u!61 &1702077007
 BoxCollider2D:
@@ -3736,6 +3742,8 @@ MonoBehaviour:
   fita2Pensamento4Aberta: {fileID: 0}
   fita2Pensamento5Fechada: {fileID: 0}
   fita2Pensamento5Aberta: {fileID: 0}
+  fita3Pensamento6Fechada: {fileID: 0}
+  fita3Pensamento6Aberta: {fileID: 0}
 --- !u!82 &1702077010
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4072,8 +4080,10 @@ MonoBehaviour:
   objetivoParaConcluir: 8
   primeiraFitaVHS: 0
   segundaFitaVHS: 1
+  terceiraFitaVHS: 0
   nomeCenaCutsceneFita1: Cutscene_Fita_1
   nomeCenaCutsceneFita2: Cutscene_Fita_2
+  nomeCenaCutsceneFita3: Cutscene_Fita_3
   transportarParaIgreja: 0
   nomeCenaDestino: Igreja_Porta
   fadePreto: {fileID: 0}

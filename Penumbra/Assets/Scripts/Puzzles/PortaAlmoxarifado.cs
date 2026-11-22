@@ -65,7 +65,8 @@ public class PortaAlmoxarifado : MonoBehaviour
 
         if (fadePreto != null)
         {
-            fadePreto.EscurecerECarregar(nomeCena);
+            // Transição com o áudio padrão da porta.
+            fadePreto.EscurecerECarregarComAudioPadrao(nomeCena);
         }
         else
         {

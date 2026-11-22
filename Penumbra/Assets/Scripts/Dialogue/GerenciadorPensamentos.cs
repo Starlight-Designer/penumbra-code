@@ -398,7 +398,19 @@ public class GerenciadorPensamentos : MonoBehaviour
 
         Debug.Log("Pensamentos da terceira fita finalizados. Indo para a Igreja.");
 
-        SceneManager.LoadScene("Igreja_Porta");
+        // Procura o FadePreto na cena do Almoxarifado.
+        FadePreto fade = FindObjectOfType<FadePreto>();
+
+        if (fade != null)
+        {
+            // Faz a transição com o áudio padrão da porta.
+            fade.EscurecerECarregarComAudioPadrao("Igreja_Porta");
+        }
+        else
+        {
+            Debug.LogWarning("FadePreto não encontrado! Carregando a cena sem áudio.");
+            SceneManager.LoadScene("Igreja_Porta");
+        }
     }
 
     // =========================================================
