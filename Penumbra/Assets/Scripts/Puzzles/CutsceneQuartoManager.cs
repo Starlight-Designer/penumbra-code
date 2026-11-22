@@ -9,7 +9,6 @@ public class CutsceneQuartoManager : MonoBehaviour
     [Header("Reprodução do vídeo")]
     public VideoPlayer reprodutorVideo;
     public GameObject imagemCutscene;
-    public GameObject textoPularCutscene;
 
     [Header("Painel do puzzle")]
     public GameObject painelPuzzleQuarto;
@@ -22,20 +21,8 @@ public class CutsceneQuartoManager : MonoBehaviour
         if (imagemCutscene != null)
             imagemCutscene.SetActive(false);
 
-        if (textoPularCutscene != null)
-            textoPularCutscene.SetActive(false);
-
         if (reprodutorVideo != null)
             reprodutorVideo.loopPointReached += FinalizarCutscene;
-    }
-
-    void Update()
-    {
-        if (!cutsceneIniciada || cutsceneFinalizada)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.E))
-            FinalizarCutscene();
     }
 
     public void IniciarCutscene()
@@ -57,24 +44,6 @@ public class CutsceneQuartoManager : MonoBehaviour
         }
 
         reprodutorVideo.Play();
-
-        StartCoroutine(MostrarTextoPular());
-    }
-
-    IEnumerator MostrarTextoPular()
-    {
-        yield return new WaitForSecondsRealtime(3f);
-
-        if (!cutsceneFinalizada && textoPularCutscene != null)
-        {
-            textoPularCutscene.SetActive(true);
-            textoPularCutscene.transform.SetAsLastSibling();
-        }
-    }
-
-    public void PularCutscene()
-    {
-        FinalizarCutscene();
     }
 
     void FinalizarCutscene(VideoPlayer video = null)
@@ -88,9 +57,6 @@ public class CutsceneQuartoManager : MonoBehaviour
 
         if (imagemCutscene != null)
             imagemCutscene.SetActive(false);
-
-        if (textoPularCutscene != null)
-            textoPularCutscene.SetActive(false);
 
         // Registra que Alice terminou o puzzle do quarto.
         PlayerPrefs.SetInt("PuzzleQuartoConcluido", 1);

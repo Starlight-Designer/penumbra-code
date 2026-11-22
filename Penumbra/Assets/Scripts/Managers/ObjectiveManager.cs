@@ -1,4 +1,3 @@
-
 using System.Collections;
 using UnityEngine;
 using TMPro;
@@ -14,7 +13,6 @@ public class ObjectiveManager : MonoBehaviour
 
     private AnimacaoZoom animacaoZoom;
     private Coroutine rotinaObjetivos;
-
     private int objetivoAtual = 0;
     private bool notificacaoEmAndamento = false;
 
@@ -44,10 +42,8 @@ public class ObjectiveManager : MonoBehaviour
         if (painelObjetivos != null)
         {
             animacaoZoom = painelObjetivos.GetComponent<AnimacaoZoom>();
-
             if (animacaoZoom == null)
                 Debug.LogError("Adicione AnimacaoZoom ao Painel_Objetivos!");
-
             painelObjetivos.SetActive(false);
         }
         else
@@ -61,7 +57,6 @@ public class ObjectiveManager : MonoBehaviour
     public void ConcluirObjetivo()
     {
         objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
-
         if (objetivoAtual >= objetivos.Length)
             return;
 
@@ -72,21 +67,17 @@ public class ObjectiveManager : MonoBehaviour
         }
 
         objetivoAtual++;
-
         PlayerPrefs.SetInt("ObjetivoAtual", objetivoAtual);
         PlayerPrefs.SetInt(CHAVE_NOTIFICACAO_PENDENTE, 1);
-
         PlayerPrefs.Save();
 
         Debug.Log("OBJETIVO CONCLUÍDO! NOVO VALOR: " + objetivoAtual);
-
         AtualizarObjetivos();
     }
 
     void AtualizarObjetivos()
     {
         objetivoAtual = Mathf.Clamp(objetivoAtual, 0, objetivos.Length);
-
         if (textoObjetivo1 == null || textoObjetivo2 == null)
         {
             Debug.LogError("Conecte os dois textos de objetivos no Inspector!");
@@ -98,7 +89,6 @@ public class ObjectiveManager : MonoBehaviour
             textoObjetivo1.text = objetivos[0];
             textoObjetivo1.fontStyle = FontStyles.Normal;
             textoObjetivo1.color = Color.black;
-
             textoObjetivo2.text = objetivos[1];
             textoObjetivo2.fontStyle = FontStyles.Normal;
             textoObjetivo2.color = Color.black;
@@ -116,9 +106,7 @@ public class ObjectiveManager : MonoBehaviour
                 textoObjetivo2.color = Color.black;
             }
             else
-            {
                 textoObjetivo2.text = "";
-            }
         }
     }
 
@@ -127,10 +115,8 @@ public class ObjectiveManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(CHAVE_NOTIFICACAO_PENDENTE, 0) != 1)
             return;
-
         if (notificacaoEmAndamento)
             return;
-
         if (Time.timeScale == 0f || FadePreto.TransicaoAtiva)
             return;
 
@@ -147,36 +133,25 @@ public class ObjectiveManager : MonoBehaviour
 
         PlayerPrefs.SetInt(CHAVE_NOTIFICACAO_PENDENTE, 0);
         PlayerPrefs.Save();
-
         notificacaoEmAndamento = true;
 
         painelObjetivos.SetActive(false);
         painelObjetivos.SetActive(true);
-
         Debug.Log("ANIMAÇÃO DE CONCLUSÃO DO OBJETIVO INICIADA!");
 
         if (rotinaObjetivos != null)
             StopCoroutine(rotinaObjetivos);
-
         rotinaObjetivos = StartCoroutine(ExibirObjetivos());
     }
 
     IEnumerator ExibirObjetivos()
     {
-        yield return new WaitForSecondsRealtime(
-            Mathf.Max(0f, tempoNaTela)
-        );
+        yield return new WaitForSecondsRealtime(Mathf.Max(0f, tempoNaTela));
 
-        if (painelObjetivos != null &&
-            painelObjetivos.activeSelf &&
-            notificacaoEmAndamento)
+        if (painelObjetivos != null && painelObjetivos.activeSelf && notificacaoEmAndamento)
         {
             animacaoZoom.Fechar();
-
-            yield return new WaitUntil(() =>
-                painelObjetivos == null ||
-                !painelObjetivos.activeSelf
-            );
+            yield return new WaitUntil(() => painelObjetivos == null || !painelObjetivos.activeSelf);
         }
 
         notificacaoEmAndamento = false;
@@ -195,7 +170,6 @@ public class ObjectiveManager : MonoBehaviour
         }
 
         notificacaoEmAndamento = false;
-
         if (painelObjetivos != null)
             painelObjetivos.SetActive(false);
 

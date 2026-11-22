@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -11,7 +12,6 @@ public class RoupaArrastavel : MonoBehaviour
     public DestaqueSprite2D destaque;
 
     [Header("Áudio")]
-    public AudioSource fonteAudio;
     public AudioClip somPegarItem;
 
     private Camera cameraPrincipal;
@@ -28,9 +28,6 @@ public class RoupaArrastavel : MonoBehaviour
     {
         cameraPrincipal = Camera.main;
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        if (fonteAudio == null)
-            fonteAudio = GetComponent<AudioSource>();
 
         if (destaque == null)
             destaque = GetComponent<DestaqueSprite2D>();
@@ -54,6 +51,7 @@ public class RoupaArrastavel : MonoBehaviour
             return;
 
         arrastando = true;
+
         TocarSom(somPegarItem);
 
         posicaoOriginal = transform.position;
@@ -63,6 +61,7 @@ public class RoupaArrastavel : MonoBehaviour
         deslocamento = transform.position - mouse;
 
         spriteRenderer.sortingOrder = ordemOriginal + 100;
+
         AtualizarDestaque();
     }
 
@@ -75,7 +74,9 @@ public class RoupaArrastavel : MonoBehaviour
         transform.position = mouse + deslocamento;
 
         Collider2D colisor = armario.GetComponent<Collider2D>();
-        bool sobreArmario = colisor != null && colisor.OverlapPoint(mouse);
+
+        bool sobreArmario =
+            colisor != null && colisor.OverlapPoint(mouse);
 
         armario.Destacar(sobreArmario);
     }
@@ -88,7 +89,9 @@ public class RoupaArrastavel : MonoBehaviour
         arrastando = false;
 
         Vector2 posicaoMouse = ObterPosicaoMouse();
-        bool aceito = armario != null && armario.TentarGuardar(this, posicaoMouse);
+
+        bool aceito = armario != null &&
+                      armario.TentarGuardar(this, posicaoMouse);
 
         if (!aceito)
         {
@@ -104,6 +107,12 @@ public class RoupaArrastavel : MonoBehaviour
 
     Vector3 ObterPosicaoMouse()
     {
+        if (cameraPrincipal == null)
+            cameraPrincipal = Camera.main;
+
+        if (cameraPrincipal == null)
+            return transform.position;
+
         float distancia = Mathf.Abs(
             cameraPrincipal.transform.position.z - transform.position.z
         );
@@ -123,12 +132,30 @@ public class RoupaArrastavel : MonoBehaviour
     void TocarSom(AudioClip som)
     {
         if (som == null)
+        {
+            Debug.LogWarning(
+                "Som de pegar roupa não foi configurado em: " + gameObject.name
+            );
             return;
+        }
 
-        if (fonteAudio != null)
-            fonteAudio.PlayOneShot(som);
+        GameObject objetoAudio = new GameObject("AudioTemporarioRoupa");
+
+        if (Camera.main != null)
+            objetoAudio.transform.position = Camera.main.transform.position;
         else
-            AudioSource.PlayClipAtPoint(som, transform.position);
+            objetoAudio.transform.position = transform.position;
+
+        AudioSource audio = objetoAudio.AddComponent<AudioSource>();
+
+        audio.clip = som;
+        audio.playOnAwake = false;
+        audio.spatialBlend = 0f;
+        audio.volume = 1f;
+
+        audio.Play();
+
+        Destroy(objetoAudio, som.length + 0.2f);
     }
 
     public void ConfirmarEncaixe()
