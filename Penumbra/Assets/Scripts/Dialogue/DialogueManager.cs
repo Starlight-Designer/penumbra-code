@@ -87,6 +87,13 @@ public class DialogueManager : MonoBehaviour
     [Header("Puzzle dos Peixes")]
     public GameObject painelPuzzlePeixes;
 
+    [Header("Fade do puzzle dos peixes")]
+    public CanvasGroup painelFadePeixes;
+    public float duracaoFadeOutPeixes = 1f;
+    public float duracaoFadeInPeixes = 1f;
+
+    private bool transicaoPuzzleIniciada = false;
+
     [Header("Indicação de Interação")]
     public GameObject indicadorInteracao;
 
@@ -295,6 +302,80 @@ public class DialogueManager : MonoBehaviour
     {
         if (audioVoz != null && audioVoz.isPlaying)
             audioVoz.Stop();
+    }
+
+    // =========================================================
+    // FADE OUT E FADE IN DO PUZZLE DOS PEIXES
+    // =========================================================
+
+    private IEnumerator AtivarPuzzleComFade()
+    {
+        if (transicaoPuzzleIniciada)
+            yield break;
+
+        transicaoPuzzleIniciada = true;
+
+        if (painelFadePeixes == null)
+        {
+            Debug.LogError(
+                "Painel Fade Peixes não foi conectado no Inspector!"
+            );
+
+            transicaoPuzzleIniciada = false;
+            DialogoGlobalAtivo = false;
+            yield break;
+        }
+
+        // Bloqueia interações durante a transição.
+        DialogoGlobalAtivo = true;
+
+        painelFadePeixes.gameObject.SetActive(true);
+        painelFadePeixes.alpha = 0f;
+        painelFadePeixes.blocksRaycasts = true;
+        painelFadePeixes.interactable = false;
+
+        // FADE OUT: a tela fica preta.
+        while (painelFadePeixes.alpha < 1f)
+        {
+            painelFadePeixes.alpha = Mathf.MoveTowards(
+                painelFadePeixes.alpha,
+                1f,
+                Time.deltaTime / Mathf.Max(0.01f, duracaoFadeOutPeixes)
+            );
+
+            yield return null;
+        }
+
+        painelFadePeixes.alpha = 1f;
+
+        // Ativa o puzzle enquanto a tela está preta.
+        if (painelPuzzlePeixes != null)
+        {
+            painelPuzzlePeixes.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(0.2f);
+
+        // FADE IN: a tela clareia e revela o puzzle.
+        while (painelFadePeixes.alpha > 0f)
+        {
+            painelFadePeixes.alpha = Mathf.MoveTowards(
+                painelFadePeixes.alpha,
+                0f,
+                Time.deltaTime / Mathf.Max(0.01f, duracaoFadeInPeixes)
+            );
+
+            yield return null;
+        }
+
+        painelFadePeixes.alpha = 0f;
+        painelFadePeixes.blocksRaycasts = false;
+        painelFadePeixes.gameObject.SetActive(false);
+
+        DialogoGlobalAtivo = false;
+        transicaoPuzzleIniciada = false;
+
+        Debug.Log("Puzzle dos peixes ativado com Fade Out e Fade In!");
     }
 
     IEnumerator IniciarDialogoPastorAposFade()
@@ -1045,8 +1126,8 @@ public class DialogueManager : MonoBehaviour
                 if (indicadorInteracao != null)
                     indicadorInteracao.SetActive(false);
 
-                if (painelPuzzlePeixes != null)
-                    painelPuzzlePeixes.SetActive(true);
+                // Ativa o puzzle com Fade Out e Fade In.
+                StartCoroutine(AtivarPuzzleComFade());
 
                 return;
             }
