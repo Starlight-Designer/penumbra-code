@@ -25,7 +25,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movement;
 
     private bool movimentoBloqueado = false;
+    private bool estavaBloqueado = false;
+
     private Coroutine rotinaPassos;
+
+    private ObjectiveManager objectiveManager;
 
     void Awake()
     {
@@ -34,17 +38,49 @@ public class PlayerMovement : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         audioPassos = GetComponent<AudioSource>();
 
+        objectiveManager = FindFirstObjectByType<ObjectiveManager>();
+
         audioPassos.playOnAwake = false;
         audioPassos.loop = false;
     }
 
     void Update()
     {
-        if (DialogueManager.DialogoGlobalAtivo ||
-            InventoryManager.InventarioAberto ||
-            InventoryManager.InventarioBloqueado ||
-            FadePreto.TransicaoAtiva ||
-            movimentoBloqueado)
+        bool dialogoAtivo = DialogueManager.DialogoGlobalAtivo;
+        bool inventarioAberto = InventoryManager.InventarioAberto;
+        bool inventarioBloqueado = InventoryManager.InventarioBloqueado;
+        bool transicaoAtiva = FadePreto.TransicaoAtiva;
+
+        bool bloqueado =
+            dialogoAtivo ||
+            inventarioAberto ||
+            inventarioBloqueado ||
+            transicaoAtiva ||
+            movimentoBloqueado;
+
+        // Diagnóstico: mostra o motivo do bloqueio apenas quando muda.
+        if (bloqueado != estavaBloqueado)
+        {
+            if (bloqueado)
+            {
+                Debug.Log(
+                    "MOVIMENTO DA ALICE BLOQUEADO! " +
+                    "Diálogo: " + dialogoAtivo +
+                    " | Inventário aberto: " + inventarioAberto +
+                    " | Inventário bloqueado: " + inventarioBloqueado +
+                    " | Fade: " + transicaoAtiva +
+                    " | Bloqueio manual: " + movimentoBloqueado
+                );
+            }
+            else
+            {
+                Debug.Log("MOVIMENTO DA ALICE LIBERADO!");
+            }
+
+            estavaBloqueado = bloqueado;
+        }
+
+        if (bloqueado)
         {
             movement = Vector2.zero;
             rb.linearVelocity = Vector2.zero;
@@ -66,6 +102,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
         movement = input.normalized;
+
+        // Avisa o ObjectiveManager quando Alice começa a andar.
+        if (movement != Vector2.zero)
+        {
+            if (objectiveManager == null)
+                objectiveManager = FindFirstObjectByType<ObjectiveManager>();
+
+            if (objectiveManager != null)
+                objectiveManager.AoJogadorComecarAMover();
+        }
 
         AtualizarAnimacao();
         AtualizarAudioPassos();

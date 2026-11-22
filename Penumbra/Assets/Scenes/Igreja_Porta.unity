@@ -1348,7 +1348,7 @@ MonoBehaviour:
   audioSource: {fileID: 1167983352}
   audioVidroQuebrando: {fileID: 8300000, guid: 3007937810634ce4da56f4ea709c039e, type: 3}
   duracaoFadeAudio: 2
-  atrasoAudioAposFade: 2
+  atrasoAudioAposFade: 0
   aoFicarPreto:
     m_PersistentCalls:
       m_Calls:
@@ -2026,6 +2026,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 859240302}
   textoObjetivo2: {fileID: 859240301}
+  painelObjetivos: {fileID: 859240299}
+  tempoNaTela: 3
 --- !u!4 &1620771537
 Transform:
   m_ObjectHideFlags: 0
@@ -2105,6 +2107,9 @@ MonoBehaviour:
   vozNPC: {fileID: 0}
   volumeVoz: 1
   painelPuzzlePeixes: {fileID: 0}
+  painelFadePeixes: {fileID: 0}
+  duracaoFadeOutPeixes: 1
+  duracaoFadeInPeixes: 1
   indicadorInteracao: {fileID: 0}
   nomeDoPersonagem: Pastor
   nomeProtagonista: Alice
@@ -2333,6 +2338,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 859240302}
   textoObjetivo2: {fileID: 859240301}
+  painelObjetivos: {fileID: 0}
+  tempoNaTela: 3
 --- !u!114 &2013918477
 MonoBehaviour:
   m_ObjectHideFlags: 0

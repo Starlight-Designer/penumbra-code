@@ -985,6 +985,11 @@ MonoBehaviour:
   nomeCena: Floresta
   spawnNoDestino: Retorno_Caminho_Igreja
   gerenciadorPensamentos: {fileID: 0}
+  usarAudio: 0
+  audioTransicao: {fileID: 0}
+  fonteAudio: {fileID: 0}
+  atrasoAudio: 0
+  duracaoFadeAudio: 1.5
   fade: {fileID: 963504280}
 --- !u!4 &410152300
 Transform:
@@ -2013,6 +2018,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 1250545612}
   textoObjetivo2: {fileID: 1250545611}
+  painelObjetivos: {fileID: 1250545613}
+  tempoNaTela: 3
 --- !u!4 &869218600
 Transform:
   m_ObjectHideFlags: 0
@@ -2041,6 +2048,7 @@ GameObject:
   - component: {fileID: 963504282}
   - component: {fileID: 963504281}
   - component: {fileID: 963504280}
+  - component: {fileID: 963504284}
   m_Layer: 5
   m_Name: FadePreto
   m_TagString: Untagged
@@ -2083,8 +2091,8 @@ MonoBehaviour:
   tempoNoPreto: 0.5
   duracaoClarear: 1
   clarearAoIniciar: 1
-  audioSource: {fileID: 0}
-  audioVidroQuebrando: {fileID: 0}
+  audioSource: {fileID: 963504284}
+  audioVidroQuebrando: {fileID: 8300000, guid: 779f20a7731f4314993bb5bdc05022c8, type: 3}
   duracaoFadeAudio: 1.5
   atrasoAudioAposFade: 0
   aoFicarPreto:
@@ -2143,6 +2151,103 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963504278}
   m_CullTransparentMesh: 1
+--- !u!82 &963504284
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963504278}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1016568414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2989,7 +3094,6 @@ GameObject:
   - component: {fileID: 1419913558}
   - component: {fileID: 1419913557}
   - component: {fileID: 1419913556}
-  - component: {fileID: 1419913555}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3023,20 +3127,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1419913555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419913553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8240ed28a4592e488f8e5f317dd09ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
-  textoObjetivo1: {fileID: 1250545612}
-  textoObjetivo2: {fileID: 1250545611}
 --- !u!114 &1419913556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3393,6 +3483,8 @@ MonoBehaviour:
   senhaCorreta: 62636873
   nomeCenaIgreja: Igreja
   fadePreto: {fileID: 963504280}
+  audioPortaAbrindo: {fileID: 8300000, guid: 779f20a7731f4314993bb5bdc05022c8, type: 3}
+  duracaoFadeAudioPorta: 1.5
 --- !u!1 &1669138416
 GameObject:
   m_ObjectHideFlags: 0
@@ -4294,6 +4386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1835688262}
   - component: {fileID: 1835688261}
+  - component: {fileID: 1835688263}
   m_Layer: 0
   m_Name: FechaduraIgreja
   m_TagString: Untagged
@@ -4319,6 +4412,8 @@ MonoBehaviour:
   senhaCorreta: 62636873
   nomeCenaIgreja: Igreja
   fadePreto: {fileID: 963504280}
+  audioPortaAbrindo: {fileID: 8300000, guid: 779f20a7731f4314993bb5bdc05022c8, type: 3}
+  duracaoFadeAudioPorta: 1.5
 --- !u!4 &1835688262
 Transform:
   m_ObjectHideFlags: 0
@@ -4334,6 +4429,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!225 &1835688263
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835688260}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1857485020
 GameObject:
   m_ObjectHideFlags: 0

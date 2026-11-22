@@ -214,7 +214,6 @@ public class DialogueManager : MonoBehaviour
         if (indicadorInteracao != null)
             indicadorInteracao.SetActive(false);
 
-        // Configura as falas específicas do Pastor opcional.
         if (pastorOpcional)
         {
             falas = falasPadreOpicional;
@@ -326,7 +325,6 @@ public class DialogueManager : MonoBehaviour
             yield break;
         }
 
-        // Bloqueia interações durante a transição.
         DialogoGlobalAtivo = true;
 
         painelFadePeixes.gameObject.SetActive(true);
@@ -334,7 +332,6 @@ public class DialogueManager : MonoBehaviour
         painelFadePeixes.blocksRaycasts = true;
         painelFadePeixes.interactable = false;
 
-        // FADE OUT: a tela fica preta.
         while (painelFadePeixes.alpha < 1f)
         {
             painelFadePeixes.alpha = Mathf.MoveTowards(
@@ -348,7 +345,6 @@ public class DialogueManager : MonoBehaviour
 
         painelFadePeixes.alpha = 1f;
 
-        // Ativa o puzzle enquanto a tela está preta.
         if (painelPuzzlePeixes != null)
         {
             painelPuzzlePeixes.SetActive(true);
@@ -356,7 +352,6 @@ public class DialogueManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.2f);
 
-        // FADE IN: a tela clareia e revela o puzzle.
         while (painelFadePeixes.alpha > 0f)
         {
             painelFadePeixes.alpha = Mathf.MoveTowards(
@@ -490,8 +485,6 @@ public class DialogueManager : MonoBehaviour
 
         if (jogadorPerto && Input.GetKeyDown(KeyCode.F))
         {
-            // O Pastor inimigo não inicia diálogo por interação.
-            // O Pastor opcional pode conversar normalmente com F.
             if (nomeDoPersonagem == "Pastor" &&
                 !pastorOpcional &&
                 !dialogoAtivo)
@@ -1017,8 +1010,6 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator IniciarPensamentosPastor()
     {
-        // Aguarda um frame para não reutilizar o F
-        // que acabou de fechar o diálogo.
         yield return null;
 
         if (gerenciadorPensamentos == null)
@@ -1076,8 +1067,6 @@ public class DialogueManager : MonoBehaviour
 
         painelDialogo.SetActive(false);
 
-        // O diálogo do Pastor opcional não altera objetivos
-        // e não executa callbacks de outros personagens.
         if (pastorOpcional)
         {
             jogadorPerto = false;
@@ -1085,7 +1074,6 @@ public class DialogueManager : MonoBehaviour
             if (indicadorInteracao != null)
                 indicadorInteracao.SetActive(false);
 
-            // Inicia os pensamentos automáticos da Alice.
             StartCoroutine(IniciarPensamentosPastor());
 
             return;
@@ -1126,7 +1114,6 @@ public class DialogueManager : MonoBehaviour
                 if (indicadorInteracao != null)
                     indicadorInteracao.SetActive(false);
 
-                // Ativa o puzzle com Fade Out e Fade In.
                 StartCoroutine(AtivarPuzzleComFade());
 
                 return;
@@ -1279,8 +1266,26 @@ public class DialogueManager : MonoBehaviour
             jogadorPerto = false;
     }
 
+    // =========================================================
+    // LIBERAÇÃO DOS BLOQUEIOS AO DESATIVAR O OBJETO
+    // =========================================================
+
     private void OnDisable()
     {
         PararAudioVoz();
+        PararAnimacaoBoca();
+
+        if (digitacaoTexto != null)
+        {
+            StopCoroutine(digitacaoTexto);
+            digitacaoTexto = null;
+        }
+
+        textoDigitando = false;
+        dialogoAtivo = false;
+
+        // Libera o bloqueio global quando o objeto
+        // é desativado ou a cena é descarregada.
+        DialogoGlobalAtivo = false;
     }
 }

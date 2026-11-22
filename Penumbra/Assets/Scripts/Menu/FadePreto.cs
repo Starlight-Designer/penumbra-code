@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -52,7 +53,50 @@ public class FadePreto : MonoBehaviour
         StartCoroutine(RotinaTransicao());
     }
 
-    // Transição SEM áudio.
+    public IEnumerator TransicaoTelaPreta(Action aoFicarPreto)
+    {
+        if (ocupado)
+            yield break;
+
+        ocupado = true;
+        TransicaoAtiva = true;
+        grupo.blocksRaycasts = true;
+
+        yield return Fade(0f, 1f, duracaoEscurecer);
+
+        aoFicarPreto?.Invoke();
+
+        yield return new WaitForSecondsRealtime(tempoNoPreto);
+
+        yield return Fade(1f, 0f, duracaoClarear);
+
+        grupo.blocksRaycasts = false;
+        ocupado = false;
+        TransicaoAtiva = false;
+    }
+
+    public IEnumerator TransicaoTelaPretaSemClarear(Action aoFicarPreto)
+    {
+        if (ocupado)
+            yield break;
+
+        ocupado = true;
+        TransicaoAtiva = true;
+        grupo.blocksRaycasts = true;
+
+        yield return Fade(0f, 1f, duracaoEscurecer);
+
+        aoFicarPreto?.Invoke();
+
+        yield return new WaitForSecondsRealtime(tempoNoPreto);
+
+        grupo.alpha = 0f;
+        grupo.blocksRaycasts = false;
+
+        ocupado = false;
+        TransicaoAtiva = false;
+    }
+
     public void EscurecerECarregar(string nomeCena)
     {
         if (ocupado) return;
@@ -68,8 +112,6 @@ public class FadePreto : MonoBehaviour
         );
     }
 
-    // Transição usando explicitamente o áudio padrão.
-    // Utilizada pela Igreja_Porta.
     public void EscurecerECarregarComAudioPadrao(string nomeCena)
     {
         EscurecerECarregarComAudio(
@@ -81,7 +123,6 @@ public class FadePreto : MonoBehaviour
         );
     }
 
-    // Transição com áudio escolhido individualmente pelo ponto de saída.
     public void EscurecerECarregarComAudio(
         string nomeCena,
         AudioClip audio,
@@ -105,7 +146,7 @@ public class FadePreto : MonoBehaviour
 
     public void IrParaIgrejaFuga()
     {
-        EscurecerECarregar("Igreja_Fuga");
+        EscurecerECarregarComAudioPadrao("Igreja_Fuga");
     }
 
     private IEnumerator RotinaTransicao()
@@ -143,11 +184,9 @@ public class FadePreto : MonoBehaviour
         // Escurece a tela.
         yield return Fade(0f, 1f, duracaoEscurecer);
 
-        // Aguarda o atraso configurado.
         if (atraso > 0f)
             yield return new WaitForSecondsRealtime(atraso);
 
-        // Só reproduz áudio quando um clip foi informado.
         if (audio != null)
         {
             if (fonteAudio != null)
@@ -194,9 +233,11 @@ public class FadePreto : MonoBehaviour
         }
         else
         {
-            // Sem áudio, utiliza a espera normal.
             yield return new WaitForSecondsRealtime(tempoNoPreto);
         }
+
+        // Libera a transição antes de carregar a próxima cena.
+        TransicaoAtiva = false;
 
         SceneManager.LoadScene(nomeCena);
     }
@@ -273,5 +314,18 @@ public class FadePreto : MonoBehaviour
         }
 
         source.volume = volumeFinal;
+    }
+
+    // =========================================================
+    // LIBERAÇÃO DA TRANSIÇÃO AO DESATIVAR O OBJETO
+    // =========================================================
+
+    private void OnDisable()
+    {
+        if (ocupado)
+        {
+            ocupado = false;
+            TransicaoAtiva = false;
+        }
     }
 }

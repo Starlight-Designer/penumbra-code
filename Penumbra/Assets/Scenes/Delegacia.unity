@@ -1210,6 +1210,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 964623370}
   textoObjetivo2: {fileID: 964623368}
+  painelObjetivos: {fileID: 1210976837}
+  tempoNaTela: 3
 --- !u!4 &916262524
 Transform:
   m_ObjectHideFlags: 0
@@ -1947,6 +1949,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 964623370}
   textoObjetivo2: {fileID: 964623368}
+  painelObjetivos: {fileID: 1210976837}
+  tempoNaTela: 3
 --- !u!1 &1210976837 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5718351597716681392, guid: d203bc604eda018478067294fc183da5, type: 3}
@@ -3586,6 +3590,9 @@ MonoBehaviour:
   vozNPC: {fileID: 8300000, guid: 4e81fdd6d489d224bb3de10c1344529e, type: 3}
   volumeVoz: 1
   painelPuzzlePeixes: {fileID: 0}
+  painelFadePeixes: {fileID: 0}
+  duracaoFadeOutPeixes: 1
+  duracaoFadeInPeixes: 1
   indicadorInteracao: {fileID: 786085694}
   nomeDoPersonagem: Delegado
   nomeProtagonista: Alice

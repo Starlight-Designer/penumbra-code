@@ -2334,6 +2334,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 1276655054}
   textoObjetivo2: {fileID: 1276655053}
+  painelObjetivos: {fileID: 0}
+  tempoNaTela: 3
 --- !u!114 &1959535888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2744,6 +2746,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 1276655054}
   textoObjetivo2: {fileID: 1276655053}
+  painelObjetivos: {fileID: 1276655055}
+  tempoNaTela: 3
 --- !u!4 &2066617675
 Transform:
   m_ObjectHideFlags: 0

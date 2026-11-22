@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 171407100}
   - component: {fileID: 171407099}
   - component: {fileID: 171407098}
-  - component: {fileID: 171407097}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -164,20 +163,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &171407097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 171407095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8240ed28a4592e488f8e5f317dd09ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
-  textoObjetivo1: {fileID: 1726486816}
-  textoObjetivo2: {fileID: 1726486815}
 --- !u!114 &171407098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1102,6 +1087,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 1726486816}
   textoObjetivo2: {fileID: 1726486815}
+  painelObjetivos: {fileID: 1726486817}
+  tempoNaTela: 3
 --- !u!4 &716759235
 Transform:
   m_ObjectHideFlags: 0
@@ -2682,8 +2669,8 @@ MonoBehaviour:
   nomePensamento: {fileID: 1661268725}
   textoPensamento: {fileID: 421529924}
   imagemAlice: {fileID: 1962200508}
-  aliceBocaFechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
-  aliceBocaAberta: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  aliceBocaFechada: {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
+  aliceBocaAberta: {fileID: 9219117700405776107, guid: 2df1845dda8af0b4db05f8f6c7d0b086, type: 3}
   velocidadeTexto: 0.03
   intervaloAnimacaoBoca: 0.2
   audioVozAlice: {fileID: 1736761646}

@@ -230,14 +230,18 @@ MonoBehaviour:
   painelDialogo: {fileID: 1176670631}
   textoDialogo: {fileID: 1176670630}
   nomeNPC: {fileID: 1176670629}
-  objectiveManager: {fileID: 289960477}
+  objectiveManager: {fileID: 1069896907}
   imagemPersonagem: {fileID: 595996625}
   imagemDoNPC: {fileID: 2978680106236548072, guid: b4e00ddeb5c384246a7da2d78039ab1e, type: 3}
   imagemDaAlice: {fileID: -6968551063855250685, guid: 9c5b06353e4f8294db5cc0299fca110f, type: 3}
   imagemDaAliceBocaAberta: {fileID: -3576318855423470051, guid: 68cc4fda4bafab749aad3f4c1eb34f30, type: 3}
   imagemNPCBocaAberta: {fileID: -6308537036648234486, guid: f13c33dc6aaf1a04ea0cf337e99d8118, type: 3}
-  aliceBocaFechadaPorResposta: []
-  aliceBocaAbertaPorResposta: []
+  aliceBocaFechadaPorResposta:
+  - {fileID: -6968551063855250685, guid: 9c5b06353e4f8294db5cc0299fca110f, type: 3}
+  - {fileID: 3115233562101966255, guid: 8240cb8f09b1cf545b3f3a77ca7e145f, type: 3}
+  aliceBocaAbertaPorResposta:
+  - {fileID: -3576318855423470051, guid: 68cc4fda4bafab749aad3f4c1eb34f30, type: 3}
+  - {fileID: 9219117700405776107, guid: 2df1845dda8af0b4db05f8f6c7d0b086, type: 3}
   npcBocaFechadaPorFala: []
   npcBocaAbertaPorFala: []
   donaCidaBocaFechadaPorFalaDepoisPuzzle: []
@@ -292,9 +296,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   falas:
-  - "O que voc\xEA quer saber sobre Bianca?\nN\xE3o vou abrir o bico de gra\xE7a. Se quiser informa\xE7\xF5es, vai ter que me ajudar a organizar esses peixes primeiro."
+  - "O que voc\xEA quer?"
+  - "Bianca?...N\xE3o vou abrir o bico de gra\xE7a. Se quiser informa\xE7\xF5es, vai ter que me ajudar a organizar esses peixes primeiro."
   respostasAlice:
-  - Tudo bem, eu ajudo.
+  - "O que voc\xEA sabe sobre o caso da Bianca? Eu estou tentando descobrir mais sobre pois eu sou investigadora criminal rec\xE9m formada e escolhi este caso para resolver."
+  - tsk...Ta eu te ajudo.
   falasPadreOpicional: []
   respostasAlicePadreOpicional: []
   falasDepoisPuzzle:
@@ -2059,10 +2065,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5718351597716681392, guid: d203bc604eda018478067294fc183da5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 289960477}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d203bc604eda018478067294fc183da5, type: 3}
 --- !u!1 &289960474 stripped
 GameObject:
@@ -2091,20 +2094,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &289960477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 289960474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8240ed28a4592e488f8e5f317dd09ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
-  textoObjetivo1: {fileID: 289960476}
-  textoObjetivo2: {fileID: 289960475}
 --- !u!224 &289960478 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4475194613143087955, guid: d203bc604eda018478067294fc183da5, type: 3}
@@ -4149,7 +4138,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 860315172}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: d9268a502168a3048806bcee36a354fb, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 92436c7d676cafe43aa3027743e3dd56, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -4346,7 +4335,6 @@ GameObject:
   - component: {fileID: 870950695}
   - component: {fileID: 870950694}
   - component: {fileID: 870950693}
-  - component: {fileID: 870950691}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4354,20 +4342,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &870950691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870950690}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8240ed28a4592e488f8e5f317dd09ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
-  textoObjetivo1: {fileID: 289960476}
-  textoObjetivo2: {fileID: 289960475}
 --- !u!114 &870950693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5456,6 +5430,54 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1069896906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1069896908}
+  - component: {fileID: 1069896907}
+  m_Layer: 0
+  m_Name: Gerenciador_Objetivos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1069896907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069896906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8240ed28a4592e488f8e5f317dd09ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
+  textoObjetivo1: {fileID: 289960476}
+  textoObjetivo2: {fileID: 289960475}
+  painelObjetivos: {fileID: 289960474}
+  tempoNaTela: 3
+--- !u!4 &1069896908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069896906}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1028.5902, y: 559.8168, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1128014834
 GameObject:
   m_ObjectHideFlags: 0
@@ -5800,7 +5822,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 401475367783363507, guid: 72502ecefa2f3ee4d96aad2ce64cdf84, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3749089759344622243, guid: 72502ecefa2f3ee4d96aad2ce64cdf84, type: 3}
       propertyPath: m_Sprite
@@ -5872,7 +5894,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5966697035417513922, guid: 72502ecefa2f3ee4d96aad2ce64cdf84, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -4
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 5966697035417513922, guid: 72502ecefa2f3ee4d96aad2ce64cdf84, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6545,52 +6567,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
---- !u!1 &1298256982
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1298256984}
-  - component: {fileID: 1298256983}
-  m_Layer: 0
-  m_Name: Gerenciador_Objetivos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1298256983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1298256982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8240ed28a4592e488f8e5f317dd09ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
-  textoObjetivo1: {fileID: 289960476}
-  textoObjetivo2: {fileID: 289960475}
---- !u!4 &1298256984
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1298256982}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1028.5902, y: 559.8168, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1299983847
 GameObject:
   m_ObjectHideFlags: 0
@@ -10342,4 +10318,4 @@ SceneRoots:
   - {fileID: 1973387257}
   - {fileID: 2097028744}
   - {fileID: 410671289}
-  - {fileID: 1298256984}
+  - {fileID: 1069896908}

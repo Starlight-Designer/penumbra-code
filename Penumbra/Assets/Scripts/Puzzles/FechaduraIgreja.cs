@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class FechaduraIgreja : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class FechaduraIgreja : MonoBehaviour
     [Header("Transição")]
     public FadePreto fadePreto;
 
+    [Header("Áudio da porta abrindo")]
+    public AudioClip audioPortaAbrindo;
+    public float duracaoFadeAudioPorta = 1.5f;
+
     private string senhaDigitada = "";
     private bool mostrandoMensagem = false;
     private bool jogadorNaFechadura = false;
@@ -26,20 +31,23 @@ public class FechaduraIgreja : MonoBehaviour
 
     void Start()
     {
-        painelFechadura.SetActive(false);
+        if (painelFechadura != null)
+            painelFechadura.SetActive(false);
+
         AtualizarTexto();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Player"))
+        if (!other.CompareTag("Player") || transicaoIniciada)
+            return;
+
+        if (jogadorNaFechadura)
             return;
 
         jogadorNaFechadura = true;
 
         InventoryManager.BloquearInventario(true);
-
-        painelFechadura.SetActive(true);
 
         if (playerMovement != null)
             playerMovement.BloquearMovimento(true);
@@ -47,7 +55,40 @@ public class FechaduraIgreja : MonoBehaviour
         senhaDigitada = "";
         AtualizarTexto();
 
-        Debug.Log("Painel da fechadura aberto!");
+        Debug.Log("Alice entrou na área da fechadura.");
+
+        if (fadePreto != null)
+        {
+            StartCoroutine(AbrirPainelComFade());
+        }
+        else
+        {
+            MostrarPainel();
+            Debug.LogWarning("FadePreto não conectado. Painel aberto sem transição.");
+        }
+    }
+
+    IEnumerator AbrirPainelComFade()
+    {
+        // A tela fica preta, o cadeado aparece normalmente
+        // e somente a tela preta faz o Fade In.
+        yield return StartCoroutine(
+            fadePreto.TransicaoTelaPreta(() =>
+            {
+                MostrarPainel();
+            })
+        );
+
+        Debug.Log("Painel aberto sem transparência ou animação própria.");
+    }
+
+    void MostrarPainel()
+    {
+        if (painelFechadura == null)
+            return;
+
+        painelFechadura.SetActive(true);
+        AtualizarTexto();
     }
 
     public void DigitarNumero(string numero)
@@ -89,24 +130,49 @@ public class FechaduraIgreja : MonoBehaviour
 
             PlayerPrefs.Save();
 
-            if (painelFechadura != null)
-                painelFechadura.SetActive(false);
-
-            if (fadePreto != null)
-            {
-                fadePreto.EscurecerECarregar(nomeCenaIgreja);
-            }
-            else
-            {
-                Debug.LogWarning("FadePreto não foi conectado! Carregando cena sem transição.");
-                UnityEngine.SceneManagement.SceneManager.LoadScene(nomeCenaIgreja);
-            }
+            StartCoroutine(AbrirIgreja());
         }
         else
         {
             Debug.Log("Senha incorreta!");
             StartCoroutine(MostrarSenhaIncorreta());
         }
+    }
+
+    IEnumerator AbrirIgreja()
+    {
+        // O painel desaparece instantaneamente.
+        // Somente a tela preta faz a transição.
+        if (painelFechadura != null)
+            painelFechadura.SetActive(false);
+
+        if (fadePreto != null)
+        {
+            if (audioPortaAbrindo != null)
+            {
+                fadePreto.EscurecerECarregarComAudio(
+                    nomeCenaIgreja,
+                    audioPortaAbrindo,
+                    fadePreto.audioSource,
+                    0f,
+                    duracaoFadeAudioPorta
+                );
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "Áudio da porta abrindo não foi atribuído."
+                );
+
+                fadePreto.EscurecerECarregar(nomeCenaIgreja);
+            }
+        }
+        else
+        {
+            SceneManager.LoadScene(nomeCenaIgreja);
+        }
+
+        yield break;
     }
 
     IEnumerator MostrarSenhaIncorreta()
@@ -141,13 +207,19 @@ public class FechaduraIgreja : MonoBehaviour
         if (transicaoIniciada)
             return;
 
+        FecharPainelImediatamente();
+    }
+
+    void FecharPainelImediatamente()
+    {
+        if (painelFechadura != null)
+            painelFechadura.SetActive(false);
+
         senhaDigitada = "";
-        AtualizarTexto();
-
-        painelFechadura.SetActive(false);
-
-        jogadorNaFechadura = false;
         mostrandoMensagem = false;
+        jogadorNaFechadura = false;
+
+        AtualizarTexto();
 
         InventoryManager.BloquearInventario(false);
 
@@ -162,19 +234,9 @@ public class FechaduraIgreja : MonoBehaviour
         if (!other.CompareTag("Player") || transicaoIniciada)
             return;
 
-        jogadorNaFechadura = false;
+        StopAllCoroutines();
 
-        if (painelFechadura != null)
-            painelFechadura.SetActive(false);
-
-        senhaDigitada = "";
-        mostrandoMensagem = false;
-        AtualizarTexto();
-
-        InventoryManager.BloquearInventario(false);
-
-        if (playerMovement != null)
-            playerMovement.BloquearMovimento(false);
+        FecharPainelImediatamente();
 
         Debug.Log("Alice saiu da área do cadeado. Inventário desbloqueado!");
     }

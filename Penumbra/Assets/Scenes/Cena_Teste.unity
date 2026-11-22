@@ -1015,6 +1015,9 @@ MonoBehaviour:
   vozNPC: {fileID: 8300000, guid: 8fd0e94f663e17c439fdbeccf4e4050e, type: 3}
   volumeVoz: 1
   painelPuzzlePeixes: {fileID: 0}
+  painelFadePeixes: {fileID: 0}
+  duracaoFadeOutPeixes: 1
+  duracaoFadeInPeixes: 1
   indicadorInteracao: {fileID: 1896033739}
   nomeDoPersonagem: Pastor
   nomeProtagonista: Alice
@@ -4020,6 +4023,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 851445128}
   textoObjetivo2: {fileID: 983127601}
+  painelObjetivos: {fileID: 1049994812415002422}
+  tempoNaTela: 3
 --- !u!1 &1243432589
 GameObject:
   m_ObjectHideFlags: 0

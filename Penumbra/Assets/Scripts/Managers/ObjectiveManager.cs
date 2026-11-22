@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -7,7 +8,18 @@ public class ObjectiveManager : MonoBehaviour
     public TextMeshProUGUI textoObjetivo1;
     public TextMeshProUGUI textoObjetivo2;
 
+    [Header("Painel de objetivos")]
+    public GameObject painelObjetivos;
+    public float tempoNaTela = 3f;
+
+    private AnimacaoZoom animacaoZoom;
+    private Coroutine rotinaObjetivos;
+
     private int objetivoAtual = 0;
+    private bool notificacaoEmAndamento = false;
+
+    private const string CHAVE_NPC_LIBERADO = "NPCOpcionalLiberado";
+    private const string CHAVE_NOTIFICACAO_PENDENTE = "NotificacaoObjetivoPendente";
 
     private string[] objetivos =
     {
@@ -25,13 +37,23 @@ public class ObjectiveManager : MonoBehaviour
         "Investigue o Almoxarifado."
     };
 
-    private const string CHAVE_NPC_LIBERADO = "NPCOpcionalLiberado";
-
     void Start()
     {
         objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
 
-        Debug.Log("OBJETIVO ATUAL: " + objetivoAtual);
+        if (painelObjetivos != null)
+        {
+            animacaoZoom = painelObjetivos.GetComponent<AnimacaoZoom>();
+
+            if (animacaoZoom == null)
+                Debug.LogError("Adicione AnimacaoZoom ao Painel_Objetivos!");
+
+            painelObjetivos.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Conecte Painel_Objetivos no Inspector!");
+        }
 
         AtualizarObjetivos();
     }
@@ -40,24 +62,25 @@ public class ObjectiveManager : MonoBehaviour
     {
         objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
 
-        if (objetivoAtual < objetivos.Length)
+        if (objetivoAtual >= objetivos.Length)
+            return;
+
+        if (objetivoAtual == 3)
         {
-            // Verifica se o objetivo concluído é o do pescador.
-            if (objetivoAtual == 3)
-            {
-                PlayerPrefs.SetInt(CHAVE_NPC_LIBERADO, 1);
-                Debug.Log("NPC OPCIONAL LIBERADO NA CENA_Teste!");
-            }
-
-            objetivoAtual++;
-
-            PlayerPrefs.SetInt("ObjetivoAtual", objetivoAtual);
-            PlayerPrefs.Save();
-
-            Debug.Log("OBJETIVO CONCLUÍDO! NOVO VALOR: " + objetivoAtual);
-
-            AtualizarObjetivos();
+            PlayerPrefs.SetInt(CHAVE_NPC_LIBERADO, 1);
+            Debug.Log("NPC OPCIONAL LIBERADO NA CENA_Teste!");
         }
+
+        objetivoAtual++;
+
+        PlayerPrefs.SetInt("ObjetivoAtual", objetivoAtual);
+        PlayerPrefs.SetInt(CHAVE_NOTIFICACAO_PENDENTE, 1);
+
+        PlayerPrefs.Save();
+
+        Debug.Log("OBJETIVO CONCLUÍDO! NOVO VALOR: " + objetivoAtual);
+
+        AtualizarObjetivos();
     }
 
     void AtualizarObjetivos()
@@ -66,9 +89,7 @@ public class ObjectiveManager : MonoBehaviour
 
         if (textoObjetivo1 == null || textoObjetivo2 == null)
         {
-            Debug.LogError(
-                "ObjectiveManager: conecte os campos Texto Objetivo 1 e Texto Objetivo 2 no Inspector!"
-            );
+            Debug.LogError("Conecte os dois textos de objetivos no Inspector!");
             return;
         }
 
@@ -99,5 +120,85 @@ public class ObjectiveManager : MonoBehaviour
                 textoObjetivo2.text = "";
             }
         }
+    }
+
+    // Chamado pelo PlayerMovement quando Alice começa a andar.
+    public void AoJogadorComecarAMover()
+    {
+        if (PlayerPrefs.GetInt(CHAVE_NOTIFICACAO_PENDENTE, 0) != 1)
+            return;
+
+        if (notificacaoEmAndamento)
+            return;
+
+        if (Time.timeScale == 0f || FadePreto.TransicaoAtiva)
+            return;
+
+        MostrarObjetivosAutomaticamente();
+    }
+
+    void MostrarObjetivosAutomaticamente()
+    {
+        if (painelObjetivos == null || animacaoZoom == null)
+        {
+            Debug.LogError("Painel ou AnimacaoZoom não encontrado!");
+            return;
+        }
+
+        PlayerPrefs.SetInt(CHAVE_NOTIFICACAO_PENDENTE, 0);
+        PlayerPrefs.Save();
+
+        notificacaoEmAndamento = true;
+
+        painelObjetivos.SetActive(false);
+        painelObjetivos.SetActive(true);
+
+        Debug.Log("ANIMAÇÃO DE CONCLUSÃO DO OBJETIVO INICIADA!");
+
+        if (rotinaObjetivos != null)
+            StopCoroutine(rotinaObjetivos);
+
+        rotinaObjetivos = StartCoroutine(ExibirObjetivos());
+    }
+
+    IEnumerator ExibirObjetivos()
+    {
+        yield return new WaitForSecondsRealtime(
+            Mathf.Max(0f, tempoNaTela)
+        );
+
+        if (painelObjetivos != null &&
+            painelObjetivos.activeSelf &&
+            notificacaoEmAndamento)
+        {
+            animacaoZoom.Fechar();
+
+            yield return new WaitUntil(() =>
+                painelObjetivos == null ||
+                !painelObjetivos.activeSelf
+            );
+        }
+
+        notificacaoEmAndamento = false;
+        rotinaObjetivos = null;
+    }
+
+    public void CancelarNotificacaoParaPausa()
+    {
+        if (!notificacaoEmAndamento)
+            return;
+
+        if (rotinaObjetivos != null)
+        {
+            StopCoroutine(rotinaObjetivos);
+            rotinaObjetivos = null;
+        }
+
+        notificacaoEmAndamento = false;
+
+        if (painelObjetivos != null)
+            painelObjetivos.SetActive(false);
+
+        Debug.Log("Notificação interrompida para abrir a pausa.");
     }
 }

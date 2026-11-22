@@ -23,6 +23,9 @@ public class PauseManager : MonoBehaviour
     private AnimacaoQueda animacaoPausa;
     private AnimacaoZoom animacaoObjetivos;
 
+    // Referência ao sistema de objetivos.
+    private ObjectiveManager objectiveManager;
+
     void Awake()
     {
         if (painelPausa == null)
@@ -36,6 +39,16 @@ public class PauseManager : MonoBehaviour
 
         if (painelObjetivos != null)
             animacaoObjetivos = painelObjetivos.GetComponent<AnimacaoZoom>();
+
+        // Encontra o ObjectiveManager da cena.
+        objectiveManager = FindFirstObjectByType<ObjectiveManager>();
+
+        if (objectiveManager == null)
+        {
+            Debug.LogWarning(
+                "PauseManager: ObjectiveManager não encontrado na cena."
+            );
+        }
     }
 
     private GameObject ProcurarNaCena(string nome)
@@ -50,7 +63,10 @@ public class PauseManager : MonoBehaviour
                 return t.gameObject;
         }
 
-        Debug.LogWarning("PauseManager: não achei o objeto '" + nome + "' na cena.");
+        Debug.LogWarning(
+            "PauseManager: não achei o objeto '" + nome + "' na cena."
+        );
+
         return null;
     }
 
@@ -83,10 +99,21 @@ public class PauseManager : MonoBehaviour
         if (videoEstavaTocandoAntesDaPausa)
             videoCutscene.Pause();
 
+        // Interrompe a notificação automática dos objetivos.
+        // O painel desaparece sem executar a animação de saída.
+        if (objectiveManager != null)
+        {
+            objectiveManager.CancelarNotificacaoParaPausa();
+        }
+
+        // Abre os painéis normalmente.
+        // O AnimacaoZoom e o AnimacaoQueda executam suas animações.
         painelPausa.SetActive(true);
         painelObjetivos.SetActive(true);
 
         Time.timeScale = 0f;
+
+        Debug.Log("Jogo pausado.");
     }
 
     public void RetomarJogo()
@@ -133,6 +160,8 @@ public class PauseManager : MonoBehaviour
             videoCutscene.Play();
 
         videoEstavaTocandoAntesDaPausa = false;
+
+        Debug.Log("Jogo retomado.");
     }
 
     public void VoltarAoMenu()
@@ -143,15 +172,28 @@ public class PauseManager : MonoBehaviour
 
         if (jogador != null)
         {
-            PlayerPrefs.SetString("CenaSalva", SceneManager.GetActiveScene().name);
-            PlayerPrefs.SetFloat("PosicaoX", jogador.transform.position.x);
-            PlayerPrefs.SetFloat("PosicaoY", jogador.transform.position.y);
+            PlayerPrefs.SetString(
+                "CenaSalva",
+                SceneManager.GetActiveScene().name
+            );
+
+            PlayerPrefs.SetFloat(
+                "PosicaoX",
+                jogador.transform.position.x
+            );
+
+            PlayerPrefs.SetFloat(
+                "PosicaoY",
+                jogador.transform.position.y
+            );
+
             PlayerPrefs.SetInt("TemPartidaSalva", 1);
             PlayerPrefs.SetInt("CarregarPosicaoSalva", 1);
             PlayerPrefs.Save();
         }
 
         Time.timeScale = 1f;
+
         SceneManager.LoadScene("Menu_Inicial");
     }
 }

@@ -2298,6 +2298,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 674990806}
   textoObjetivo2: {fileID: 674990805}
+  painelObjetivos: {fileID: 657734746}
+  tempoNaTela: 3
 --- !u!4 &1339761634
 Transform:
   m_ObjectHideFlags: 0
@@ -2480,10 +2482,8 @@ MonoBehaviour:
   imagemNPCBocaAberta: {fileID: -5749902289572241483, guid: 5c79df42d04295f40a75afd4a3369891, type: 3}
   aliceBocaFechadaPorResposta:
   - {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
-  - {fileID: -6968551063855250685, guid: 9c5b06353e4f8294db5cc0299fca110f, type: 3}
   aliceBocaAbertaPorResposta:
   - {fileID: 8512984223476161493, guid: 3f104814154a0e3409fa54b3b1e5202b, type: 3}
-  - {fileID: -3576318855423470051, guid: 68cc4fda4bafab749aad3f4c1eb34f30, type: 3}
   npcBocaFechadaPorFala:
   - {fileID: 8369884552239806696, guid: 8965a0686dcf0f94bb8ee9f1c1c4ad58, type: 3}
   - {fileID: 226396571658009093, guid: 793be4428b6c82141b8087bf74aebde5, type: 3}
@@ -2521,6 +2521,9 @@ MonoBehaviour:
   vozNPC: {fileID: 8300000, guid: ec65ef3263d5e3047b20ba510de5a3c9, type: 3}
   volumeVoz: 1
   painelPuzzlePeixes: {fileID: 0}
+  painelFadePeixes: {fileID: 0}
+  duracaoFadeOutPeixes: 1
+  duracaoFadeInPeixes: 1
   indicadorInteracao: {fileID: 1508290170}
   nomeDoPersonagem: Dona Cida
   nomeProtagonista: Alice
@@ -2541,22 +2544,24 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   falas:
-  - "eu fico muito triste em falar sobre minha \xFAnica filha, antes de eu lhe ajudar vc poderia me ajudar?"
+  - "Ol\xE1, em que posso lhe ajudar?"
   - ...
-  - eu queria q vc arrumasse o quarto da bianca, eu n entro la desde o desaparecimento
+  - "Sou eu mesma\u2026o que voc\xEA quer saber?"
+  - "Minha filha,faz um favor para mim? Quase n\xE3o entro no quarto dela n\xE3o consigo sozinha, me ajude a ajeitar as coisas l\xE1 pois em baixo da bagun\xE7a tem uma caixa, acho que vai ajudar na nossa conversa."
   respostasAlice:
-  - Claro dona cida, oq vc deseja?
-  - Eu te ajudo sim dona cida, deixa comigo
+  - "Boa tarde,eu me chamo Alice , a senhora que \xE9 a dona Aparecida? Queria saber se a senhora estaria dispon\xEDvel para conversar sobre o caso da sua filha\u2026a Bianca."
+  - "Eu s\xF3 quero fazer umas perguntas se n\xE3o for incomodo."
+  - Claro dona cida, vou te ajudar com certeza.
   falasPadreOpicional: []
   respostasAlicePadreOpicional: []
   falasDepoisPuzzle: []
   respostasAliceDepoisPuzzle: []
   falasDepoisPuzzleDonaCida:
-  - obrigada por limpar, fazia tanto tempo q n sentia essa casa mais livre....
-  - eu sei q vc quer ajudar a encontrar a minha filha, eu n sei se vai ajudar muito mas pegue isto, minha filha guardava isso com muito carinho
+  - Obrigada por limpar, fazia tanto tempo q n sentia essa casa mais...livre....
+  - "Eu achei est\xE1 fita enquanto estava arrumand, eu n\xE3o sei se vai ajudar muito mas pegue, minha filha guardava isso com muito carinho."
   respostasAliceDepoisPuzzleDonaCida:
-  - n se preocupe dona cida, ta tudo limpinho pra vc agr
-  - muito obrigada
+  - "N\xE3o se preocupe dona cida, ta tudo limpinho pra vc agr"
+  - Muito obrigada.
   falaDonaCidaDepoisDaFita: ...
   spriteDonaCidaDepoisDaFita: {fileID: 226396571658009093, guid: 793be4428b6c82141b8087bf74aebde5, type: 3}
   objetivoParaConcluir: 7
@@ -3592,6 +3597,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectiveManager
   textoObjetivo1: {fileID: 674990806}
   textoObjetivo2: {fileID: 674990805}
+  painelObjetivos: {fileID: 657734746}
+  tempoNaTela: 3
 --- !u!4 &1696007100
 Transform:
   m_ObjectHideFlags: 0
