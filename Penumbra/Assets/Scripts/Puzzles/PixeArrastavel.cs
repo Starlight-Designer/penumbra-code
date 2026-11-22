@@ -2,9 +2,18 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PixeArrastavel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class PixeArrastavel : MonoBehaviour,
+    IBeginDragHandler,
+    IDragHandler,
+    IEndDragHandler
 {
+    [Header("Peixe")]
     public string especie;
+
+    [Header("Áudios")]
+    public AudioSource fonteAudio;
+    public AudioClip somPegarPeixe;
+    public AudioClip somColocarPeixe;
 
     private RectTransform rectTransform;
     private Vector3 posicaoOriginal;
@@ -15,6 +24,9 @@ public class PixeArrastavel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+
+        if (fonteAudio == null)
+            fonteAudio = GetComponent<AudioSource>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -25,6 +37,9 @@ public class PixeArrastavel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
         aceito = false;
         transform.SetAsLastSibling();
+
+        // Toca o som de pegar o peixe.
+        TocarSom(somPegarPeixe);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -45,8 +60,20 @@ public class PixeArrastavel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     public void AceitarNaCaixa(Transform caixa)
     {
         aceito = true;
+
         transform.SetParent(caixa);
         rectTransform.position = caixa.position;
         transform.SetSiblingIndex(1);
+
+        // Toca o som de colocar o peixe na caixa.
+        TocarSom(somColocarPeixe);
+    }
+
+    private void TocarSom(AudioClip som)
+    {
+        if (fonteAudio != null && som != null)
+        {
+            fonteAudio.PlayOneShot(som);
+        }
     }
 }

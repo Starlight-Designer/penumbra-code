@@ -717,8 +717,44 @@ public class DialogueManager : MonoBehaviour
         {
             int indiceResposta = falaAtual;
 
-            if (indiceRespostaPorFala != null &&
-                falaAtual < indiceRespostaPorFala.Length)
+            // Mapeamento específico do diálogo inicial da Dona Cida:
+            // Fala 0 -> resposta 0
+            // Fala 1 -> sem resposta
+            // Fala 2 -> resposta 1
+            // Fala 3 -> resposta 2
+            if (nomeDoPersonagem == "Dona Cida" &&
+                !donaCidaDialogoPosPuzzle)
+            {
+                switch (falaAtual)
+                {
+                    case 0:
+                        indiceResposta = 0;
+                        break;
+                    case 1:
+                        indiceResposta = -1;
+                        break;
+                    case 2:
+                        indiceResposta = 1;
+                        break;
+                    case 3:
+                        indiceResposta = 2;
+                        break;
+                    default:
+                        indiceResposta = -1;
+                        break;
+                }
+            }
+            // No diálogo pós-puzzle da Dona Cida, as respostas seguem
+            // diretamente a ordem das falas: Element 0 -> Element 0,
+            // Element 1 -> Element 1.
+            else if (nomeDoPersonagem == "Dona Cida" &&
+                     donaCidaDialogoPosPuzzle)
+            {
+                indiceResposta = falaAtual;
+            }
+            // Os demais personagens continuam usando o mapeamento do Inspector.
+            else if (indiceRespostaPorFala != null &&
+                     falaAtual < indiceRespostaPorFala.Length)
             {
                 indiceResposta = indiceRespostaPorFala[falaAtual];
             }
@@ -1124,22 +1160,30 @@ public class DialogueManager : MonoBehaviour
             {
                 int objetivoAtual = PlayerPrefs.GetInt("ObjetivoAtual", 0);
 
-                if (objectiveManager == null)
+                // O diálogo é encerrado e o pescador é liberado mesmo que
+                // o ObjectiveManager não esteja conectado ou o objetivo atual
+                // esteja diferente do esperado. O objetivo só é concluído
+                // quando a condição correta for atendida.
+                if (objectiveManager != null)
+                {
+                    if (objetivoAtual == objetivoParaConcluir)
+                    {
+                        objectiveManager.ConcluirObjetivo();
+                        Debug.Log("Objetivo do pescador concluído! Casa da Bianca liberada.");
+                    }
+                    else
+                    {
+                        Debug.LogWarning(
+                            "Diálogo final do pescador concluído, mas o objetivo atual é diferente. " +
+                            "Objetivo atual: " + objetivoAtual +
+                            " | Objetivo esperado: " + objetivoParaConcluir
+                        );
+                    }
+                }
+                else
                 {
                     Debug.LogError("Objective Manager não foi conectado no Pescador!");
-                    return;
                 }
-
-                if (objetivoAtual != objetivoParaConcluir)
-                {
-                    Debug.LogWarning(
-                        "Objetivo do pescador não concluído. Objetivo atual: " +
-                        objetivoAtual + " | Objetivo esperado: " + objetivoParaConcluir
-                    );
-                    return;
-                }
-
-                objectiveManager.ConcluirObjetivo();
 
                 PlayerPrefs.SetInt("DialogoFinalPescadorConcluido", 1);
 
@@ -1151,8 +1195,12 @@ public class DialogueManager : MonoBehaviour
                 PlayerPrefs.Save();
 
                 pescadorInteracaoBloqueada = false;
+                jogadorPerto = true;
 
-                Debug.Log("Objetivo do pescador concluído! Casa da Bianca liberada.");
+                if (indicadorInteracao != null)
+                    indicadorInteracao.SetActive(true);
+
+                Debug.Log("Pescador liberado! Agora ele responde: VAI EMBORA.");
             }
 
             return;

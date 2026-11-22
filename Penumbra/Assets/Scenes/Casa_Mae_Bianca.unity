@@ -2506,7 +2506,7 @@ MonoBehaviour:
   - {fileID: -3576318855423470051, guid: 68cc4fda4bafab749aad3f4c1eb34f30, type: 3}
   aliceBocaFechadaPorRespostaDepoisPeixaria: []
   aliceBocaAbertaPorRespostaDepoisPeixaria: []
-  indiceRespostaPorFala: 00000000ffffffff01000000i
+  indiceRespostaPorFala: 00000000ffffffff0100000002000000i
   aliceEspecialBocaFechada: {fileID: 0}
   aliceEspecialBocaAberta: {fileID: 0}
   aliceMereceMorrerBocaFechada: {fileID: 0}
