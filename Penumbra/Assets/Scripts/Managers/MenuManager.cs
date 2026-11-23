@@ -19,18 +19,22 @@ public class MenuManager : MonoBehaviour
     private const string CHAVE_REINICIAR_APOS_FINAL =
         "ReiniciarAoVoltarMenu";
 
+    private const string CHAVE_RETORNAR_FLORESTA =
+        "RetornarFlorestaAposDerrota";
+
+    private const string CHAVE_CUTSCENE_PENDENTE =
+        "CutscenePendenteMenu";
+
     private bool iniciandoJogo = false;
 
     private void Start()
     {
-        // Verifica se o jogador acabou de voltar da cutscene final.
         if (PlayerPrefs.GetInt(CHAVE_REINICIAR_APOS_FINAL, 0) == 1)
         {
             ApagarProgresso();
             Debug.Log("Progresso reiniciado após a cutscene final!");
         }
 
-        // Recupera o volume geral salvo.
         float volumeGeral = PlayerPrefs.GetFloat("VolumeGeral", 1f);
         AudioListener.volume = volumeGeral;
 
@@ -68,7 +72,6 @@ public class MenuManager : MonoBehaviour
     {
         iniciandoJogo = true;
 
-        // Diminui a música antes de sair do menu.
         if (musicaMenu != null)
         {
             musicaMenu.FadeOut();
@@ -78,7 +81,45 @@ public class MenuManager : MonoBehaviour
             );
         }
 
-        // Se existe uma partida salva, continua de onde parou.
+        // PRIORIDADE 1: Retomar uma cutscene interrompida.
+        if (PlayerPrefs.HasKey(CHAVE_CUTSCENE_PENDENTE))
+        {
+            string cutsceneSalva = PlayerPrefs.GetString(
+                CHAVE_CUTSCENE_PENDENTE
+            );
+
+            // Apaga o registro para não repetir a cutscene
+            // depois que ela for concluída normalmente.
+            PlayerPrefs.DeleteKey(CHAVE_CUTSCENE_PENDENTE);
+            PlayerPrefs.Save();
+
+            Time.timeScale = 1f;
+
+            if (fade != null)
+                fade.EscurecerECarregar(cutsceneSalva);
+            else
+                SceneManager.LoadScene(cutsceneSalva);
+
+            yield break;
+        }
+
+        // PRIORIDADE 2: Retornar à floresta após a derrota.
+        if (PlayerPrefs.GetInt(CHAVE_RETORNAR_FLORESTA, 0) == 1)
+        {
+            PlayerPrefs.DeleteKey(CHAVE_RETORNAR_FLORESTA);
+            PlayerPrefs.Save();
+
+            Time.timeScale = 1f;
+
+            if (fade != null)
+                fade.EscurecerECarregar("Floresta_Fuga");
+            else
+                SceneManager.LoadScene("Floresta_Fuga");
+
+            yield break;
+        }
+
+        // PRIORIDADE 3: Continuar uma partida salva.
         if (PlayerPrefs.GetInt("TemPartidaSalva", 0) == 1)
         {
             string cenaSalva = PlayerPrefs.GetString(
@@ -86,19 +127,26 @@ public class MenuManager : MonoBehaviour
                 "Cena_Teste"
             );
 
-            SceneManager.LoadScene(cenaSalva);
+            if (fade != null)
+                fade.EscurecerECarregar(cenaSalva);
+            else
+                SceneManager.LoadScene(cenaSalva);
+
             yield break;
         }
 
-        // Se ainda não assistiu à abertura, reproduz a cutscene.
+        // PRIORIDADE 4: Cutscene inicial.
         if (PlayerPrefs.GetInt("CutsceneInicialAssistida", 0) == 0)
         {
             IrParaCutscene();
             yield break;
         }
 
-        // Se já assistiu à abertura, entra diretamente no jogo.
-        SceneManager.LoadScene("Cena_Teste");
+        // PRIORIDADE 5: Entrar diretamente no jogo.
+        if (fade != null)
+            fade.EscurecerECarregar("Cena_Teste");
+        else
+            SceneManager.LoadScene("Cena_Teste");
     }
 
     public void AbrirCreditos()
@@ -137,7 +185,6 @@ public class MenuManager : MonoBehaviour
     {
         iniciandoJogo = true;
 
-        // Diminui a música antes de abrir a cutscene inicial.
         if (musicaMenu != null)
         {
             musicaMenu.FadeOut();
@@ -152,26 +199,21 @@ public class MenuManager : MonoBehaviour
 
     private void ApagarProgresso()
     {
-        // Guardar todas as configurações de áudio.
         float volumeGeral = PlayerPrefs.GetFloat("VolumeGeral", 1f);
         float volumeMusica = PlayerPrefs.GetFloat("VolumeMusica", 1f);
         float volumeCutscenes = PlayerPrefs.GetFloat("VolumeCutscenes", 1f);
 
-        // Limpar o inventário.
         if (InventoryManager.instance != null)
         {
             InventoryManager.instance.LimparInventario();
         }
 
-        // Apagar os dados do jogo.
         PlayerPrefs.DeleteAll();
 
-        // Restaurar as configurações de áudio.
         PlayerPrefs.SetFloat("VolumeGeral", volumeGeral);
         PlayerPrefs.SetFloat("VolumeMusica", volumeMusica);
         PlayerPrefs.SetFloat("VolumeCutscenes", volumeCutscenes);
 
-        // Restaurar o volume geral aplicado.
         AudioListener.volume = volumeGeral;
 
         PlayerPrefs.Save();

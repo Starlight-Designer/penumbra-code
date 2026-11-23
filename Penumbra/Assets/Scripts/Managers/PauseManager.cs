@@ -23,8 +23,10 @@ public class PauseManager : MonoBehaviour
     private AnimacaoQueda animacaoPausa;
     private AnimacaoZoom animacaoObjetivos;
 
-    // Referência ao sistema de objetivos.
     private ObjectiveManager objectiveManager;
+
+    private const string CHAVE_CUTSCENE_PENDENTE =
+        "CutscenePendenteMenu";
 
     void Awake()
     {
@@ -40,7 +42,6 @@ public class PauseManager : MonoBehaviour
         if (painelObjetivos != null)
             animacaoObjetivos = painelObjetivos.GetComponent<AnimacaoZoom>();
 
-        // Encontra o ObjectiveManager da cena.
         objectiveManager = FindFirstObjectByType<ObjectiveManager>();
 
         if (objectiveManager == null)
@@ -75,13 +76,9 @@ public class PauseManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!jogoPausado)
-            {
                 PausarJogo();
-            }
             else
-            {
                 RetomarJogo();
-            }
         }
     }
 
@@ -99,15 +96,9 @@ public class PauseManager : MonoBehaviour
         if (videoEstavaTocandoAntesDaPausa)
             videoCutscene.Pause();
 
-        // Interrompe a notificação automática dos objetivos.
-        // O painel desaparece sem executar a animação de saída.
         if (objectiveManager != null)
-        {
             objectiveManager.CancelarNotificacaoParaPausa();
-        }
 
-        // Abre os painéis normalmente.
-        // O AnimacaoZoom e o AnimacaoQueda executam suas animações.
         painelPausa.SetActive(true);
         painelObjetivos.SetActive(true);
 
@@ -168,29 +159,49 @@ public class PauseManager : MonoBehaviour
     {
         Debug.Log("BOTÃO VOLTAR AO MENU FOI CLICADO!");
 
-        GameObject jogador = GameObject.FindGameObjectWithTag("Player");
+        string cenaAtual = SceneManager.GetActiveScene().name;
 
-        if (jogador != null)
+        // Identifica se o jogador está em uma cutscene.
+        bool estaEmCutscene =
+            videoCutscene != null ||
+            cenaAtual.StartsWith("Cutscene_");
+
+        if (estaEmCutscene)
         {
+            // Salva o nome da cutscene para retomá-la pelo menu.
             PlayerPrefs.SetString(
-                "CenaSalva",
-                SceneManager.GetActiveScene().name
+                CHAVE_CUTSCENE_PENDENTE,
+                cenaAtual
             );
 
-            PlayerPrefs.SetFloat(
-                "PosicaoX",
-                jogador.transform.position.x
-            );
-
-            PlayerPrefs.SetFloat(
-                "PosicaoY",
-                jogador.transform.position.y
-            );
-
-            PlayerPrefs.SetInt("TemPartidaSalva", 1);
-            PlayerPrefs.SetInt("CarregarPosicaoSalva", 1);
-            PlayerPrefs.Save();
+            Debug.Log("Cutscene salva para retomada: " + cenaAtual);
         }
+        else
+        {
+            // Mantém o salvamento normal da partida.
+            GameObject jogador =
+                GameObject.FindGameObjectWithTag("Player");
+
+            if (jogador != null)
+            {
+                PlayerPrefs.SetString("CenaSalva", cenaAtual);
+
+                PlayerPrefs.SetFloat(
+                    "PosicaoX",
+                    jogador.transform.position.x
+                );
+
+                PlayerPrefs.SetFloat(
+                    "PosicaoY",
+                    jogador.transform.position.y
+                );
+
+                PlayerPrefs.SetInt("TemPartidaSalva", 1);
+                PlayerPrefs.SetInt("CarregarPosicaoSalva", 1);
+            }
+        }
+
+        PlayerPrefs.Save();
 
         Time.timeScale = 1f;
 
