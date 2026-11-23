@@ -29,6 +29,9 @@ public class CutsceneManager : MonoBehaviour
     public float velocidadeLetras = 0.06f;
     public float tempoTextoNaTela = 5f;
 
+    [Header("Pausa entre as frases")]
+    public float esperaEntreFrases = 2f;
+
     [Header("Destino")]
     public string nomeCenaDestino = "Menu_Inicial";
 
@@ -155,34 +158,32 @@ public class CutsceneManager : MonoBehaviour
             FadeCanvas(telaPretaFinal, 0f, 1f, duracaoFadePreto)
         );
 
-        // Espera dois segundos no escuro.
+        // Espera antes de começar o texto.
         yield return new WaitForSecondsRealtime(esperaAntesTexto);
 
-        // Prepara a mensagem.
+        // Prepara o painel da mensagem.
         grupoTextoFinal.gameObject.SetActive(true);
         grupoTextoFinal.alpha = 0f;
 
-        textoFinal.ForceMeshUpdate();
-        textoFinal.maxVisibleCharacters = 0;
-
-        // Fade In do texto.
+        // Fade In do painel.
         yield return StartCoroutine(
             FadeCanvas(grupoTextoFinal, 0f, 1f, duracaoFadeTexto)
         );
 
-        // Letras aparecem uma por uma.
-        int quantidadeLetras = textoFinal.textInfo.characterCount;
+        // PRIMEIRA FRASE.
+        textoFinal.text = "Nem todo mundo tem finais felizes...";
 
-        for (int i = 0; i <= quantidadeLetras; i++)
-        {
-            textoFinal.maxVisibleCharacters = i;
+        yield return StartCoroutine(MostrarLetras());
 
-            yield return new WaitForSecondsRealtime(
-                velocidadeLetras
-            );
-        }
+        // Espera dois segundos antes da segunda frase.
+        yield return new WaitForSecondsRealtime(esperaEntreFrases);
 
-        // Mantém o texto visível por cinco segundos.
+        // SEGUNDA FRASE.
+        textoFinal.text = "E pelo visto você teve o mesmo destino que eu... Alice.";
+
+        yield return StartCoroutine(MostrarLetras());
+
+        // Mantém o texto completo visível.
         yield return new WaitForSecondsRealtime(tempoTextoNaTela);
 
         // Fade Out do texto final.
@@ -192,6 +193,21 @@ public class CutsceneManager : MonoBehaviour
 
         // Carrega o menu inicial.
         SceneManager.LoadScene(nomeCenaDestino);
+    }
+
+    IEnumerator MostrarLetras()
+    {
+        textoFinal.ForceMeshUpdate();
+        textoFinal.maxVisibleCharacters = 0;
+
+        int quantidadeLetras = textoFinal.textInfo.characterCount;
+
+        for (int i = 0; i <= quantidadeLetras; i++)
+        {
+            textoFinal.maxVisibleCharacters = i;
+
+            yield return new WaitForSecondsRealtime(velocidadeLetras);
+        }
     }
 
     IEnumerator FadeCanvas(

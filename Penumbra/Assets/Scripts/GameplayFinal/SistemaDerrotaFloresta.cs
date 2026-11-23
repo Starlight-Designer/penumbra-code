@@ -14,6 +14,13 @@ public class SistemaDerrotaFloresta : MonoBehaviour
     public TMP_Text textoDerrota;
     public float velocidadeLetras = 0.05f;
 
+    [Header("Pausa entre as frases")]
+    public float esperaEntreFrases = 2f;
+
+    [Header("Mensagens da derrota")]
+    public string primeiraFrase = "Alice, você falhou...";
+    public string segundaFrase = "Mas eu te dou mais uma chance de sobreviver, você quer ser diferente?";
+
     [Header("Botões")]
     public CanvasGroup grupoBotaoSim;
     public CanvasGroup grupoBotaoNao;
@@ -89,30 +96,28 @@ public class SistemaDerrotaFloresta : MonoBehaviour
 
     private IEnumerator SequenciaDerrota()
     {
-        // 1. Fade In do painel
+        // 1. Fade In do painel.
         yield return StartCoroutine(
             FadeGrupo(grupoPainel, 0f, 1f, duracaoFadeIn)
         );
 
-        // 2. Texto aparecendo letra por letra
+        // 2. Primeira frase.
         if (textoDerrota != null)
         {
-            textoDerrota.maxVisibleCharacters = 0;
-            textoDerrota.ForceMeshUpdate();
+            textoDerrota.text = primeiraFrase;
 
-            int quantidadeLetras = textoDerrota.textInfo.characterCount;
+            yield return StartCoroutine(MostrarLetras());
 
-            for (int i = 0; i < quantidadeLetras; i++)
-            {
-                textoDerrota.maxVisibleCharacters = i + 1;
+            // 3. Espera dois segundos.
+            yield return new WaitForSecondsRealtime(esperaEntreFrases);
 
-                yield return new WaitForSecondsRealtime(velocidadeLetras);
-            }
+            // 4. Segunda frase.
+            textoDerrota.text = segundaFrase;
 
-            textoDerrota.maxVisibleCharacters = quantidadeLetras;
+            yield return StartCoroutine(MostrarLetras());
         }
 
-        // 3. Fade In do botão SIM
+        // 5. Fade In do botão SIM.
         if (grupoBotaoSim != null)
         {
             grupoBotaoSim.blocksRaycasts = true;
@@ -127,7 +132,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
             );
         }
 
-        // 4. Fade In do botão NÃO
+        // 6. Fade In do botão NÃO.
         if (grupoBotaoNao != null)
         {
             grupoBotaoNao.blocksRaycasts = true;
@@ -142,7 +147,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
             );
         }
 
-        // 5. Liberar interação depois de toda a sequência
+        // 7. Liberar interação depois de toda a sequência.
         grupoPainel.interactable = true;
         grupoPainel.blocksRaycasts = true;
 
@@ -167,6 +172,23 @@ public class SistemaDerrotaFloresta : MonoBehaviour
             if (hoverNao != null)
                 hoverNao.Liberar();
         }
+    }
+
+    private IEnumerator MostrarLetras()
+    {
+        textoDerrota.ForceMeshUpdate();
+        textoDerrota.maxVisibleCharacters = 0;
+
+        int quantidadeLetras = textoDerrota.textInfo.characterCount;
+
+        for (int i = 0; i < quantidadeLetras; i++)
+        {
+            textoDerrota.maxVisibleCharacters = i + 1;
+
+            yield return new WaitForSecondsRealtime(velocidadeLetras);
+        }
+
+        textoDerrota.maxVisibleCharacters = quantidadeLetras;
     }
 
     private IEnumerator FadeGrupo(

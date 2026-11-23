@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a8a5bd440410fe4e990d7a2dc6c7875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovimentoObstaculo
-  velocidade: 5
+  velocidade: 13
   limiteEsquerdo: -15
 --- !u!50 &7471418101866939444
 Rigidbody2D:

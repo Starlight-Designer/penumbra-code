@@ -4,7 +4,7 @@ using UnityEngine;
 public class MovimentoObstaculo : MonoBehaviour
 {
     [Header("Movimento normal")]
-    public float velocidade = 5f;
+    public float velocidade = 8f;
     public float limiteEsquerdo = -15f;
 
     private bool foiArremessado = false;
