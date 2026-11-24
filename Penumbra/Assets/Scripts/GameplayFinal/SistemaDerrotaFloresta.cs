@@ -10,6 +10,20 @@ public class SistemaDerrotaFloresta : MonoBehaviour
     public GameObject painelDerrota;
     public CanvasGroup grupoPainel;
 
+    [Header("Áudios")]
+    public AudioSource audioNoite;
+    public AudioSource musicaPerseguicao;
+
+    [Header("Fade da música de perseguição")]
+    public float duracaoFadeOutPerseguicao = 2f;
+
+    [Header("Fade do áudio da noite")]
+    public float duracaoFadeInNoite = 2f;
+    public float duracaoFadeOutNoite = 1.5f;
+
+    private float volumeOriginalNoite;
+    private float volumeOriginalPerseguicao;
+
     [Header("Texto")]
     public TMP_Text textoDerrota;
     public float velocidadeLetras = 0.05f;
@@ -62,6 +76,19 @@ public class SistemaDerrotaFloresta : MonoBehaviour
         PrepararBotao(grupoBotaoSim);
         PrepararBotao(grupoBotaoNao);
 
+        // Guarda os volumes originais.
+        if (audioNoite != null)
+        {
+            volumeOriginalNoite = audioNoite.volume;
+            audioNoite.playOnAwake = false;
+            audioNoite.Stop();
+        }
+
+        if (musicaPerseguicao != null)
+        {
+            volumeOriginalPerseguicao = musicaPerseguicao.volume;
+        }
+
         painelDerrota.SetActive(false);
     }
 
@@ -91,7 +118,59 @@ public class SistemaDerrotaFloresta : MonoBehaviour
 
         painelDerrota.SetActive(true);
 
+        // Inicia a transição dos áudios.
+        StartCoroutine(TransicaoAudioDerrota());
+
         StartCoroutine(SequenciaDerrota());
+    }
+
+    private IEnumerator TransicaoAudioDerrota()
+    {
+        // Fade Out da música de perseguição.
+        if (musicaPerseguicao != null && musicaPerseguicao.isPlaying)
+        {
+            float volumeInicial = musicaPerseguicao.volume;
+            float tempo = 0f;
+
+            while (tempo < duracaoFadeOutPerseguicao)
+            {
+                tempo += Time.unscaledDeltaTime;
+
+                float progresso = Mathf.Clamp01(
+                    tempo / duracaoFadeOutPerseguicao
+                );
+
+                musicaPerseguicao.volume = Mathf.Lerp(
+                    volumeInicial,
+                    0f,
+                    progresso
+                );
+
+                yield return null;
+            }
+
+            musicaPerseguicao.volume = 0f;
+            musicaPerseguicao.Stop();
+
+            // Restaura o volume original para uma próxima reprodução.
+            musicaPerseguicao.volume = volumeOriginalPerseguicao;
+        }
+
+        // Fade In do áudio da noite.
+        if (audioNoite != null)
+        {
+            audioNoite.volume = 0f;
+            audioNoite.Play();
+
+            yield return StartCoroutine(
+                FadeAudio(
+                    audioNoite,
+                    0f,
+                    volumeOriginalNoite,
+                    duracaoFadeInNoite
+                )
+            );
+        }
     }
 
     private IEnumerator SequenciaDerrota()
@@ -108,7 +187,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
 
             yield return StartCoroutine(MostrarLetras());
 
-            // 3. Espera dois segundos.
+            // 3. Espera entre as frases.
             yield return new WaitForSecondsRealtime(esperaEntreFrases);
 
             // 4. Segunda frase.
@@ -227,6 +306,44 @@ public class SistemaDerrotaFloresta : MonoBehaviour
         grupo.alpha = fim;
     }
 
+    private IEnumerator FadeAudio(
+        AudioSource audio,
+        float inicio,
+        float fim,
+        float duracao
+    )
+    {
+        if (audio == null)
+            yield break;
+
+        audio.volume = inicio;
+
+        if (duracao <= 0f)
+        {
+            audio.volume = fim;
+            yield break;
+        }
+
+        float tempo = 0f;
+
+        while (tempo < duracao)
+        {
+            tempo += Time.unscaledDeltaTime;
+
+            float progresso = Mathf.Clamp01(tempo / duracao);
+
+            audio.volume = Mathf.Lerp(
+                inicio,
+                fim,
+                progresso
+            );
+
+            yield return null;
+        }
+
+        audio.volume = fim;
+    }
+
     public void Recomecar()
     {
         if (saindo || !derrotado)
@@ -254,6 +371,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
         grupoPainel.interactable = false;
         grupoPainel.blocksRaycasts = true;
 
+        // Fade Out do painel.
         yield return StartCoroutine(
             FadeGrupo(
                 grupoPainel,
@@ -262,6 +380,24 @@ public class SistemaDerrotaFloresta : MonoBehaviour
                 duracaoFadeOut
             )
         );
+
+        // Fade Out do áudio da noite.
+        if (audioNoite != null && audioNoite.isPlaying)
+        {
+            yield return StartCoroutine(
+                FadeAudio(
+                    audioNoite,
+                    audioNoite.volume,
+                    0f,
+                    duracaoFadeOutNoite
+                )
+            );
+
+            audioNoite.Stop();
+
+            // Restaura o volume original.
+            audioNoite.volume = volumeOriginalNoite;
+        }
 
         Time.timeScale = 1f;
 
