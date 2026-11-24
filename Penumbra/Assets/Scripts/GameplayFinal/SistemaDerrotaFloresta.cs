@@ -1,4 +1,3 @@
-
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -57,6 +56,9 @@ public class SistemaDerrotaFloresta : MonoBehaviour
 
     private const string CHAVE_RETORNAR_FLORESTA =
         "RetornarFlorestaAposDerrota";
+
+    private const string CHAVE_CUTSCENE_PENDENTE =
+        "CutscenePendenteMenu";
 
     private void Start()
     {
@@ -357,8 +359,10 @@ public class SistemaDerrotaFloresta : MonoBehaviour
         if (saindo || !derrotado)
             return;
 
-        // Remove qualquer indicação antiga de retorno à floresta.
+        // Remove qualquer indicação antiga de retorno à floresta
+        // e qualquer pedido de reinício.
         PlayerPrefs.DeleteKey(CHAVE_RETORNAR_FLORESTA);
+        PlayerPrefs.DeleteKey(CHAVE_REINICIAR_APOS_FINAL);
         PlayerPrefs.Save();
 
         StartCoroutine(
@@ -371,12 +375,17 @@ public class SistemaDerrotaFloresta : MonoBehaviour
         if (saindo || !derrotado)
             return;
 
-        // Solicita que o MenuManager apague o progresso
-        // assim que o menu inicial for carregado.
-        PlayerPrefs.SetInt(CHAVE_REINICIAR_APOS_FINAL, 1);
+        // NÃO reinicia o jogo: o progresso é mantido.
+        PlayerPrefs.DeleteKey(CHAVE_REINICIAR_APOS_FINAL);
 
-        // Remove a indicação antiga de retorno à floresta.
-        PlayerPrefs.DeleteKey(CHAVE_RETORNAR_FLORESTA);
+        // Ao apertar Jogar no menu, volta para a Floresta_Fuga.
+        PlayerPrefs.SetInt(CHAVE_RETORNAR_FLORESTA, 1);
+
+        // Evita que uma cutscene antiga salva tenha prioridade.
+        PlayerPrefs.DeleteKey(CHAVE_CUTSCENE_PENDENTE);
+
+        // Evita carregar uma posição salva de outra cena.
+        PlayerPrefs.SetInt("CarregarPosicaoSalva", 0);
 
         PlayerPrefs.Save();
 

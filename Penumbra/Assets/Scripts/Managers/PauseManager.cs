@@ -1,4 +1,3 @@
-
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +10,9 @@ public class PauseManager : MonoBehaviour
 
     [Header("Vídeo da cutscene (opcional)")]
     public VideoPlayer videoCutscene;
+
+    [Header("Marque se esta cena é uma cutscene (ex.: cutscene final)")]
+    public bool ehCutscene = false;
 
     private bool jogoPausado = false;
     private bool fechando = false;
@@ -165,6 +167,7 @@ public class PauseManager : MonoBehaviour
         string cenaAtual = SceneManager.GetActiveScene().name;
 
         bool estaEmCutscene =
+            ehCutscene ||
             videoCutscene != null ||
             cenaAtual.StartsWith("Cutscene_");
 
@@ -179,13 +182,15 @@ public class PauseManager : MonoBehaviour
         }
         else
         {
+            // A cena é salva SEMPRE, com ou sem Player.
+            PlayerPrefs.SetString("CenaSalva", cenaAtual);
+            PlayerPrefs.SetInt("TemPartidaSalva", 1);
+
             GameObject jogador =
                 GameObject.FindGameObjectWithTag("Player");
 
             if (jogador != null)
             {
-                PlayerPrefs.SetString("CenaSalva", cenaAtual);
-
                 PlayerPrefs.SetFloat(
                     "PosicaoX",
                     jogador.transform.position.x
@@ -196,8 +201,19 @@ public class PauseManager : MonoBehaviour
                     jogador.transform.position.y
                 );
 
-                PlayerPrefs.SetInt("TemPartidaSalva", 1);
                 PlayerPrefs.SetInt("CarregarPosicaoSalva", 1);
+            }
+            else
+            {
+                // Sem Player: não reaproveita a posição de outra cena.
+                PlayerPrefs.SetInt("CarregarPosicaoSalva", 0);
+                PlayerPrefs.DeleteKey("PosicaoX");
+                PlayerPrefs.DeleteKey("PosicaoY");
+
+                Debug.LogWarning(
+                    "Nenhum objeto com a tag Player em '" + cenaAtual +
+                    "'. Cena salva sem posição."
+                );
             }
 
             // Mantém o registro de que o puzzle dos peixes

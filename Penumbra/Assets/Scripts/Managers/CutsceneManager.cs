@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
@@ -38,8 +37,20 @@ public class CutsceneManager : MonoBehaviour
     [Header("Destino")]
     public string nomeCenaDestino = "Menu_Inicial";
 
+    [Header("Marque SOMENTE na Cutscene_Fuga (fim do jogo)")]
+    public bool ehCutsceneFinal = false;
+
     private bool cutsceneFinalizada = false;
     private bool cutscenePausada = false;
+
+    private const string CHAVE_REINICIAR_APOS_FINAL =
+        "ReiniciarAoVoltarMenu";
+
+    private const string CHAVE_RETORNAR_FLORESTA =
+        "RetornarFlorestaAposDerrota";
+
+    private const string CHAVE_CUTSCENE_PENDENTE =
+        "CutscenePendenteMenu";
 
     void Start()
     {
@@ -51,10 +62,14 @@ public class CutsceneManager : MonoBehaviour
         telaPretaFinal.alpha = 0f;
         telaPretaFinal.gameObject.SetActive(false);
 
-        grupoTextoFinal.alpha = 0f;
-        grupoTextoFinal.gameObject.SetActive(false);
+        if (grupoTextoFinal != null)
+        {
+            grupoTextoFinal.alpha = 0f;
+            grupoTextoFinal.gameObject.SetActive(false);
+        }
 
-        textoFinal.maxVisibleCharacters = 0;
+        if (textoFinal != null)
+            textoFinal.maxVisibleCharacters = 0;
 
         // Garante que o áudio ambiente só comece após o vídeo.
         if (audioAmbienteNoite != null)
@@ -153,6 +168,22 @@ public class CutsceneManager : MonoBehaviour
         StartCoroutine(SequenciaFinal());
     }
 
+    // Marca que o jogo deve ser reiniciado quando o menu abrir.
+    // O MenuManager apaga o progresso no Start() ao ver esta chave.
+    void MarcarReinicioDoJogo()
+    {
+        // Só a cutscene final reinicia o jogo.
+        if (!ehCutsceneFinal)
+            return;
+
+        PlayerPrefs.SetInt(CHAVE_REINICIAR_APOS_FINAL, 1);
+
+        PlayerPrefs.DeleteKey(CHAVE_RETORNAR_FLORESTA);
+        PlayerPrefs.DeleteKey(CHAVE_CUTSCENE_PENDENTE);
+
+        PlayerPrefs.Save();
+    }
+
     IEnumerator SequenciaFinal()
     {
         // Interrompe o vídeo.
@@ -166,6 +197,11 @@ public class CutsceneManager : MonoBehaviour
 
         DialogueManager.DialogoGlobalAtivo = false;
 
+        // Fim do jogo: o progresso será apagado ao abrir o menu.
+        // Marcado aqui no início para valer mesmo que o jogador
+        // feche o jogo durante a sequência final.
+        MarcarReinicioDoJogo();
+
         // Fade In da tela preta.
         telaPretaFinal.gameObject.SetActive(true);
         telaPretaFinal.alpha = 0f;
@@ -177,35 +213,44 @@ public class CutsceneManager : MonoBehaviour
         // Espera antes de começar o texto.
         yield return new WaitForSecondsRealtime(esperaAntesTexto);
 
-        // Prepara o painel da mensagem.
-        grupoTextoFinal.gameObject.SetActive(true);
-        grupoTextoFinal.alpha = 0f;
+        // A mensagem final só aparece se os campos de texto estiverem preenchidos.
+        if (grupoTextoFinal != null && textoFinal != null)
+        {
+            // Prepara o painel da mensagem.
+            grupoTextoFinal.gameObject.SetActive(true);
+            grupoTextoFinal.alpha = 0f;
 
-        // Fade In do painel.
-        yield return StartCoroutine(
-            FadeCanvas(grupoTextoFinal, 0f, 1f, duracaoFadeTexto)
-        );
+            // Fade In do painel.
+            yield return StartCoroutine(
+                FadeCanvas(grupoTextoFinal, 0f, 1f, duracaoFadeTexto)
+            );
 
-        // PRIMEIRA FRASE.
-        textoFinal.text = "Nem todo mundo tem finais felizes...";
+            // PRIMEIRA FRASE.
+            textoFinal.text = "Nem todo mundo tem finais felizes...";
 
-        yield return StartCoroutine(MostrarLetras());
+            yield return StartCoroutine(MostrarLetras());
 
-        // Espera dois segundos antes da segunda frase.
-        yield return new WaitForSecondsRealtime(esperaEntreFrases);
+            // Espera dois segundos antes da segunda frase.
+            yield return new WaitForSecondsRealtime(esperaEntreFrases);
 
-        // SEGUNDA FRASE.
-        textoFinal.text = "E pelo visto você teve o mesmo destino que eu... Alice.";
+            // SEGUNDA FRASE.
+            textoFinal.text = "E pelo visto você teve o mesmo destino que eu... Alice.";
 
-        yield return StartCoroutine(MostrarLetras());
+            yield return StartCoroutine(MostrarLetras());
 
-        // Mantém o texto completo visível.
-        yield return new WaitForSecondsRealtime(tempoTextoNaTela);
+            // Mantém o texto completo visível.
+            yield return new WaitForSecondsRealtime(tempoTextoNaTela);
 
-        // Fade Out do texto final.
-        yield return StartCoroutine(
-            FadeCanvas(grupoTextoFinal, 1f, 0f, duracaoFadeTexto)
-        );
+            // Fade Out do texto final.
+            yield return StartCoroutine(
+                FadeCanvas(grupoTextoFinal, 1f, 0f, duracaoFadeTexto)
+            );
+        }
+
+        // Garante a marcação de reinício antes de ir ao menu.
+        MarcarReinicioDoJogo();
+
+        Time.timeScale = 1f;
 
         // Carrega o menu inicial.
         SceneManager.LoadScene(nomeCenaDestino);

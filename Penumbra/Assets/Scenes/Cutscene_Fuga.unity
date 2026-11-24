@@ -800,6 +800,7 @@ MonoBehaviour:
   tempoTextoNaTela: 5
   esperaEntreFrases: 2
   nomeCenaDestino: Menu_Inicial
+  ehCutsceneFinal: 1
 --- !u!82 &803649386
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1048,7 +1049,7 @@ AudioSource:
   m_GameObject: {fileID: 1171498079}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 856ff98a45522ff4f9d195ce08003321, type: 2}
+  OutputAudioMixerGroup: {fileID: 1243471131175607021, guid: 856ff98a45522ff4f9d195ce08003321, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 3a706c131ef2805409307abf07d9ed32, type: 3}
   m_PlayOnAwake: 0
@@ -1412,6 +1413,7 @@ MonoBehaviour:
   painelPausa: {fileID: 106103048}
   painelObjetivos: {fileID: 0}
   videoCutscene: {fileID: 803649383}
+  ehCutscene: 0
   nomePainelPausa: Painel_Pausa (1)
   nomePainelObjetivos: 
 --- !u!4 &1498870502

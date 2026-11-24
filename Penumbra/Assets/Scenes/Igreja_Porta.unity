@@ -277,6 +277,7 @@ MonoBehaviour:
   audioSource: {fileID: 110541737}
   duracaoFade: 3
   volumeMaximo: 1
+  iniciarAutomaticamente: 1
 --- !u!82 &110541737
 AudioSource:
   m_ObjectHideFlags: 0
@@ -286,7 +287,7 @@ AudioSource:
   m_GameObject: {fileID: 110541735}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 856ff98a45522ff4f9d195ce08003321, type: 2}
+  OutputAudioMixerGroup: {fileID: 1243471131175607021, guid: 856ff98a45522ff4f9d195ce08003321, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 3a706c131ef2805409307abf07d9ed32, type: 3}
   m_PlayOnAwake: 0

@@ -5139,7 +5139,7 @@ AudioSource:
   m_GameObject: {fileID: 1541670183}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 856ff98a45522ff4f9d195ce08003321, type: 2}
+  OutputAudioMixerGroup: {fileID: 1243471131175607021, guid: 856ff98a45522ff4f9d195ce08003321, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: bdaf97b3f93e17749a9111cd08644fc4, type: 3}
   m_PlayOnAwake: 0
@@ -5538,6 +5538,16 @@ MonoBehaviour:
   fita2Pensamento4Aberta: {fileID: 0}
   fita2Pensamento5Fechada: {fileID: 0}
   fita2Pensamento5Aberta: {fileID: 0}
+  fita3Pensamento1Fechada: {fileID: 0}
+  fita3Pensamento1Aberta: {fileID: 0}
+  fita3Pensamento2Fechada: {fileID: 0}
+  fita3Pensamento2Aberta: {fileID: 0}
+  fita3Pensamento3Fechada: {fileID: 0}
+  fita3Pensamento3Aberta: {fileID: 0}
+  fita3Pensamento4Fechada: {fileID: 0}
+  fita3Pensamento4Aberta: {fileID: 0}
+  fita3Pensamento5Fechada: {fileID: 0}
+  fita3Pensamento5Aberta: {fileID: 0}
   fita3Pensamento6Fechada: {fileID: 0}
   fita3Pensamento6Aberta: {fileID: 0}
 --- !u!1 &1870995413
