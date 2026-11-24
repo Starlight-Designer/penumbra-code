@@ -34,14 +34,29 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
     [Header("Cutscene")]
     public CutscenePeixesManager cutscenePeixesManager;
 
+    private const string CHAVE_PUZZLE_ATIVO = "PuzzlePeixesEmAndamento";
+    private const string CHAVE_QUANTIDADE = "PeixesOrganizados";
+    private const string CHAVE_POPUP10 = "PopupPeixes10Mostrado";
+    private const string CHAVE_POPUP15 = "PopupPeixes15Mostrado";
+    private const string CHAVE_POPUP_ABERTO = "PopupPeixesAberto";
+    private const string CHAVE_POPUPS_EXTRAS = "PopupsPeixesExtrasIniciados";
+    private const string CHAVE_POPUPS_CRIADOS = "QuantidadePopupsPeixesCriados";
+
     private int peixesOrganizados = 0;
 
     private CanvasGroup grupoPopup;
     private Coroutine animacaoAtual;
+    private Coroutine rotinaPopupsExtras;
 
     private bool popupsJaApareceram = false;
     private bool musicaPuzzleIniciada = false;
     private bool painelPuzzleJaAtivado = false;
+
+    private bool popup10Mostrado = false;
+    private bool popup15Mostrado = false;
+    private bool sequenciaPopupsExtrasEmAndamento = false;
+
+    private int popupsExtrasCriados = 0;
 
     private List<AudioSource> sonsPopupsExtras =
         new List<AudioSource>();
@@ -72,9 +87,9 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
 
     private void Start()
     {
-        // Ao entrar ou retornar à peixaria,
-        // as duas músicas ambientes começam juntas.
+        CarregarProgresso();
 
+        // Músicas ambientes.
         if (musicaAmbiente != null)
         {
             musicaAmbiente.Stop();
@@ -92,25 +107,135 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
 
         musicaPuzzleIniciada = false;
 
-        Debug.Log("Músicas ambientes da peixaria iniciadas!");
+        // Se havia um puzzle em andamento, abre novamente o painel.
+        if (PlayerPrefs.GetInt(CHAVE_PUZZLE_ATIVO, 0) == 1)
+        {
+            if (painelPuzzlePeixes != null)
+                painelPuzzlePeixes.SetActive(true);
+
+            Debug.Log("Retomando o puzzle dos peixes!");
+        }
+
+        // Restaura a música de acordo com o progresso.
+        if (painelPuzzlePeixes != null &&
+            painelPuzzlePeixes.activeInHierarchy)
+        {
+            painelPuzzleJaAtivado = true;
+
+            if (peixesOrganizados < 10)
+                IniciarMusicaPuzzle();
+            else
+                PararMusicaPuzzle();
+        }
+
+        // Se o jogador saiu enquanto um popup estava aberto,
+        // mostra novamente o popup.
+        if (PlayerPrefs.GetInt(CHAVE_POPUP_ABERTO, 0) == 1)
+        {
+            MostrarPopup();
+        }
+
+        // Continua a sequência de popups extras, se necessário.
+        if (sequenciaPopupsExtrasEmAndamento)
+        {
+            rotinaPopupsExtras =
+                StartCoroutine(AparecerPopupsExtras());
+        }
+
+        Debug.Log(
+            "Progresso carregado. Peixes organizados: " +
+            peixesOrganizados
+        );
+    }
+
+    private void CarregarProgresso()
+    {
+        peixesOrganizados =
+            PlayerPrefs.GetInt(CHAVE_QUANTIDADE, 0);
+
+        popup10Mostrado =
+            PlayerPrefs.GetInt(CHAVE_POPUP10, 0) == 1;
+
+        popup15Mostrado =
+            PlayerPrefs.GetInt(CHAVE_POPUP15, 0) == 1;
+
+        popupsJaApareceram =
+            PlayerPrefs.GetInt(CHAVE_POPUPS_EXTRAS, 0) == 1;
+
+        sequenciaPopupsExtrasEmAndamento =
+            PlayerPrefs.GetInt("SequenciaPopupsPeixesEmAndamento", 0) == 1;
+
+        popupsExtrasCriados =
+            PlayerPrefs.GetInt(CHAVE_POPUPS_CRIADOS, 0);
+    }
+
+    private void SalvarProgresso()
+    {
+        PlayerPrefs.SetInt(CHAVE_PUZZLE_ATIVO, 1);
+
+        PlayerPrefs.SetInt(
+            CHAVE_QUANTIDADE,
+            peixesOrganizados
+        );
+
+        PlayerPrefs.SetInt(
+            CHAVE_POPUP10,
+            popup10Mostrado ? 1 : 0
+        );
+
+        PlayerPrefs.SetInt(
+            CHAVE_POPUP15,
+            popup15Mostrado ? 1 : 0
+        );
+
+        PlayerPrefs.SetInt(
+            CHAVE_POPUP_ABERTO,
+            painelPopupPeixes != null &&
+            painelPopupPeixes.activeSelf ? 1 : 0
+        );
+
+        PlayerPrefs.SetInt(
+            CHAVE_POPUPS_EXTRAS,
+            popupsJaApareceram ? 1 : 0
+        );
+
+        PlayerPrefs.SetInt(
+            "SequenciaPopupsPeixesEmAndamento",
+            sequenciaPopupsExtrasEmAndamento ? 1 : 0
+        );
+
+        PlayerPrefs.SetInt(
+            CHAVE_POPUPS_CRIADOS,
+            popupsExtrasCriados
+        );
+
+        PlayerPrefs.Save();
     }
 
     private void Update()
     {
-        // Começa a música do puzzle quando o painel aparece.
+        // Registra que o puzzle foi iniciado.
         if (painelPuzzlePeixes != null &&
-            painelPuzzlePeixes.activeInHierarchy &&
-            !painelPuzzleJaAtivado)
+            painelPuzzlePeixes.activeInHierarchy)
         {
-            painelPuzzleJaAtivado = true;
-            IniciarMusicaPuzzle();
+            if (PlayerPrefs.GetInt(CHAVE_PUZZLE_ATIVO, 0) == 0)
+            {
+                PlayerPrefs.SetInt(CHAVE_PUZZLE_ATIVO, 1);
+                PlayerPrefs.Save();
+            }
+
+            if (!painelPuzzleJaAtivado)
+            {
+                painelPuzzleJaAtivado = true;
+                IniciarMusicaPuzzle();
+            }
         }
 
-        // Verifica a proximidade do cursor para os pop-ups extras.
         if (painelPopupPeixes == null ||
             peixesOrganizados < 15 ||
             !painelPopupPeixes.activeInHierarchy ||
-            popupsJaApareceram)
+            popupsJaApareceram ||
+            sequenciaPopupsExtrasEmAndamento)
             return;
 
         RectTransform rectPopup =
@@ -139,7 +264,12 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         if (areaPopup.Contains(posicaoLocal))
         {
             popupsJaApareceram = true;
-            StartCoroutine(AparecerPopupsExtras());
+            sequenciaPopupsExtrasEmAndamento = true;
+
+            SalvarProgresso();
+
+            rotinaPopupsExtras =
+                StartCoroutine(AparecerPopupsExtras());
         }
     }
 
@@ -149,20 +279,30 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
 
         Debug.Log("Peixes organizados: " + peixesOrganizados);
 
-        // No décimo peixe, aparece o primeiro popup.
-        // A música do puzzle para e a floresta continua.
-
         if (peixesOrganizados == 10)
         {
             PararMusicaPuzzle();
         }
 
-        if (peixesOrganizados == 10 || peixesOrganizados == 15)
+        if (peixesOrganizados == 10 && !popup10Mostrado)
         {
+            popup10Mostrado = true;
+
             Debug.Log("BIANCA NÃO ESTÁ AQUI.");
 
             MostrarPopup();
         }
+
+        if (peixesOrganizados == 15 && !popup15Mostrado)
+        {
+            popup15Mostrado = true;
+
+            Debug.Log("BIANCA NÃO ESTÁ AQUI.");
+
+            MostrarPopup();
+        }
+
+        SalvarProgresso();
     }
 
     private void IniciarMusicaPuzzle()
@@ -228,10 +368,12 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         if (painelPopupPeixes == null)
             return;
 
-        // Bloqueia os peixes enquanto o popup estiver aberto.
         BloquearInteracaoPeixes();
 
         painelPopupPeixes.SetActive(true);
+
+        PlayerPrefs.SetInt(CHAVE_POPUP_ABERTO, 1);
+        PlayerPrefs.Save();
 
         if (audioPopup != null)
         {
@@ -278,6 +420,10 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         else if (painelPopupPeixes != null)
         {
             painelPopupPeixes.SetActive(false);
+
+            PlayerPrefs.SetInt(CHAVE_POPUP_ABERTO, 0);
+            PlayerPrefs.Save();
+
             LiberarInteracaoPeixes();
         }
     }
@@ -299,6 +445,9 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         painelPopupPeixes.SetActive(false);
         animacaoAtual = null;
 
+        PlayerPrefs.SetInt(CHAVE_POPUP_ABERTO, 0);
+        PlayerPrefs.Save();
+
         LiberarInteracaoPeixes();
     }
 
@@ -310,7 +459,9 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         if (areaCanvas == null)
             yield break;
 
-        for (int i = 0; i < quantidadePopups; i++)
+        for (int i = popupsExtrasCriados;
+             i < quantidadePopups;
+             i++)
         {
             GameObject novoPopup = Instantiate(
                 painelPopupPeixes,
@@ -369,16 +520,24 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
                 sonsPopupsExtras.Add(somNovoPopup);
             }
 
+            popupsExtrasCriados++;
+            SalvarProgresso();
+
             yield return new WaitForSeconds(
                 intervaloEntrePopups
             );
         }
+
+        sequenciaPopupsExtrasEmAndamento = false;
+        SalvarProgresso();
 
         if (cutscenePeixesManager != null)
         {
             Debug.Log("Iniciando cutscene dos peixes!");
 
             PararSonsDosPopups();
+
+            LimparProgressoPuzzle();
 
             cutscenePeixesManager.IniciarCutscene();
         }
@@ -388,6 +547,8 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
                 "CutscenePeixesManager não foi conectado no Inspector!"
             );
         }
+
+        rotinaPopupsExtras = null;
     }
 
     private void PararSonsDosPopups()
@@ -402,5 +563,31 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         }
 
         sonsPopupsExtras.Clear();
+    }
+
+    private void LimparProgressoPuzzle()
+    {
+        PlayerPrefs.DeleteKey(CHAVE_PUZZLE_ATIVO);
+        PlayerPrefs.DeleteKey(CHAVE_QUANTIDADE);
+        PlayerPrefs.DeleteKey(CHAVE_POPUP10);
+        PlayerPrefs.DeleteKey(CHAVE_POPUP15);
+        PlayerPrefs.DeleteKey(CHAVE_POPUP_ABERTO);
+        PlayerPrefs.DeleteKey(CHAVE_POPUPS_EXTRAS);
+        PlayerPrefs.DeleteKey(CHAVE_POPUPS_CRIADOS);
+        PlayerPrefs.DeleteKey("SequenciaPopupsPeixesEmAndamento");
+
+        PixeArrastavel[] peixes =
+            FindObjectsByType<PixeArrastavel>(
+                FindObjectsInactive.Include,
+                FindObjectsSortMode.None
+            );
+
+        foreach (PixeArrastavel peixe in peixes)
+        {
+            if (peixe != null)
+                peixe.LimparEstadoSalvo();
+        }
+
+        PlayerPrefs.Save();
     }
 }

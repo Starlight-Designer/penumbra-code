@@ -2810,6 +2810,16 @@ MonoBehaviour:
   fita2Pensamento4Aberta: {fileID: 0}
   fita2Pensamento5Fechada: {fileID: 0}
   fita2Pensamento5Aberta: {fileID: 0}
+  fita3Pensamento1Fechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita3Pensamento1Aberta: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita3Pensamento2Fechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita3Pensamento2Aberta: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita3Pensamento3Fechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita3Pensamento3Aberta: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita3Pensamento4Fechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita3Pensamento4Aberta: {fileID: 8512984223476161493, guid: 3f104814154a0e3409fa54b3b1e5202b, type: 3}
+  fita3Pensamento5Fechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
+  fita3Pensamento5Aberta: {fileID: 8512984223476161493, guid: 3f104814154a0e3409fa54b3b1e5202b, type: 3}
   fita3Pensamento6Fechada: {fileID: 1766667236818194794, guid: 232ff096cf08c4940a72759cd09ce5e9, type: 3}
   fita3Pensamento6Aberta: {fileID: 8136755554462697388, guid: 89c0a869d7611a541b5b90de0e1e217b, type: 3}
 --- !u!4 &1736761645

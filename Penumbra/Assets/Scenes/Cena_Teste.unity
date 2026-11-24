@@ -353,8 +353,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -1525,6 +1525,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MusicaAmbienteManager
   musicaAmbiente: {fileID: 438890361}
+  cenasComMusica:
+  - Cena_Teste
+  - Casa_Mae_Bianca
+  - Delegacia
+  - Floresta
+  - Caminho_Igreja
   duracaoFade: 1.5
   volumeMaximo: 1
 --- !u!4 &438890363
@@ -1705,8 +1711,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -4268,8 +4274,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -4330,7 +4336,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -504.5, y: 453}
+  m_AnchoredPosition: {x: 0, y: 265}
   m_SizeDelta: {x: 911, y: 174}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1127765563
@@ -5567,15 +5573,7 @@ MonoBehaviour:
   instrucoes:
   - mensagem: Aperte WASD para se movimentar
     textoUI: {fileID: 474515359}
-    posicao: {x: -504.5, y: 453}
-    tamanhoFonte: 50
-    duracao: 3
-    duracaoFadeIn: 0.5
-    duracaoFadeOut: 0.5
-    ativa: 1
-  - mensagem: "Aperte I para abrir o invent\xE1rio"
-    textoUI: {fileID: 173177235}
-    posicao: {x: -504.5, y: 453}
+    posicao: {x: 0, y: 265}
     tamanhoFonte: 50
     duracao: 3
     duracaoFadeIn: 0.5
@@ -5583,7 +5581,15 @@ MonoBehaviour:
     ativa: 1
   - mensagem: Aperte ESC para pausar
     textoUI: {fileID: 1127765560}
-    posicao: {x: -504.5, y: 453}
+    posicao: {x: 0, y: 265}
+    tamanhoFonte: 50
+    duracao: 3
+    duracaoFadeIn: 0.5
+    duracaoFadeOut: 0.5
+    ativa: 1
+  - mensagem: "Aperte I para abrir o invent\xE1rio"
+    textoUI: {fileID: 173177235}
+    posicao: {x: 0, y: 265}
     tamanhoFonte: 50
     duracao: 3
     duracaoFadeIn: 0.5

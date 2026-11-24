@@ -676,6 +676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+  idPersistencia: 7
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -899,6 +900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tambaqui
+  idPersistencia: 2
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -1770,6 +1772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tambaqui
+  idPersistencia: 8
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -2280,6 +2283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tucunare
+  idPersistencia: 7
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -2732,6 +2736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tucunare
+  idPersistencia: 9
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -2955,6 +2960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+  idPersistencia: 4
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -3178,6 +3184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tucunare
+  idPersistencia: 10
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -3459,6 +3466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tambaqui
+  idPersistencia: 5
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -3897,6 +3905,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tambaqui
+  idPersistencia: 4
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -4485,6 +4494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+  idPersistencia: 10
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -4708,6 +4718,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tucunare
+  idPersistencia: 4
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -4931,6 +4942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+  idPersistencia: 5
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -5186,6 +5198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tambaqui
+  idPersistencia: 7
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -5409,6 +5422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tucunare
+  idPersistencia: 8
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -5690,7 +5704,7 @@ VideoPlayer:
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
-  m_AspectRatio: 4
+  m_AspectRatio: 3
   m_DataSource: 0
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
@@ -5738,7 +5752,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CutscenePeixesManager
   reprodutorVideo: {fileID: 860315173}
   imagemCutscene: {fileID: 2021102745}
-  musicaAmbiente: {fileID: 1476309667}
+  musicaAmbiente: {fileID: 0}
   florestaAmbiente: {fileID: 1194390191}
   musicaPuzzle: {fileID: 499462807}
   dialogoPescador: {fileID: 23686523}
@@ -5838,6 +5852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+  idPersistencia: 1
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -6247,6 +6262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+  idPersistencia: 9
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -6470,6 +6486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tucunare
+  idPersistencia: 3
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -7076,6 +7093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+  idPersistencia: 2
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -7242,7 +7260,7 @@ MonoBehaviour:
   painelPopupPeixes: {fileID: 1299983847}
   grupoInteracaoPeixes: {fileID: 106301931}
   audioPopup: {fileID: 1054061549}
-  musicaAmbiente: {fileID: 1476309667}
+  musicaAmbiente: {fileID: 0}
   florestaAmbiente: {fileID: 1194390191}
   musicaPuzzle: {fileID: 499462807}
   velocidadeFadeIn: 0.1
@@ -7648,6 +7666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+  idPersistencia: 8
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -8301,6 +8320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tucunare
+  idPersistencia: 5
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -8691,6 +8711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tambaqui
+  idPersistencia: 9
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -8914,6 +8935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tambaqui
+  idPersistencia: 6
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -9454,6 +9476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tambaqui
+  idPersistencia: 10
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -10075,135 +10098,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1473506865}
   m_CullTransparentMesh: 1
---- !u!1 &1476309665
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1476309668}
-  - component: {fileID: 1476309667}
-  m_Layer: 0
-  m_Name: MusicaAmbiente
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!82 &1476309667
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1476309665}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 1243471131175607021, guid: 856ff98a45522ff4f9d195ce08003321, type: 2}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 97ba5e0fe1067044cb52a82f2e12b88c, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!4 &1476309668
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1476309665}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.13905, y: -0.8945, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1483657467
 GameObject:
   m_ObjectHideFlags: 0
@@ -10634,6 +10528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tambaqui
+  idPersistencia: 1
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -11008,6 +10903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+  idPersistencia: 6
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -11645,6 +11541,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tucunare
+  idPersistencia: 6
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -11868,6 +11765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tucunare
+  idPersistencia: 1
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -12434,6 +12332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tambaqui
+  idPersistencia: 3
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -12729,6 +12628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Tucunare
+  idPersistencia: 2
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -13329,6 +13229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeixeArrastavel
   especie: Pirarucu
+  idPersistencia: 3
   fonteAudio: {fileID: 1627172780}
   somPegarPeixe: {fileID: 8300000, guid: a171f037ed35f1d46b5a24930a78f956, type: 3}
   somColocarPeixe: {fileID: 8300000, guid: db1a1ad592d305f4f85340670f50ecf6, type: 3}
@@ -13735,6 +13636,5 @@ SceneRoots:
   - {fileID: 2097028744}
   - {fileID: 410671289}
   - {fileID: 1069896908}
-  - {fileID: 1476309668}
   - {fileID: 1194390192}
   - {fileID: 499462808}

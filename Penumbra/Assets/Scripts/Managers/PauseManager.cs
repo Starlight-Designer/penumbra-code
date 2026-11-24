@@ -28,6 +28,9 @@ public class PauseManager : MonoBehaviour
     private const string CHAVE_CUTSCENE_PENDENTE =
         "CutscenePendenteMenu";
 
+    private const string CHAVE_PUZZLE_PEIXES =
+        "PuzzlePeixesEmAndamento";
+
     void Awake()
     {
         if (painelPausa == null)
@@ -161,14 +164,12 @@ public class PauseManager : MonoBehaviour
 
         string cenaAtual = SceneManager.GetActiveScene().name;
 
-        // Identifica se o jogador está em uma cutscene.
         bool estaEmCutscene =
             videoCutscene != null ||
             cenaAtual.StartsWith("Cutscene_");
 
         if (estaEmCutscene)
         {
-            // Salva o nome da cutscene para retomá-la pelo menu.
             PlayerPrefs.SetString(
                 CHAVE_CUTSCENE_PENDENTE,
                 cenaAtual
@@ -178,7 +179,6 @@ public class PauseManager : MonoBehaviour
         }
         else
         {
-            // Mantém o salvamento normal da partida.
             GameObject jogador =
                 GameObject.FindGameObjectWithTag("Player");
 
@@ -198,6 +198,16 @@ public class PauseManager : MonoBehaviour
 
                 PlayerPrefs.SetInt("TemPartidaSalva", 1);
                 PlayerPrefs.SetInt("CarregarPosicaoSalva", 1);
+            }
+
+            // Mantém o registro de que o puzzle dos peixes
+            // deve ser retomado ao carregar novamente a Peixaria.
+            if (cenaAtual == "Peixaria" &&
+                PlayerPrefs.GetInt(CHAVE_PUZZLE_PEIXES, 0) == 1)
+            {
+                Debug.Log(
+                    "Retomada do puzzle dos peixes registrada."
+                );
             }
         }
 

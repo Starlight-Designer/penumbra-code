@@ -10,6 +10,9 @@ public class MusicaAmbienteManager : MonoBehaviour
     [Header("Música ambiente")]
     public AudioSource musicaAmbiente;
 
+    [Header("Cenas que terão música ambiente")]
+    public string[] cenasComMusica;
+
     [Header("Fade")]
     public float duracaoFade = 1.5f;
 
@@ -17,7 +20,7 @@ public class MusicaAmbienteManager : MonoBehaviour
     public float volumeMaximo = 1f;
 
     private Coroutine fadeAtual;
-    private bool primeiraCena = true;
+    private bool musicaJaIniciada = false;
 
     private void Awake()
     {
@@ -35,7 +38,9 @@ public class MusicaAmbienteManager : MonoBehaviour
 
         if (musicaAmbiente == null)
         {
-            Debug.LogError("MusicaAmbienteManager: AudioSource não foi conectado!");
+            Debug.LogError(
+                "MusicaAmbienteManager: AudioSource não foi conectado!"
+            );
             return;
         }
 
@@ -52,21 +57,81 @@ public class MusicaAmbienteManager : MonoBehaviour
 
         musicaAmbiente.volume = 0f;
 
-        if (!musicaAmbiente.isPlaying)
-            musicaAmbiente.Play();
-
-        IniciarFadeIn();
+        VerificarCena(SceneManager.GetActiveScene().name);
     }
 
     private void AoCarregarCena(Scene cena, LoadSceneMode modo)
     {
-        if (primeiraCena)
+        VerificarCena(cena.name);
+    }
+
+    private void VerificarCena(string nomeCena)
+    {
+        bool deveTocar = false;
+
+        foreach (string cena in cenasComMusica)
         {
-            primeiraCena = false;
-            return;
+            if (cena == nomeCena)
+            {
+                deveTocar = true;
+                break;
+            }
         }
 
-        IniciarFadeIn();
+        if (deveTocar)
+        {
+            IniciarFadeIn();
+        }
+        else
+        {
+            IniciarFadeOut();
+        }
+    }
+
+    public void IniciarFadeIn()
+    {
+        if (musicaAmbiente == null)
+            return;
+
+        PararFadeAtual();
+
+        if (!musicaJaIniciada)
+        {
+            musicaAmbiente.volume = 0f;
+            musicaAmbiente.Play();
+            musicaJaIniciada = true;
+        }
+        else
+        {
+            musicaAmbiente.UnPause();
+        }
+
+        fadeAtual = StartCoroutine(FadeInRotina());
+    }
+
+    private IEnumerator FadeInRotina()
+    {
+        yield return AlterarVolume(volumeMaximo);
+        fadeAtual = null;
+    }
+
+    public void IniciarFadeOut()
+    {
+        if (musicaAmbiente == null || !musicaAmbiente.isPlaying)
+            return;
+
+        PararFadeAtual();
+
+        fadeAtual = StartCoroutine(FadeOutRotina());
+    }
+
+    private IEnumerator FadeOutRotina()
+    {
+        yield return AlterarVolume(0f);
+
+        musicaAmbiente.Pause();
+
+        fadeAtual = null;
     }
 
     public IEnumerator FadeOutParaTroca()
@@ -78,31 +143,7 @@ public class MusicaAmbienteManager : MonoBehaviour
 
         yield return AlterarVolume(0f);
 
-        // Pausa sem perder a posição atual da música.
         musicaAmbiente.Pause();
-    }
-
-    public void IniciarFadeIn()
-    {
-        if (musicaAmbiente == null)
-            return;
-
-        PararFadeAtual();
-
-        musicaAmbiente.volume = 0f;
-
-        if (musicaAmbiente.timeSamples == 0 && !musicaAmbiente.isPlaying)
-            musicaAmbiente.Play();
-        else
-            musicaAmbiente.UnPause();
-
-        fadeAtual = StartCoroutine(FadeInRotina());
-    }
-
-    private IEnumerator FadeInRotina()
-    {
-        yield return AlterarVolume(volumeMaximo);
-        fadeAtual = null;
     }
 
     private IEnumerator AlterarVolume(float destino)
@@ -120,7 +161,9 @@ public class MusicaAmbienteManager : MonoBehaviour
         {
             tempo += Time.unscaledDeltaTime;
 
-            float progresso = Mathf.Clamp01(tempo / duracaoFade);
+            float progresso = Mathf.Clamp01(
+                tempo / duracaoFade
+            );
 
             musicaAmbiente.volume = Mathf.Lerp(
                 volumeInicial,

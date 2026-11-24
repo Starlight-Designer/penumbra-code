@@ -643,12 +643,12 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: d82021952945ba547bdd3d44a1615706, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 4bbea6645ece08e45be2f7f442324121, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
-  m_AspectRatio: 2
+  m_AspectRatio: 3
   m_DataSource: 0
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
@@ -682,6 +682,7 @@ MonoBehaviour:
   reprodutorVideo: {fileID: 625440014}
   textoPularCutscene: {fileID: 171909996}
   painelPausaCutscene: {fileID: 988939561}
+  audioAmbienteNoite: {fileID: 0}
   grupoTextoPular: {fileID: 171909998}
   duracaoFadeTextoPular: 1
   duracaoFadeOutTextoPular: 0.5
@@ -1081,7 +1082,7 @@ RectTransform:
   m_GameObject: {fileID: 1069854179}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.91, y: 0.91, z: 0.91}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1443891425}
@@ -1111,7 +1112,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: d82021952945ba547bdd3d44a1615706, type: 2}
+  m_Texture: {fileID: 8400000, guid: 4bbea6645ece08e45be2f7f442324121, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0

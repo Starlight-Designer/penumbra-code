@@ -52,6 +52,12 @@ public class SistemaDerrotaFloresta : MonoBehaviour
     private bool derrotado = false;
     private bool saindo = false;
 
+    private const string CHAVE_REINICIAR_APOS_FINAL =
+        "ReiniciarAoVoltarMenu";
+
+    private const string CHAVE_RETORNAR_FLORESTA =
+        "RetornarFlorestaAposDerrota";
+
     private void Start()
     {
         if (painelDerrota == null)
@@ -76,7 +82,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
         PrepararBotao(grupoBotaoSim);
         PrepararBotao(grupoBotaoNao);
 
-        // Guarda os volumes originais.
+        // Guarda o volume original do áudio noturno.
         if (audioNoite != null)
         {
             volumeOriginalNoite = audioNoite.volume;
@@ -84,6 +90,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
             audioNoite.Stop();
         }
 
+        // Guarda o volume original da perseguição.
         if (musicaPerseguicao != null)
         {
             volumeOriginalPerseguicao = musicaPerseguicao.volume;
@@ -118,7 +125,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
 
         painelDerrota.SetActive(true);
 
-        // Inicia a transição dos áudios.
+        // Inicia as transições de áudio.
         StartCoroutine(TransicaoAudioDerrota());
 
         StartCoroutine(SequenciaDerrota());
@@ -126,7 +133,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
 
     private IEnumerator TransicaoAudioDerrota()
     {
-        // Fade Out da música de perseguição.
+        // FADE OUT DA MÚSICA DE PERSEGUIÇÃO.
         if (musicaPerseguicao != null && musicaPerseguicao.isPlaying)
         {
             float volumeInicial = musicaPerseguicao.volume;
@@ -152,13 +159,14 @@ public class SistemaDerrotaFloresta : MonoBehaviour
             musicaPerseguicao.volume = 0f;
             musicaPerseguicao.Stop();
 
-            // Restaura o volume original para uma próxima reprodução.
+            // Restaura o volume para uma próxima reprodução.
             musicaPerseguicao.volume = volumeOriginalPerseguicao;
         }
 
-        // Fade In do áudio da noite.
+        // FADE IN DO ÁUDIO NOTURNO.
         if (audioNoite != null)
         {
+            audioNoite.Stop();
             audioNoite.volume = 0f;
             audioNoite.Play();
 
@@ -226,7 +234,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
             );
         }
 
-        // 7. Liberar interação depois de toda a sequência.
+        // 7. Libera as interações.
         grupoPainel.interactable = true;
         grupoPainel.blocksRaycasts = true;
 
@@ -349,6 +357,10 @@ public class SistemaDerrotaFloresta : MonoBehaviour
         if (saindo || !derrotado)
             return;
 
+        // Remove qualquer indicação antiga de retorno à floresta.
+        PlayerPrefs.DeleteKey(CHAVE_RETORNAR_FLORESTA);
+        PlayerPrefs.Save();
+
         StartCoroutine(
             FadeOutECarregarCena(cenaRecomecar)
         );
@@ -358,6 +370,15 @@ public class SistemaDerrotaFloresta : MonoBehaviour
     {
         if (saindo || !derrotado)
             return;
+
+        // Solicita que o MenuManager apague o progresso
+        // assim que o menu inicial for carregado.
+        PlayerPrefs.SetInt(CHAVE_REINICIAR_APOS_FINAL, 1);
+
+        // Remove a indicação antiga de retorno à floresta.
+        PlayerPrefs.DeleteKey(CHAVE_RETORNAR_FLORESTA);
+
+        PlayerPrefs.Save();
 
         StartCoroutine(
             FadeOutECarregarCena(cenaMenu)
@@ -371,7 +392,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
         grupoPainel.interactable = false;
         grupoPainel.blocksRaycasts = true;
 
-        // Fade Out do painel.
+        // FADE OUT DO PAINEL.
         yield return StartCoroutine(
             FadeGrupo(
                 grupoPainel,
@@ -381,7 +402,7 @@ public class SistemaDerrotaFloresta : MonoBehaviour
             )
         );
 
-        // Fade Out do áudio da noite.
+        // FADE OUT DO ÁUDIO NOTURNO.
         if (audioNoite != null && audioNoite.isPlaying)
         {
             yield return StartCoroutine(

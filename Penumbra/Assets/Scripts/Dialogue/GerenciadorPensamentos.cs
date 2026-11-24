@@ -48,7 +48,27 @@ public class GerenciadorPensamentos : MonoBehaviour
     public Sprite fita2Pensamento5Fechada;
     public Sprite fita2Pensamento5Aberta;
 
-    [Header("Sprites - Sexto pensamento da terceira fita")]
+    [Header("Sprites - Pensamento 1 da terceira fita")]
+    public Sprite fita3Pensamento1Fechada;
+    public Sprite fita3Pensamento1Aberta;
+
+    [Header("Sprites - Pensamento 2 da terceira fita")]
+    public Sprite fita3Pensamento2Fechada;
+    public Sprite fita3Pensamento2Aberta;
+
+    [Header("Sprites - Pensamento 3 da terceira fita")]
+    public Sprite fita3Pensamento3Fechada;
+    public Sprite fita3Pensamento3Aberta;
+
+    [Header("Sprites - Pensamento 4 da terceira fita")]
+    public Sprite fita3Pensamento4Fechada;
+    public Sprite fita3Pensamento4Aberta;
+
+    [Header("Sprites - Pensamento 5 da terceira fita")]
+    public Sprite fita3Pensamento5Fechada;
+    public Sprite fita3Pensamento5Aberta;
+
+    [Header("Sprites - Pensamento 6 da terceira fita")]
     public Sprite fita3Pensamento6Fechada;
     public Sprite fita3Pensamento6Aberta;
 
@@ -343,7 +363,9 @@ public class GerenciadorPensamentos : MonoBehaviour
     {
         MostrarPensamento(
             "...",
-            MostrarSegundoPensamentoFita3
+            MostrarSegundoPensamentoFita3,
+            fita3Pensamento1Fechada,
+            fita3Pensamento1Aberta
         );
     }
 
@@ -351,7 +373,9 @@ public class GerenciadorPensamentos : MonoBehaviour
     {
         MostrarPensamento(
             "...",
-            MostrarTerceiroPensamentoFita3
+            MostrarTerceiroPensamentoFita3,
+            fita3Pensamento2Fechada,
+            fita3Pensamento2Aberta
         );
     }
 
@@ -359,7 +383,9 @@ public class GerenciadorPensamentos : MonoBehaviour
     {
         MostrarPensamento(
             "...",
-            MostrarQuartoPensamentoFita3
+            MostrarQuartoPensamentoFita3,
+            fita3Pensamento3Fechada,
+            fita3Pensamento3Aberta
         );
     }
 
@@ -367,7 +393,9 @@ public class GerenciadorPensamentos : MonoBehaviour
     {
         MostrarPensamento(
             "Foi...ele...",
-            MostrarQuintoPensamentoFita3
+            MostrarQuintoPensamentoFita3,
+            fita3Pensamento4Fechada,
+            fita3Pensamento4Aberta
         );
     }
 
@@ -375,7 +403,9 @@ public class GerenciadorPensamentos : MonoBehaviour
     {
         MostrarPensamento(
             "Ele que matou a Bianca....",
-            MostrarSextoPensamentoFita3
+            MostrarSextoPensamentoFita3,
+            fita3Pensamento5Fechada,
+            fita3Pensamento5Aberta
         );
     }
 

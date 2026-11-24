@@ -51,13 +51,15 @@ public class TutorialInicialManager : MonoBehaviour
 
     private void Start()
     {
-        // Verifica se o tutorial já foi concluído.
-        if (PlayerPrefs.GetInt(CHAVE_TUTORIAL_CONCLUIDO, 0) == 1)
+        // Verifica se o tutorial já foi concluído OU iniciado.
+        if (PlayerPrefs.GetInt(CHAVE_TUTORIAL_CONCLUIDO, 0) == 1 ||
+            PlayerPrefs.GetInt(CHAVE_TUTORIAL_EM_ANDAMENTO, 0) == 1)
         {
             EsconderTodasInstrucoes();
             return;
         }
 
+        // Registra imediatamente que o tutorial começou.
         PlayerPrefs.SetInt(CHAVE_TUTORIAL_EM_ANDAMENTO, 1);
         PlayerPrefs.Save();
 
@@ -94,19 +96,12 @@ public class TutorialInicialManager : MonoBehaviour
 
             TextMeshProUGUI texto = instrucao.textoUI;
 
-            // Configura a mensagem.
             texto.text = instrucao.mensagem;
-
-            // Configura o tamanho da fonte.
             texto.fontSize = instrucao.tamanhoFonte;
-
-            // Configura a posição.
             texto.rectTransform.anchoredPosition = instrucao.posicao;
 
-            // Ativa o objeto de texto.
             texto.gameObject.SetActive(true);
 
-            // Começa invisível.
             Color cor = texto.color;
             cor.a = 0f;
             texto.color = cor;
@@ -116,7 +111,7 @@ public class TutorialInicialManager : MonoBehaviour
                 FadeTexto(texto, 0f, 1f, instrucao.duracaoFadeIn)
             );
 
-            // Mantém o texto visível pelo tempo configurado.
+            // Mantém o texto visível.
             yield return new WaitForSecondsRealtime(instrucao.duracao);
 
             // Fade Out.
@@ -124,10 +119,8 @@ public class TutorialInicialManager : MonoBehaviour
                 FadeTexto(texto, 1f, 0f, instrucao.duracaoFadeOut)
             );
 
-            // Desativa o texto.
             texto.gameObject.SetActive(false);
 
-            // Intervalo antes da próxima instrução.
             yield return new WaitForSecondsRealtime(intervaloEntreInstrucoes);
         }
 

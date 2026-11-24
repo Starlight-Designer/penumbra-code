@@ -29,10 +29,13 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
+        // Apaga o progresso se o jogador voltou ao menu
+        // após a sequência de derrota da floresta.
         if (PlayerPrefs.GetInt(CHAVE_REINICIAR_APOS_FINAL, 0) == 1)
         {
             ApagarProgresso();
-            Debug.Log("Progresso reiniciado após a cutscene final!");
+
+            Debug.Log("Progresso reiniciado após a derrota na floresta!");
         }
 
         float volumeGeral = PlayerPrefs.GetFloat("VolumeGeral", 1f);
@@ -88,8 +91,6 @@ public class MenuManager : MonoBehaviour
                 CHAVE_CUTSCENE_PENDENTE
             );
 
-            // Apaga o registro para não repetir a cutscene
-            // depois que ela for concluída normalmente.
             PlayerPrefs.DeleteKey(CHAVE_CUTSCENE_PENDENTE);
             PlayerPrefs.Save();
 
@@ -127,6 +128,8 @@ public class MenuManager : MonoBehaviour
                 "Cena_Teste"
             );
 
+            Time.timeScale = 1f;
+
             if (fade != null)
                 fade.EscurecerECarregar(cenaSalva);
             else
@@ -143,6 +146,8 @@ public class MenuManager : MonoBehaviour
         }
 
         // PRIORIDADE 5: Entrar diretamente no jogo.
+        Time.timeScale = 1f;
+
         if (fade != null)
             fade.EscurecerECarregar("Cena_Teste");
         else
@@ -208,8 +213,10 @@ public class MenuManager : MonoBehaviour
             InventoryManager.instance.LimparInventario();
         }
 
+        // Apaga todas as informações da partida.
         PlayerPrefs.DeleteAll();
 
+        // Preserva as configurações de áudio.
         PlayerPrefs.SetFloat("VolumeGeral", volumeGeral);
         PlayerPrefs.SetFloat("VolumeMusica", volumeMusica);
         PlayerPrefs.SetFloat("VolumeCutscenes", volumeCutscenes);
