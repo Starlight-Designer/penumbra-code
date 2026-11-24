@@ -1,9 +1,13 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GerenciadorPuzzlePeixes : MonoBehaviour
 {
+    [Header("Painel do puzzle")]
+    public GameObject painelPuzzlePeixes;
+
     [Header("Popup do puzzle")]
     public GameObject painelPopupPeixes;
 
@@ -12,6 +16,11 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
 
     [Header("Som do popup")]
     public AudioSource audioPopup;
+
+    [Header("Músicas")]
+    public AudioSource musicaAmbiente;
+    public AudioSource florestaAmbiente;
+    public AudioSource musicaPuzzle;
 
     [Header("Animação do popup")]
     public float velocidadeFadeIn = 0.15f;
@@ -26,18 +35,28 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
     public CutscenePeixesManager cutscenePeixesManager;
 
     private int peixesOrganizados = 0;
+
     private CanvasGroup grupoPopup;
     private Coroutine animacaoAtual;
+
     private bool popupsJaApareceram = false;
+    private bool musicaPuzzleIniciada = false;
+    private bool painelPuzzleJaAtivado = false;
+
+    private List<AudioSource> sonsPopupsExtras =
+        new List<AudioSource>();
 
     private void Awake()
     {
         if (painelPopupPeixes != null)
         {
-            grupoPopup = painelPopupPeixes.GetComponent<CanvasGroup>();
+            grupoPopup =
+                painelPopupPeixes.GetComponent<CanvasGroup>();
 
             if (grupoPopup == null)
-                Debug.LogError("Adicione um CanvasGroup ao PainelPopupPeixes!");
+                Debug.LogError(
+                    "Adicione um CanvasGroup ao PainelPopupPeixes!"
+                );
         }
 
         if (grupoInteracaoPeixes == null)
@@ -46,10 +65,48 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
                 "Conecte o Grupo Interacao Peixes no Inspector!"
             );
         }
+
+        if (musicaPuzzle != null)
+            musicaPuzzle.Stop();
+    }
+
+    private void Start()
+    {
+        // Ao entrar ou retornar à peixaria,
+        // as duas músicas ambientes começam juntas.
+
+        if (musicaAmbiente != null)
+        {
+            musicaAmbiente.Stop();
+            musicaAmbiente.Play();
+        }
+
+        if (florestaAmbiente != null)
+        {
+            florestaAmbiente.Stop();
+            florestaAmbiente.Play();
+        }
+
+        if (musicaPuzzle != null)
+            musicaPuzzle.Stop();
+
+        musicaPuzzleIniciada = false;
+
+        Debug.Log("Músicas ambientes da peixaria iniciadas!");
     }
 
     private void Update()
     {
+        // Começa a música do puzzle quando o painel aparece.
+        if (painelPuzzlePeixes != null &&
+            painelPuzzlePeixes.activeInHierarchy &&
+            !painelPuzzleJaAtivado)
+        {
+            painelPuzzleJaAtivado = true;
+            IniciarMusicaPuzzle();
+        }
+
+        // Verifica a proximidade do cursor para os pop-ups extras.
         if (painelPopupPeixes == null ||
             peixesOrganizados < 15 ||
             !painelPopupPeixes.activeInHierarchy ||
@@ -92,11 +149,55 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
 
         Debug.Log("Peixes organizados: " + peixesOrganizados);
 
+        // No décimo peixe, aparece o primeiro popup.
+        // A música do puzzle para e a floresta continua.
+
+        if (peixesOrganizados == 10)
+        {
+            PararMusicaPuzzle();
+        }
+
         if (peixesOrganizados == 10 || peixesOrganizados == 15)
         {
             Debug.Log("BIANCA NÃO ESTÁ AQUI.");
 
             MostrarPopup();
+        }
+    }
+
+    private void IniciarMusicaPuzzle()
+    {
+        if (musicaPuzzleIniciada)
+            return;
+
+        musicaPuzzleIniciada = true;
+
+        if (musicaAmbiente != null)
+        {
+            musicaAmbiente.Stop();
+            Debug.Log("Música ambiente interrompida!");
+        }
+
+        if (musicaPuzzle != null)
+        {
+            musicaPuzzle.Play();
+            Debug.Log("Música do puzzle iniciada!");
+        }
+        else
+        {
+            Debug.LogWarning(
+                "MusicaPuzzle não foi conectada no Inspector!"
+            );
+        }
+    }
+
+    private void PararMusicaPuzzle()
+    {
+        if (musicaPuzzle != null && musicaPuzzle.isPlaying)
+        {
+            musicaPuzzle.Stop();
+
+            Debug.Log("Música do puzzle interrompida!");
         }
     }
 
@@ -155,7 +256,9 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
     {
         while (grupoPopup.alpha < 1f)
         {
-            grupoPopup.alpha += Time.deltaTime / velocidadeFadeIn;
+            grupoPopup.alpha +=
+                Time.deltaTime / velocidadeFadeIn;
+
             yield return null;
         }
 
@@ -186,7 +289,9 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
 
         while (grupoPopup.alpha > 0f)
         {
-            grupoPopup.alpha -= Time.deltaTime / velocidadeFadeOut;
+            grupoPopup.alpha -=
+                Time.deltaTime / velocidadeFadeOut;
+
             yield return null;
         }
 
@@ -194,7 +299,6 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
         painelPopupPeixes.SetActive(false);
         animacaoAtual = null;
 
-        // Só libera os peixes depois que o popup desaparece.
         LiberarInteracaoPeixes();
     }
 
@@ -223,12 +327,14 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
 
             float limiteX = Mathf.Max(
                 0f,
-                areaCanvas.rect.width / 2f - rectNovo.rect.width / 2f
+                areaCanvas.rect.width / 2f -
+                rectNovo.rect.width / 2f
             );
 
             float limiteY = Mathf.Max(
                 0f,
-                areaCanvas.rect.height / 2f - rectNovo.rect.height / 2f
+                areaCanvas.rect.height / 2f -
+                rectNovo.rect.height / 2f
             );
 
             rectNovo.anchoredPosition = new Vector2(
@@ -259,14 +365,20 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
             {
                 somNovoPopup.time = 0.3f;
                 somNovoPopup.Play();
+
+                sonsPopupsExtras.Add(somNovoPopup);
             }
 
-            yield return new WaitForSeconds(intervaloEntrePopups);
+            yield return new WaitForSeconds(
+                intervaloEntrePopups
+            );
         }
 
         if (cutscenePeixesManager != null)
         {
             Debug.Log("Iniciando cutscene dos peixes!");
+
+            PararSonsDosPopups();
 
             cutscenePeixesManager.IniciarCutscene();
         }
@@ -276,5 +388,19 @@ public class GerenciadorPuzzlePeixes : MonoBehaviour
                 "CutscenePeixesManager não foi conectado no Inspector!"
             );
         }
+    }
+
+    private void PararSonsDosPopups()
+    {
+        if (audioPopup != null)
+            audioPopup.Stop();
+
+        foreach (AudioSource som in sonsPopupsExtras)
+        {
+            if (som != null)
+                som.Stop();
+        }
+
+        sonsPopupsExtras.Clear();
     }
 }

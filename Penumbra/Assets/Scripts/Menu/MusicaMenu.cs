@@ -7,8 +7,12 @@ public class MusicaMenu : MonoBehaviour
 {
     public AudioSource audioSource;
     public float duracaoFade = 2f;
+
     [Range(0f, 1f)]
     public float volumeMaximo = 1f;
+
+    [Header("Controle de reprodução")]
+    public bool iniciarAutomaticamente = true;
 
     private Coroutine fadeAtual;
 
@@ -24,6 +28,15 @@ public class MusicaMenu : MonoBehaviour
         }
 
         audioSource.loop = true;
+
+        // Permite que o GerenciadorPuzzlePeixes
+        // controle a música na cena da peixaria.
+        if (!iniciarAutomaticamente)
+        {
+            Debug.Log("MusicaMenu: reprodução automática desativada.");
+            return;
+        }
+
         audioSource.volume = 0f;
         audioSource.Play();
 

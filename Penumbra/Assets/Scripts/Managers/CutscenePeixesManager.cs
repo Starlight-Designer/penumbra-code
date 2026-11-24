@@ -8,6 +8,11 @@ public class CutscenePeixesManager : MonoBehaviour
     public VideoPlayer reprodutorVideo;
     public GameObject imagemCutscene;
 
+    [Header("Músicas")]
+    public AudioSource musicaAmbiente;
+    public AudioSource florestaAmbiente;
+    public AudioSource musicaPuzzle;
+
     [Header("Diálogo final")]
     public DialogueManager dialogoPescador;
 
@@ -127,6 +132,9 @@ public class CutscenePeixesManager : MonoBehaviour
 
         DialogueManager.DialogoGlobalAtivo = true;
 
+        // Durante o vídeo, nenhuma música ambiente deve tocar.
+        PararTodasAsMusicas();
+
         if (painelPuzzlePeixes != null)
             painelPuzzlePeixes.SetActive(false);
 
@@ -137,6 +145,20 @@ public class CutscenePeixesManager : MonoBehaviour
         }
 
         reprodutorVideo.Play();
+    }
+
+    private void PararTodasAsMusicas()
+    {
+        if (musicaAmbiente != null)
+            musicaAmbiente.Stop();
+
+        if (florestaAmbiente != null)
+            florestaAmbiente.Stop();
+
+        if (musicaPuzzle != null)
+            musicaPuzzle.Stop();
+
+        Debug.Log("Músicas ambientes interrompidas para a cutscene!");
     }
 
     void FinalizarCutscene(VideoPlayer video = null)
@@ -150,6 +172,27 @@ public class CutscenePeixesManager : MonoBehaviour
 
         if (imagemCutscene != null)
             imagemCutscene.SetActive(false);
+
+        // Depois do vídeo, somente a música da floresta retorna.
+        if (musicaAmbiente != null)
+            musicaAmbiente.Stop();
+
+        if (musicaPuzzle != null)
+            musicaPuzzle.Stop();
+
+        if (florestaAmbiente != null)
+        {
+            florestaAmbiente.Stop();
+            florestaAmbiente.Play();
+
+            Debug.Log("Somente florestaAmbiente foi retomada!");
+        }
+        else
+        {
+            Debug.LogWarning(
+                "florestaAmbiente não foi conectada no Inspector!"
+            );
+        }
 
         // Remove o popup original e todos os popups extras.
         if (painelPopupPeixes != null)
