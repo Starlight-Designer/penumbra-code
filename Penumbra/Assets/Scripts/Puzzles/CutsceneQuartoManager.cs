@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 public class CutsceneQuartoManager : MonoBehaviour
 {
@@ -12,6 +11,9 @@ public class CutsceneQuartoManager : MonoBehaviour
 
     [Header("Painel do puzzle")]
     public GameObject painelPuzzleQuarto;
+
+    [Header("Música do puzzle")]
+    public AudioSource musicaPuzzle;
 
     private bool cutsceneIniciada = false;
     private bool cutsceneFinalizada = false;
@@ -37,12 +39,17 @@ public class CutsceneQuartoManager : MonoBehaviour
         if (painelPuzzleQuarto != null)
             painelPuzzleQuarto.SetActive(false);
 
+        // Para a música do puzzle imediatamente.
+        if (musicaPuzzle != null)
+            musicaPuzzle.Stop();
+
         if (imagemCutscene != null)
         {
             imagemCutscene.SetActive(true);
             imagemCutscene.transform.SetAsLastSibling();
         }
 
+        // Inicia o vídeo após parar a música.
         reprodutorVideo.Play();
     }
 

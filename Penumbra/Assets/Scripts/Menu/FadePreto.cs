@@ -187,6 +187,7 @@ public class FadePreto : MonoBehaviour
         if (atraso > 0f)
             yield return new WaitForSecondsRealtime(atraso);
 
+        // Reproduz o áudio da transição, se configurado.
         if (audio != null)
         {
             if (fonteAudio != null)
@@ -234,6 +235,13 @@ public class FadePreto : MonoBehaviour
         else
         {
             yield return new WaitForSecondsRealtime(tempoNoPreto);
+        }
+
+        // Fade-out e pausa da música ambiente,
+        // preservando a posição atual antes da troca de cena.
+        if (MusicaAmbienteManager.Instance != null)
+        {
+            yield return MusicaAmbienteManager.Instance.FadeOutParaTroca();
         }
 
         // Libera a transição antes de carregar a próxima cena.

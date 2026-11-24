@@ -2732,6 +2732,7 @@ MonoBehaviour:
   audioSource: {fileID: 746420782}
   duracaoFade: 2.5
   volumeMaximo: 1
+  iniciarAutomaticamente: 1
 --- !u!82 &746420782
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3567,6 +3568,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CutscenePeixesManager
   reprodutorVideo: {fileID: 1074114813}
   imagemCutscene: {fileID: 200474439}
+  musicaAmbiente: {fileID: 0}
+  florestaAmbiente: {fileID: 0}
+  musicaPuzzle: {fileID: 0}
   dialogoPescador: {fileID: 0}
   painelPopupPeixes: {fileID: 0}
   painelPuzzlePeixes: {fileID: 0}
@@ -3715,6 +3719,7 @@ MonoBehaviour:
   reprodutorVideo: {fileID: 1074114813}
   imagemCutscene: {fileID: 200474439}
   painelPuzzleQuarto: {fileID: 255410517}
+  musicaPuzzle: {fileID: 746420782}
 --- !u!4 &1120405653
 Transform:
   m_ObjectHideFlags: 0

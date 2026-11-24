@@ -37,7 +37,7 @@ public class PuzzleQuartoManager : MonoBehaviour
 
             Debug.Log("PUZZLE DO QUARTO CONCLUÍDO!");
 
-            // Conclui o objetivo 6
+            // Conclui o objetivo 6.
             if (objectiveManager != null &&
                 PlayerPrefs.GetInt("ObjetivoAtual", 0) == 6)
             {
@@ -46,10 +46,12 @@ public class PuzzleQuartoManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("ObjectiveManager não encontrado ou objetivo atual diferente de 6.");
+                Debug.LogWarning(
+                    "ObjectiveManager não encontrado ou objetivo atual diferente de 6."
+                );
             }
 
-            // Inicia a cutscene
+            // Inicia a cutscene.
             cutsceneQuarto.IniciarCutscene();
         }
     }
