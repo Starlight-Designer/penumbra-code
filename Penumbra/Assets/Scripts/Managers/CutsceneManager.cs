@@ -12,6 +12,9 @@ public class CutsceneManager : MonoBehaviour
     public GameObject textoPularCutscene;
     public GameObject painelPausaCutscene;
 
+    [Header("Áudio após o vídeo")]
+    public AudioSource audioAmbienteNoite;
+
     [Header("Fade do texto Pular Cutscene")]
     public CanvasGroup grupoTextoPular;
     public float duracaoFadeTextoPular = 1f;
@@ -52,6 +55,13 @@ public class CutsceneManager : MonoBehaviour
         grupoTextoFinal.gameObject.SetActive(false);
 
         textoFinal.maxVisibleCharacters = 0;
+
+        // Garante que o áudio ambiente só comece após o vídeo.
+        if (audioAmbienteNoite != null)
+        {
+            audioAmbienteNoite.playOnAwake = false;
+            audioAmbienteNoite.Stop();
+        }
 
         reprodutorVideo.loopPointReached += FinalizarCutscene;
 
@@ -110,6 +120,12 @@ public class CutsceneManager : MonoBehaviour
             return;
 
         cutsceneFinalizada = true;
+
+        // Inicia o áudio ambiente após o vídeo terminar ou ser pulado.
+        if (audioAmbienteNoite != null)
+        {
+            audioAmbienteNoite.Play();
+        }
 
         StopCoroutine("MostrarTextoPular");
 
