@@ -1,9 +1,10 @@
 
 using UnityEngine;
 
-// Efeito de hover para as caixas do Almoxarifado.
+// Efeito de hover e sons para as caixas do Almoxarifado.
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(AudioSource))]
 public class HoverCaixaAlmoxarifado : MonoBehaviour
 {
     [Header("Aumento")]
@@ -14,8 +15,19 @@ public class HoverCaixaAlmoxarifado : MonoBehaviour
     [SerializeField] private Color corBorda = Color.white;
     [SerializeField] private float tamanhoBorda = 1.08f;
 
+    [Header("Sons")]
+    [SerializeField] private AudioClip somHover;
+    [SerializeField] private AudioClip somSelecao;
+
+    [Range(0f, 1f)]
+    [SerializeField] private float volumeHover = 1f;
+
+    [Range(0f, 1f)]
+    [SerializeField] private float volumeSelecao = 1f;
+
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer bordaRenderer;
+    private AudioSource audioSource;
 
     private Vector3 escalaBase;
     private bool mouseEmCima;
@@ -23,6 +35,12 @@ public class HoverCaixaAlmoxarifado : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
+
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
+        audioSource.spatialBlend = 0f;
+
         escalaBase = transform.localScale;
 
         CriarBorda();
@@ -49,13 +67,27 @@ public class HoverCaixaAlmoxarifado : MonoBehaviour
     private void OnMouseEnter()
     {
         mouseEmCima = true;
+
         bordaRenderer.enabled = true;
+
+        if (somHover != null)
+        {
+            audioSource.PlayOneShot(somHover, volumeHover);
+        }
     }
 
     private void OnMouseExit()
     {
         mouseEmCima = false;
         bordaRenderer.enabled = false;
+    }
+
+    private void OnMouseDown()
+    {
+        if (somSelecao != null)
+        {
+            audioSource.PlayOneShot(somSelecao, volumeSelecao);
+        }
     }
 
     private void Update()
@@ -72,7 +104,6 @@ public class HoverCaixaAlmoxarifado : MonoBehaviour
             suavizacao
         );
 
-        // Mantém a borda sincronizada com a imagem da caixa.
         if (bordaRenderer != null)
         {
             bordaRenderer.sprite = spriteRenderer.sprite;

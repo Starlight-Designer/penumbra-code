@@ -297,19 +297,19 @@ MonoBehaviour:
       m_Calls: []
   falas:
   - "O que voc\xEA quer?"
-  - "Bianca?...N\xE3o vou abrir o bico de gra\xE7a. Se quiser informa\xE7\xF5es, vai ter que me ajudar a organizar esses peixes primeiro."
+  - "Bianca?... N\xE3o vou abrir o bico de gra\xE7a. Se quiser informa\xE7\xF5es, vai ter que me ajudar a organizar esses peixes primeiro."
   respostasAlice:
   - "O que voc\xEA sabe sobre o caso da Bianca? Eu estou tentando descobrir mais sobre pois eu sou investigadora criminal rec\xE9m formada e escolhi este caso para resolver."
-  - tsk...Ta eu te ajudo.
+  - Tsk... ta eu te ajudo.
   falasPadreOpicional: []
   respostasAlicePadreOpicional: []
   falasDepoisPuzzle:
-  - Pode ir embora ja, obrigado pela a ajuda.
+  - "Pode ir embora j\xE1, obrigado pela ajuda."
   - 'Menina- '
-  - "Alice...Olha vou falar a mesma coisa que falei para o delegado daquela \xE9poca, eu s\xF3 fui fazer a pesca do dia que sempre fazia para repor os peixes da banca. N\xE3o ouvi nada e n\xE3o vi nada, al\xE9m de peixes agitados.\r\nS\xF3 sei que essa fatalidade mudou o clima da cidade para todos."
+  - "Alice... Olha vou falar a mesma coisa que falei para o delegado daquela \xE9poca, eu s\xF3 fui fazer a pesca do dia que sempre fazia para repor os peixes da banca. N\xE3o ouvi nada e n\xE3o vi nada, al\xE9m de peixes agitados.\r\nS\xF3 sei que essa fatalidade mudou o clima da cidade para todos."
   - "Olha muleca, j\xE1 estou ficando sem tempo para prosa, um bom dia para voc\xEA e n\xE3o me perturbe mais com esse assunto, lhe aconselho a n\xE3o mexer em uma casa de maribondos."
   respostasAliceDepoisPuzzle:
-  - "Eu j\xE1 ajudei como me pediu! voc\xEA me prometeu falar oque sabe sobre o caso da Bianca."
+  - "Eu j\xE1 ajudei como me pediu! voc\xEA me prometeu falar o que sabe sobre o caso da Bianca."
   - Alice.
   - Fatalidade? Tipo morte?
   - ...
@@ -2071,6 +2071,7 @@ MonoBehaviour:
   painelPausa: {fileID: 217453365}
   painelObjetivos: {fileID: 289960474}
   videoCutscene: {fileID: 0}
+  ehCutscene: 0
   nomePainelPausa: Painel_Pausa
   nomePainelObjetivos: Painel_Objetivos
 --- !u!1 &217453367 stripped
@@ -8082,6 +8083,7 @@ MonoBehaviour:
   painelPausa: {fileID: 217453365}
   painelObjetivos: {fileID: 289960474}
   videoCutscene: {fileID: 860315173}
+  ehCutscene: 0
   nomePainelPausa: Painel_Pausa
   nomePainelObjetivos: Painel_Objetivos
 --- !u!4 &1185952410

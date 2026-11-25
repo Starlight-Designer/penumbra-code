@@ -1408,6 +1408,7 @@ MonoBehaviour:
   painelPausa: {fileID: 1618621137}
   painelObjetivos: {fileID: 1210976837}
   videoCutscene: {fileID: 0}
+  ehCutscene: 0
   nomePainelPausa: Painel_Pausa
   nomePainelObjetivos: Painel_Objetivos
 --- !u!4 &1001932057
@@ -2008,6 +2009,16 @@ MonoBehaviour:
   fita2Pensamento4Aberta: {fileID: 0}
   fita2Pensamento5Fechada: {fileID: 0}
   fita2Pensamento5Aberta: {fileID: 0}
+  fita3Pensamento1Fechada: {fileID: 0}
+  fita3Pensamento1Aberta: {fileID: 0}
+  fita3Pensamento2Fechada: {fileID: 0}
+  fita3Pensamento2Aberta: {fileID: 0}
+  fita3Pensamento3Fechada: {fileID: 0}
+  fita3Pensamento3Aberta: {fileID: 0}
+  fita3Pensamento4Fechada: {fileID: 0}
+  fita3Pensamento4Aberta: {fileID: 0}
+  fita3Pensamento5Fechada: {fileID: 0}
+  fita3Pensamento5Aberta: {fileID: 0}
   fita3Pensamento6Fechada: {fileID: 0}
   fita3Pensamento6Aberta: {fileID: 0}
 --- !u!4 &1343853586
@@ -3619,9 +3630,9 @@ MonoBehaviour:
   - "Lendas tem um monte, j\xE1 ouviu falar no curupira?"
   - "J\xE1 que voc\xEA t\xE1 t\xE3o interessada nessa tal lenda assiste essa fita, a lenda veio desse caso."
   respostasAlice:
-  - ' Oi tio! Quer dizer , delegado Juarez.'
-  - "Foi sim,  s\xF3 uma hist\xF3ria esquisita que escutei mas tudo tranquilo\u2026inclusive tio, o senhor sabe de alguma lenda ou algo assim por aqui?"
-  - "Ai tio eu to falando s\xE9rio, ouvi no barco a hist\xF3ria de uma tal de Bianca, menina que simplesmente sumiu\u2026o senhor sabe desse caso?"
+  - ' Oi tio! Quer dizer, delegado Juarez.'
+  - "Foi sim, s\xF3 uma hist\xF3ria esquisita que escutei mas tudo tranquilo\u2026 inclusive tio, o senhor sabe de alguma lenda ou algo assim por aqui?"
+  - "Ai tio eu to falando s\xE9rio, ouvi no barco a hist\xF3ria de uma tal de Bianca, menina que simplesmente sumiu\u2026 o senhor sabe desse caso?"
   falasPadreOpicional: []
   respostasAlicePadreOpicional: []
   falasDepoisPuzzle: []

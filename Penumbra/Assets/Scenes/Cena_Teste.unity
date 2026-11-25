@@ -156,6 +156,7 @@ MonoBehaviour:
   painelPausa: {fileID: 6739120890510187355}
   painelObjetivos: {fileID: 1049994812415002422}
   videoCutscene: {fileID: 0}
+  ehCutscene: 0
   nomePainelPausa: Painel_Pausa
   nomePainelObjetivos: Painel_Objetivos
 --- !u!4 &84114054
@@ -1193,11 +1194,11 @@ MonoBehaviour:
   falas: []
   respostasAlice: []
   falasPadreOpicional:
-  - "Ol\xE1 querida, voc\xEA \xE9 a nova moradora da cidade de S\xE3o Gabriel da Cachoeira n\xE3o \xE9 mesmo? A paz do senhor ,minha filha."
-  - "Perd\xE3o  a falta de educa\xE7\xE3o, sou o pastor Ezequiel, ministro os cultos da cidade\u2026e sua gra\xE7a qual seria? "
-  - "Claro minha filha, olha caso precise de algo as portas de minha igreja est\xE3o sempre abertas para novos filhos de Deus\u2026a paz do senhor."
+  - "Ol\xE1 querida, voc\xEA \xE9 a nova moradora da cidade de S\xE3o Gabriel da Cachoeira n\xE3o \xE9 mesmo? A paz do senhor, minha filha."
+  - "Perd\xE3o a falta de educa\xE7\xE3o, sou o pastor Ezequiel, ministro os cultos da cidade\u2026 e sua gra\xE7a qual seria? "
+  - "Claro minha filha. Olha, caso precise de algo, as portas de minha igreja estar\xE3o sempre abertas para novos filhos de Deus. A paz do Senhor!"
   respostasAlicePadreOpicional:
-  - "Ol\xE1, sim sou sim\u2026quem seria o senhor?"
+  - "Ol\xE1, sim sou sim\u2026 quem seria o senhor?"
   - "Me chamo Alice, bom se me der licen\xE7a preciso continuar meus afazeres."
   - Agradecida...
   falasDepoisPuzzle: []

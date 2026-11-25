@@ -1359,6 +1359,16 @@ MonoBehaviour:
   fita2Pensamento4Aberta: {fileID: 1766667236818194794, guid: 232ff096cf08c4940a72759cd09ce5e9, type: 3}
   fita2Pensamento5Fechada: {fileID: -6214200641705995386, guid: b5c12aea4aedeb74e98ac505a2a77335, type: 3}
   fita2Pensamento5Aberta: {fileID: 8512984223476161493, guid: 3f104814154a0e3409fa54b3b1e5202b, type: 3}
+  fita3Pensamento1Fechada: {fileID: 0}
+  fita3Pensamento1Aberta: {fileID: 0}
+  fita3Pensamento2Fechada: {fileID: 0}
+  fita3Pensamento2Aberta: {fileID: 0}
+  fita3Pensamento3Fechada: {fileID: 0}
+  fita3Pensamento3Aberta: {fileID: 0}
+  fita3Pensamento4Fechada: {fileID: 0}
+  fita3Pensamento4Aberta: {fileID: 0}
+  fita3Pensamento5Fechada: {fileID: 0}
+  fita3Pensamento5Aberta: {fileID: 0}
   fita3Pensamento6Fechada: {fileID: 0}
   fita3Pensamento6Aberta: {fileID: 0}
 --- !u!4 &646546815
@@ -2671,21 +2681,21 @@ MonoBehaviour:
   falas:
   - "Ol\xE1, em que posso lhe ajudar?"
   - ...
-  - "Sou eu mesma\u2026o que voc\xEA quer saber?"
-  - "Minha filha,faz um favor para mim? Quase n\xE3o entro no quarto dela n\xE3o consigo sozinha, me ajude a ajeitar as coisas l\xE1 pois em baixo da bagun\xE7a tem uma caixa, acho que vai ajudar na nossa conversa."
+  - "Sou eu mesma\u2026 o que voc\xEA quer saber?"
+  - "Minha filha, faz um favor para mim? Quase n\xE3o entro no quarto dela, n\xE3o consigo sozinha, me ajude a ajeitar as coisas l\xE1 pois em baixo da bagun\xE7a tem uma caixa, acho que vai ajudar na nossa conversa."
   respostasAlice:
-  - "Boa tarde,eu me chamo Alice , a senhora que \xE9 a dona Aparecida? Queria saber se a senhora estaria dispon\xEDvel para conversar sobre o caso da sua filha\u2026a Bianca."
-  - "Eu s\xF3 quero fazer umas perguntas se n\xE3o for incomodo."
-  - Claro dona cida, vou te ajudar com certeza.
+  - "Boa tarde, eu me chamo Alice, a senhora que \xE9 a Dona Aparecida? Queria saber se a senhora estaria dispon\xEDvel para conversar sobre o caso da sua filha\u2026a Bianca."
+  - "Eu s\xF3 quero fazer umas perguntas se n\xE3o for inc\xF4modo."
+  - Claro Dona Cida, vou te ajudar com certeza.
   falasPadreOpicional: []
   respostasAlicePadreOpicional: []
   falasDepoisPuzzle: []
   respostasAliceDepoisPuzzle: []
   falasDepoisPuzzleDonaCida:
-  - Obrigada por limpar, fazia tanto tempo q n sentia essa casa mais...livre....
-  - "Eu achei est\xE1 fita enquanto estava arrumand, eu n\xE3o sei se vai ajudar muito mas pegue, minha filha guardava isso com muito carinho."
+  - "Obrigada por limpar, fazia tanto tempo q n\xE3o sentia essa casa mais...livre...."
+  - "Eu achei esta fita enquanto estava arrumando, eu n\xE3o sei se vai ajudar muito mas pegue, minha filha guardava isso com muito carinho."
   respostasAliceDepoisPuzzleDonaCida:
-  - "N\xE3o se preocupe dona cida, ta tudo limpinho pra vc agr"
+  - "N\xE3o se preocupe Dona Cida, t\xE1 tudo limpinho pra voc\xEA agora."
   - Muito obrigada.
   falaDonaCidaDepoisDaFita: ...
   spriteDonaCidaDepoisDaFita: {fileID: 226396571658009093, guid: 793be4428b6c82141b8087bf74aebde5, type: 3}
@@ -2928,6 +2938,7 @@ MonoBehaviour:
   painelPausa: {fileID: 0}
   painelObjetivos: {fileID: 0}
   videoCutscene: {fileID: 0}
+  ehCutscene: 0
   nomePainelPausa: Painel_Pausa
   nomePainelObjetivos: Painel_Objetivos
 --- !u!4 &1487142528
@@ -3875,6 +3886,16 @@ MonoBehaviour:
   fita2Pensamento4Aberta: {fileID: 0}
   fita2Pensamento5Fechada: {fileID: 0}
   fita2Pensamento5Aberta: {fileID: 0}
+  fita3Pensamento1Fechada: {fileID: 0}
+  fita3Pensamento1Aberta: {fileID: 0}
+  fita3Pensamento2Fechada: {fileID: 0}
+  fita3Pensamento2Aberta: {fileID: 0}
+  fita3Pensamento3Fechada: {fileID: 0}
+  fita3Pensamento3Aberta: {fileID: 0}
+  fita3Pensamento4Fechada: {fileID: 0}
+  fita3Pensamento4Aberta: {fileID: 0}
+  fita3Pensamento5Fechada: {fileID: 0}
+  fita3Pensamento5Aberta: {fileID: 0}
   fita3Pensamento6Fechada: {fileID: 0}
   fita3Pensamento6Aberta: {fileID: 0}
 --- !u!82 &1702077010
